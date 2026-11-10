@@ -185,7 +185,7 @@ class FairAudioEngine {
 
 const audio = new FairAudioEngine();
 
-// Games Database
+// Games Database (Official Live Render URLs)
 const GAMES_DATA = [
   {
     id: 'canicas',
@@ -193,18 +193,14 @@ const GAMES_DATA = [
     subtitle: 'Feria de Clavos & Patio de Tierra',
     icon: '🔮',
     categories: ['destreza', 'multiplayer'],
-    categoryBadge: 'Destreza & Física',
-    livePlayers: 'En vivo',
+    categoryBadge: 'Destreza & Puntería',
     desc: 'Lanza tu canica de vidrio con el resorte de latón, sortea 56 clavos de madera y embócala en los hoyitos pintados de la feria, o juega en el patio de tierra al Círculo y la Hoyita.',
     features: [
-      'Tablero tradicional de feria con clavos y hoyitos de puntaje',
-      'Modo Patio: La Rueda / El Círculo y La Hoyita de tierra',
-      'Física 3D a 60fps con audio procedural de cristal y campana',
-      'Multijugador sincronizado en tiempo real vía WebSockets'
+      'Tablero de feria con clavos y hoyitos de puntaje',
+      'Modo Patio de tierra: El Círculo y La Hoyita',
+      'Física de rebote realista y sonido de campana'
     ],
-    tech: ['Rust', 'Axum', 'WebSockets', 'HTML5 Canvas 3D', 'Render'],
-    playUrl: 'https://github.com/pinguxx/canicas',
-    repoUrl: 'https://github.com/pinguxx/canicas',
+    playUrl: 'https://canicas.onrender.com',
     rules: 'Ajusta la fuerza del resorte con el ratón o barra espaciadora. Tu canica rodará por el arco superior y rebotará en los clavos de latón. Si cae en el hoyo de "El Gallo de Oro", ganas 100 puntos y combo doble si ya había canica.'
   },
   {
@@ -214,17 +210,13 @@ const GAMES_DATA = [
     icon: '✏️',
     categories: ['palabras', 'multiplayer'],
     categoryBadge: 'Palabras & Mente',
-    livePlayers: 'En vivo',
     desc: 'El clásico juego de lápiz y papel llevado al multijugador moderno. Compite por escribir Nombre, Apellido, Ciudad, Flor o Fruto antes de que alguien grite "¡Basta para mí, basta para todos!".',
     features: [
-      'Estilo hoja de libreta escolar con margen rojo y temas de feria',
-      'Bots inteligentes con modismos mexicanos (El Bryan, Don Lupe)',
-      'Gritos rápidos de fiesta con síntesis de audio procedural',
-      'Sistema de votación democrática en tiempo real entre jugadores'
+      'Estilo hoja de libreta escolar con categorías clásicas',
+      'Partidas multijugador y bots divertidos para jugar solo',
+      'Votación democrática de palabras y gritos rápidos de fiesta'
     ],
-    tech: ['Rust', 'Axum', 'Tokio', 'WebSockets', 'Quality Gates'],
-    playUrl: 'https://github.com/pinguxx/basta',
-    repoUrl: 'https://github.com/pinguxx/basta',
+    playUrl: 'https://basta-azbj.onrender.com',
     rules: 'Se sortea una letra al azar. Todos llenan sus categorías a contrarreloj. El primero en completar grita "¡Basta!". Durante la votación, las respuestas únicas valen 100 puntos y las repetidas 50.'
   },
   {
@@ -233,18 +225,14 @@ const GAMES_DATA = [
     subtitle: 'Tablas, Frijolitos y Gritón',
     icon: '🎴',
     categories: ['tablero', 'multiplayer'],
-    categoryBadge: 'Tablero Tradicional',
-    livePlayers: 'En vivo',
+    categoryBadge: '¡Lotería Tradicional!',
     desc: '¡Corre y se va con la primera! Disfruta la tradicional Lotería Mexicana con sus 54 cartas ilustradas, frijolitos para marcar tu tabla y voz de cantador con pregones populares.',
     features: [
-      'Las 54 cartas oficiales: El Gallo, La Muerte, El Catrín, La Sirena...',
-      'Marcado interactivo con frijoles o corcholatas',
-      'Múltiples modalidades: Línea, Cuarteta, Centro o Tabla Llena',
-      'Gritón automático y multijugador con salas privadas'
+      'Las 54 cartas oficiales con frijolitos para marcar',
+      'Voz de cantador con pregones populares tradicionales',
+      'Modalidades: Cuarteta, Centro, Línea o Tabla Llena'
     ],
-    tech: ['Rust', 'Axum', 'Tokio', 'WebSockets', 'SVG'],
-    playUrl: 'https://github.com/pinguxx/loteria',
-    repoUrl: 'https://github.com/pinguxx/loteria',
+    playUrl: 'https://loteria-zhet.onrender.com',
     rules: 'El cantador canta cada carta con un pregón tradicional. Si la carta cantada está en tu tabla de 4x4, haz clic sobre ella para colocar un frijolito. Completa la figura y sé el primero en gritar "¡Buenas!" o "¡Lotería!".'
   },
   {
@@ -253,18 +241,14 @@ const GAMES_DATA = [
     subtitle: 'Toma Todo & Pozo de Fichas',
     icon: '🌀',
     categories: ['destreza', 'multiplayer'],
-    categoryBadge: 'Destreza & Suerte',
-    livePlayers: 'En vivo',
+    categoryBadge: 'Toma Todo & Azar',
     desc: 'El emblemático trompito mexicano de 6 caras. Pon tu ficha en el pozo central, dale cuerda al tiro y prepárate para la tensión cuando el trompo desacelera y cae en "¡Toma Todo!".',
     features: [
-      'Simulación física de giro tridimensional con bamboleo realista',
-      'Las 6 caras tradicionales: Toma Uno, Toma Dos, Toma Todo, Pon Uno, Pon Dos, Todos Ponen',
-      'Gestión de pozo de monedas y apuestas comunitarias',
-      'Modo fiesta con animaciones festivas y efectos de sonido'
+      'Las 6 caras clásicas: Pon Uno, Pon Dos, Toma Todo...',
+      'Giro 3D realista con física de bamboleo',
+      'Apuestas de fichas comunitarias y modo fiesta'
     ],
-    tech: ['Rust', 'Axum', 'WebSockets', 'Canvas 3D'],
-    playUrl: 'https://github.com/pinguxx/pirinola',
-    repoUrl: 'https://github.com/pinguxx/pirinola',
+    playUrl: 'https://pirinola.onrender.com',
     rules: 'Cada jugador comienza con una bolsa de fichas o monedas y aporta una al pozo ("Todos ponen"). En tu turno, impulsa la pirinola. Cumple la orden de la cara que quede hacia arriba. ¡El que vacía el pozo con Toma Todo se lleva la gloria!'
   },
   {
@@ -273,18 +257,14 @@ const GAMES_DATA = [
     subtitle: 'El Tablero de las 100 Casillas',
     icon: '🐍',
     categories: ['tablero', 'multiplayer'],
-    categoryBadge: 'Tablero Clásico',
-    livePlayers: 'En vivo',
+    categoryBadge: 'Tablero Familiar',
     desc: 'Sube hacia la victoria por las escaleras de madera o resbala hasta el fondo por las colas de las víboras en este legendario juego de mesa ilustrado para toda la familia.',
     features: [
-      'Tablero numérico clásico de 100 casillas ricamente decorado',
-      'Lanzamiento de dados con física realista',
-      'Casillas de sorpresa, escalones empinados y serpientes traviesas',
-      'Turnos en tiempo real con avatares personalizados'
+      'Tablero clásico de 100 casillas ilustrado',
+      'Tiradas de dados, escaleras altas y resbalones en víboras',
+      'Salas para jugar con amigos y familia en turnos'
     ],
-    tech: ['Rust', 'Axum', 'Tokio', 'WebSockets'],
-    playUrl: 'https://github.com/pinguxx/shoots_ladders',
-    repoUrl: 'https://github.com/pinguxx/shoots_ladders',
+    playUrl: 'https://shoots-ladders.onrender.com',
     rules: 'Por turnos, tira el dado y avanza tu ficha tantas casillas como indique. Si caes al pie de una escalera, subes de inmediato. Si caes en la cabeza de una serpiente, resbalas hasta su cola. Gana el primero en llegar exactamente a la casilla 100.'
   },
   {
@@ -293,18 +273,14 @@ const GAMES_DATA = [
     subtitle: 'De Oca a Oca y Tiro Porque Me Toca',
     icon: '🪿',
     categories: ['tablero', 'multiplayer'],
-    categoryBadge: 'Tablero Clásico',
-    livePlayers: 'En vivo',
+    categoryBadge: 'Clásico de Mesa',
     desc: 'El viaje en espiral más célebre de los juegos de mesa. Cruza el puente, evita la posada, no caigas en el pozo ni en la calavera y salta de oca en oca hasta el Gran Jardín de la Oca.',
     features: [
-      'Espiral completa de 63 casillas con casillas especiales clásicas',
-      'Mecánica tradicional: La Oca, El Puente, La Posada, El Pozo, El Laberinto, La Cárcel y La Muerte',
-      'Modo multijugador en vivo con tiradas de dados dobles',
-      'Efectos sonoros clásicos al caer en cada casilla'
+      'Espiral clásica de 63 casillas con casillas especiales',
+      'Tiro doble de dados y saltos de oca en oca',
+      'El puente, la posada, el laberinto, el pozo y la muerte'
     ],
-    tech: ['Rust', 'Axum', 'Tokio', 'WebSockets'],
-    playUrl: 'https://github.com/pinguxx/oca',
-    repoUrl: 'https://github.com/pinguxx/oca',
+    playUrl: 'https://oca-ox87.onrender.com',
     rules: 'Tira los dos dados y avanza por la espiral. Si caes en una casilla con oca, repites el tiro diciendo "De oca a oca y tiro porque me toca". Ten cuidado con la casilla 58 (La Calavera), que te regresa al inicio de la espiral.'
   }
 ];
@@ -574,12 +550,14 @@ function onMiniGameWin(cup) {
 
   const phraseEl = document.getElementById('miniBoothPhrase');
   if (phraseEl) {
+    const ptsBadge = `<span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${cup.pts} pts</span>`;
+    const tktBadge = `<span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${cup.tickets} boletos</span>`;
     if (cup.pts === 100) {
       audio.playBell();
-      phraseEl.innerHTML = `🎉 <strong>¡EL GALLO DE ORO!</strong> Ganaste <strong>${cup.pts} pts</strong> y <strong>+${cup.tickets} Boletos</strong>`;
+      phraseEl.innerHTML = `🎉 <strong>¡EL GALLO DE ORO!</strong> Ganaste ${ptsBadge} y ${tktBadge}`;
     } else {
       audio.playBell();
-      phraseEl.innerHTML = `🎯 <strong>¡Premio!</strong> Ganaste <strong>${cup.pts} pts</strong> y <strong>+${cup.tickets} Boletos</strong>`;
+      phraseEl.innerHTML = `🎯 <strong>¡Premio!</strong> Ganaste ${ptsBadge} y ${tktBadge}`;
     }
   }
 
@@ -611,7 +589,7 @@ function renderBooths() {
       g.title.toLowerCase().includes(query) ||
       g.subtitle.toLowerCase().includes(query) ||
       g.desc.toLowerCase().includes(query) ||
-      g.tech.some(t => t.toLowerCase().includes(query));
+      g.categoryBadge.toLowerCase().includes(query);
     return matchesCategory && matchesSearch;
   });
 
@@ -634,7 +612,6 @@ function renderBooths() {
       <div class="booth-header">
         <div class="booth-icon-box">${game.icon}</div>
         <div class="booth-badges">
-          <span class="badge-live">WebSockets</span>
           <span class="badge-players">${game.categoryBadge}</span>
         </div>
       </div>
@@ -643,21 +620,15 @@ function renderBooths() {
         <div class="booth-subtitle">${game.subtitle}</div>
         <p class="booth-desc">${game.desc}</p>
         <ul class="booth-features">
-          ${game.features.slice(0, 3).map(f => `<li><span>✦</span> ${f}</li>`).join('')}
+          ${game.features.map(f => `<li><span>✦</span> ${f}</li>`).join('')}
         </ul>
-        <div class="booth-tech">
-          ${game.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-        </div>
         <div class="booth-actions">
           <a href="${game.playUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" onclick="audio.playWoodClick()">
-            <span>🎮</span> Jugar / Ver Puesto
+            <span>🎮</span> ¡Jugar Ahora!
           </a>
           <button class="btn-secondary" onclick="openGameModal('${game.id}')">
-            <span>📖</span> Reglas
+            <span>📖</span> Ver Reglas
           </button>
-          <a href="${game.repoUrl}" target="_blank" rel="noopener noreferrer" class="btn-secondary" onclick="audio.playWoodClick()">
-            <span>📦</span> GitHub
-          </a>
         </div>
       </div>
     </article>
@@ -730,26 +701,23 @@ function openGameModal(gameId) {
     </div>
 
     <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 16px; margin-bottom: 20px;">
-      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 8px;">📜 ¿Cómo se juega? (Reglas de Feria)</h4>
+      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 8px;">📜 ¿Cómo se juega?</h4>
       <p style="font-size: 14px; color: var(--text-main); line-height: 1.6;">${game.rules}</p>
     </div>
 
     <div style="margin-bottom: 24px;">
-      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">🌟 Características y Tecnologías:</h4>
-      <ul style="list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px;">
+      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">🌟 Lo que incluye este puesto:</h4>
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 6px;">
         ${game.features.map(f => `<li style="font-size: 13px; color: var(--text-muted);">✦ ${f}</li>`).join('')}
       </ul>
-      <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-        ${game.tech.map(t => `<span class="tech-tag" style="background: var(--bg-card); border-color: var(--border-card);">${t}</span>`).join('')}
-      </div>
     </div>
 
     <div style="display: flex; gap: 12px; justify-content: flex-end;">
-      <a href="${game.repoUrl}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="padding: 10px 18px;">
-        <span>📦</span> Ver en GitHub
-      </a>
-      <a href="${game.playUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" style="grid-column: auto; padding: 10px 24px;">
-        <span>🎮</span> Ir a Jugar
+      <button class="btn-secondary" onclick="closeGameModal()" style="padding: 10px 18px;">
+        Cerrar
+      </button>
+      <a href="${game.playUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" style="width: auto; padding: 10px 24px;">
+        <span>🎮</span> ¡Entrar a Jugar!
       </a>
     </div>
   `;

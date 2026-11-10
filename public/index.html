@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#0a111c" />
-  <meta name="description" content="🎪 La Feria • Colección de juegos tradicionales mexicanos multijugador en línea en Rust y WebSockets: Canicas 3D, Basta Online, Lotería Mexicana, Pirinola, Serpientes y Escaleras y El Juego de la Oca." />
+  <meta name="description" content="🎪 La Feria • Colección de juegos tradicionales mexicanos multijugador en línea: Canicas 3D, Basta Online, Lotería Mexicana, Pirinola, Serpientes y Escaleras y El Juego de la Oca." />
   <title>🎪 La Feria • Juegos Tradicionales Mexicanos Online</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,10 +53,6 @@
     </a>
 
     <div class="nav-controls">
-      <div class="btn-control" id="activeVisitorsBadge" style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-green); cursor: default;">
-        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-green); box-shadow:0 0 6px var(--accent-green);"></span>
-        <span id="activeVisitorsText">Rust Axum Live</span>
-      </div>
       <div class="ticket-badge" id="navTickets" title="Tus boletos ganados en la feria">
         🎫 <span id="ticketCount">10</span> Boletos
       </div>
@@ -80,7 +76,7 @@
       <div class="hero-tag">🇲🇽 Gran Kermés Virtual • Colección Oficial</div>
       <h1 class="hero-title">¡PÁSELE MARCHANTE A LA FERIA!</h1>
       <p class="hero-subtitle">
-        Los juegos tradicionales más queridos de México y de siempre, reimaginados en línea con <strong>Rust</strong>, <strong>Axum</strong>, <strong>WebSockets</strong> de alta velocidad y física interactiva en tu navegador.
+        Los juegos tradicionales más queridos de México y de siempre, reunidos para jugar en línea con amigos y familia directo en tu navegador.
       </p>
 
       <!-- Interactive Mini-Booth Widget -->
@@ -133,7 +129,7 @@
 
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" class="search-input" placeholder="Buscar juego, puesto o tecnología..." />
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar juego o puesto de feria..." />
       </div>
     </section>
 
@@ -157,50 +153,6 @@
       </div>
     </section>
 
-    <!-- Architecture & Open Source Showcase -->
-    <section class="architecture-section" aria-label="Arquitectura de software">
-      <div class="arch-info">
-        <div class="hero-tag" style="margin-bottom: 8px;">⚙️ Ingeniería Rust & Web</div>
-        <h3>Hecho para Rendimiento y Conexión en Vivo</h3>
-        <p>
-          Cada uno de los juegos que componen <strong>La Feria</strong> está desarrollado con un backend nativo en <strong>Rust</strong> con <strong>Tokio</strong> y <strong>Axum</strong>, ofreciendo latencias ultrabajas mediante WebSockets, cero dependencias pesadas de audio (Web Audio API procedural sintetizada) y despliegues listos en Docker y Render.
-        </p>
-        <div class="arch-highlights">
-          <div class="arch-item">
-            <div class="arch-item-title">⚡ Rust Tokio + Axum</div>
-            <div class="arch-item-desc">Manejo asíncrono concurrente de salas multijugador con consumo mínimo de RAM.</div>
-          </div>
-          <div class="arch-item">
-            <div class="arch-item-title">🔌 WebSockets Nativos</div>
-            <div class="arch-item-desc">Canales bidireccionales en tiempo real para votaciones, turnos y lanzamientos.</div>
-          </div>
-          <div class="arch-item">
-            <div class="arch-item-title">🔊 Audio Procedural</div>
-            <div class="arch-item-desc">Efectos de sonido y melodías de organillo sintetizadas 100% en código de cliente.</div>
-          </div>
-          <div class="arch-item">
-            <div class="arch-item-title">🛡️ CI/CD Quality Gates</div>
-            <div class="arch-item-desc">Pipelines automatizados con Clippy, rustfmt, tests unitarios y escaneo Trivy.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="arch-code-preview">
-        <div style="color: #64748b; margin-bottom: 8px;">// Servidor WebSocket de La Feria (Axum + Tokio)</div>
-        <div><span class="code-keyword">use</span> axum::{routing::get, Router};</div>
-        <div><span class="code-keyword">use</span> tokio::sync::broadcast;</div>
-        <br />
-        <div><span class="code-keyword">async fn</span> <span class="code-fn">iniciar_feria</span>() {</div>
-        <div>&nbsp;&nbsp;<span class="code-keyword">let</span> (tx, _rx) = broadcast::channel(128);</div>
-        <div>&nbsp;&nbsp;<span class="code-keyword">let</span> app = Router::new()</div>
-        <div>&nbsp;&nbsp;&nbsp;&nbsp;.route(<span class="code-string">"/ws"</span>, get(feria_ws_handler))</div>
-        <div>&nbsp;&nbsp;&nbsp;&nbsp;.with_state(tx);</div>
-        <div>&nbsp;&nbsp;<span class="code-comment">// ¡Servidor listo a 60fps con latencia &lt; 5ms!</span></div>
-        <div>&nbsp;&nbsp;axum::serve(listener, app).<span class="code-keyword">await</span>.unwrap();</div>
-        <div>}</div>
-      </div>
-    </section>
-
   </main>
 
   <!-- Modal for Rules and Details -->
@@ -218,15 +170,15 @@
     <div class="footer-content">
       <div class="footer-brand">🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA</div>
       <div class="footer-links">
-        <a href="https://github.com/pinguxx/canicas" class="footer-link" target="_blank" rel="noopener noreferrer">🔮 Canicas 3D</a>
-        <a href="https://github.com/pinguxx/basta" class="footer-link" target="_blank" rel="noopener noreferrer">✏️ Basta Online</a>
-        <a href="https://github.com/pinguxx/loteria" class="footer-link" target="_blank" rel="noopener noreferrer">🎴 Lotería</a>
-        <a href="https://github.com/pinguxx/pirinola" class="footer-link" target="_blank" rel="noopener noreferrer">🌀 Pirinola</a>
-        <a href="https://github.com/pinguxx/shoots_ladders" class="footer-link" target="_blank" rel="noopener noreferrer">🐍 Serpientes y Escaleras</a>
-        <a href="https://github.com/pinguxx/oca" class="footer-link" target="_blank" rel="noopener noreferrer">🪿 El Juego de la Oca</a>
+        <a href="https://canicas.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🔮 Canicas 3D</a>
+        <a href="https://basta-azbj.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">✏️ Basta Online</a>
+        <a href="https://loteria-zhet.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🎴 Lotería</a>
+        <a href="https://pirinola.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🌀 Pirinola</a>
+        <a href="https://shoots-ladders.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🐍 Serpientes y Escaleras</a>
+        <a href="https://oca-ox87.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🪿 El Juego de la Oca</a>
       </div>
       <div class="footer-copy">
-        Hecho con ❤️, cultura popular y Rust de alto rendimiento por <strong>@pinguxx</strong>.
+        Hecho con ❤️ y amor a los juegos tradicionales por <strong>@pinguxx</strong>.
       </div>
     </div>
   </footer>

@@ -455,12 +455,18 @@ body {
   font-weight: 600;
   color: var(--text-main);
   background: var(--bg-elevated);
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
   border-left: 4px solid var(--accent-rose);
-  min-height: 44px;
-  display: flex;
-  align-items: center;
+  min-height: 48px;
+  display: block;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.mini-booth-phrase strong {
+  color: var(--accent-gold);
+  font-weight: 800;
 }
 
 .btn-launch-mini {
@@ -786,13 +792,14 @@ body {
 
 /* Card Actions */
 .booth-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  margin-top: auto;
 }
 
 .btn-primary-play {
-  grid-column: span 2;
+  width: 100%;
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
   color: #1e1b4b;
   font-family: var(--font-accent);
