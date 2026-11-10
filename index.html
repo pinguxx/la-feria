@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="noche">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#0a111c" />
+  <meta name="description" content="🎪 La Feria • Colección de juegos tradicionales mexicanos multijugador en línea en Rust y WebSockets: Canicas 3D, Basta Online, Lotería Mexicana, Pirinola, Serpientes y Escaleras y El Juego de la Oca." />
+  <title>🎪 La Feria • Juegos Tradicionales Mexicanos Online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Festive Papel Picado Garland -->
+  <div class="papel-garland" aria-hidden="true">
+    <div class="papel-flag">🎪</div>
+    <div class="papel-flag">🔮</div>
+    <div class="papel-flag">✏️</div>
+    <div class="papel-flag">🎴</div>
+    <div class="papel-flag">🌀</div>
+    <div class="papel-flag">🐍</div>
+    <div class="papel-flag">🪿</div>
+    <div class="papel-flag">🔔</div>
+    <div class="papel-flag">👑</div>
+    <div class="papel-flag">🎉</div>
+  </div>
+
+  <!-- Fairground String Lights -->
+  <div class="lights-string" aria-hidden="true">
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="top-nav">
+    <a href="#" class="nav-brand">
+      <span class="nav-logo-icon">🎪</span>
+      <span class="nav-brand-text">LA FERIA</span>
+      <span class="nav-tagline">Juegos Tradicionales Mexicanos</span>
+    </a>
+
+    <div class="nav-controls">
+      <div class="ticket-badge" id="navTickets" title="Tus boletos ganados en la feria">
+        🎫 <span id="ticketCount">10</span> Boletos
+      </div>
+      <button class="btn-control" id="btnAudioToggle" title="Activar/Desactivar efectos de sonido">
+        🔇 Sonido: OFF
+      </button>
+      <button class="btn-control" id="btnMusicToggle" title="Tocar música de organillo de feria">
+        🎵 Organillo: OFF
+      </button>
+      <button class="btn-control" id="btnThemeToggle" title="Cambiar tema visual">
+        🏮 Noche de Feria
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-tag">🇲🇽 Gran Kermés Virtual • Colección Oficial</div>
+      <h1 class="hero-title">¡PÁSELE MARCHANTE A LA FERIA!</h1>
+      <p class="hero-subtitle">
+        Los juegos tradicionales más queridos de México y de siempre, reimaginados en línea con <strong>Rust</strong>, <strong>Axum</strong>, <strong>WebSockets</strong> de alta velocidad y física interactiva en tu navegador.
+      </p>
+
+      <!-- Interactive Mini-Booth Widget -->
+      <div class="hero-mini-booth">
+        <div class="mini-booth-header">
+          <div class="mini-booth-title">
+            <span>🔮</span> Puesto de la Suerte: ¡Tira la Canica de Prueba!
+          </div>
+          <div style="font-family: var(--font-accent); font-size: 12px; color: var(--accent-gold);">
+            Gana boletos para los premios
+          </div>
+        </div>
+
+        <div class="mini-booth-content">
+          <div class="mini-canvas-container">
+            <canvas id="miniFeriaCanvas" width="260" height="130"></canvas>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+              Rebote físico en clavos de latón
+            </div>
+          </div>
+
+          <div class="mini-booth-actions">
+            <div class="mini-booth-phrase" id="miniBoothPhrase">
+              🎪 «¡Pásele marchante, pásele a probar suerte!»
+            </div>
+            <button class="btn-launch-mini" id="btnLaunchMini">
+              <span>🚀</span> ¡Soltar Canica! (Gratis)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters & Search Section -->
+    <section class="filter-section" aria-label="Filtros de juegos">
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all">
+          <span>🎪</span> Todos los Puestos (6)
+        </button>
+        <button class="filter-btn" data-filter="destreza">
+          <span>🎯</span> Destreza & Física (2)
+        </button>
+        <button class="filter-btn" data-filter="palabras">
+          <span>✏️</span> Palabras & Mente (1)
+        </button>
+        <button class="filter-btn" data-filter="tablero">
+          <span>🎲</span> Tablero Clásico (3)
+        </button>
+      </div>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar juego, puesto o tecnología..." />
+      </div>
+    </section>
+
+    <!-- Booths Grid (The 6 Games) -->
+    <section id="boothsGrid" class="booths-grid" aria-label="Catálogo de juegos de la feria">
+      <!-- Injected by app.js -->
+    </section>
+
+    <!-- Prizes Showcase (Vitrina de Premios de la Feria) -->
+    <section class="prizes-section" aria-label="Vitrina de premios">
+      <div class="section-header">
+        <div class="section-tag">🎁 Puesto de Reclamación</div>
+        <h2 class="section-title">VITRINA DE PREMIOS DE FERIA</h2>
+        <p class="section-desc">
+          Juega en los puestos, acumula tus boletos de la suerte y canjea los tesoros más auténticos de cualquier feria de pueblo mexicana.
+        </p>
+      </div>
+
+      <div id="prizesGrid" class="prizes-grid">
+        <!-- Injected by app.js -->
+      </div>
+    </section>
+
+    <!-- Architecture & Open Source Showcase -->
+    <section class="architecture-section" aria-label="Arquitectura de software">
+      <div class="arch-info">
+        <div class="hero-tag" style="margin-bottom: 8px;">⚙️ Ingeniería Rust & Web</div>
+        <h3>Hecho para Rendimiento y Conexión en Vivo</h3>
+        <p>
+          Cada uno de los juegos que componen <strong>La Feria</strong> está desarrollado con un backend nativo en <strong>Rust</strong> con <strong>Tokio</strong> y <strong>Axum</strong>, ofreciendo latencias ultrabajas mediante WebSockets, cero dependencias pesadas de audio (Web Audio API procedural sintetizada) y despliegues listos en Docker y Render.
+        </p>
+        <div class="arch-highlights">
+          <div class="arch-item">
+            <div class="arch-item-title">⚡ Rust Tokio + Axum</div>
+            <div class="arch-item-desc">Manejo asíncrono concurrente de salas multijugador con consumo mínimo de RAM.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-item-title">🔌 WebSockets Nativos</div>
+            <div class="arch-item-desc">Canales bidireccionales en tiempo real para votaciones, turnos y lanzamientos.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-item-title">🔊 Audio Procedural</div>
+            <div class="arch-item-desc">Efectos de sonido y melodías de organillo sintetizadas 100% en código de cliente.</div>
+          </div>
+          <div class="arch-item">
+            <div class="arch-item-title">🛡️ CI/CD Quality Gates</div>
+            <div class="arch-item-desc">Pipelines automatizados con Clippy, rustfmt, tests unitarios y escaneo Trivy.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-code-preview">
+        <div style="color: #64748b; margin-bottom: 8px;">// Servidor WebSocket de La Feria (Axum + Tokio)</div>
+        <div><span class="code-keyword">use</span> axum::{routing::get, Router};</div>
+        <div><span class="code-keyword">use</span> tokio::sync::broadcast;</div>
+        <br />
+        <div><span class="code-keyword">async fn</span> <span class="code-fn">iniciar_feria</span>() {</div>
+        <div>&nbsp;&nbsp;<span class="code-keyword">let</span> (tx, _rx) = broadcast::channel(128);</div>
+        <div>&nbsp;&nbsp;<span class="code-keyword">let</span> app = Router::new()</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;.route(<span class="code-string">"/ws"</span>, get(feria_ws_handler))</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;.with_state(tx);</div>
+        <div>&nbsp;&nbsp;<span class="code-comment">// ¡Servidor listo a 60fps con latencia &lt; 5ms!</span></div>
+        <div>&nbsp;&nbsp;axum::serve(listener, app).<span class="code-keyword">await</span>.unwrap();</div>
+        <div>}</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal for Rules and Details -->
+  <div class="modal-overlay" id="gameModalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">✕</button>
+      <div class="modal-content" id="modalContent">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA</div>
+      <div class="footer-links">
+        <a href="https://github.com/pinguxx/canicas" class="footer-link" target="_blank" rel="noopener noreferrer">🔮 Canicas 3D</a>
+        <a href="https://github.com/pinguxx/basta" class="footer-link" target="_blank" rel="noopener noreferrer">✏️ Basta Online</a>
+        <a href="https://github.com/pinguxx/loteria" class="footer-link" target="_blank" rel="noopener noreferrer">🎴 Lotería</a>
+        <a href="https://github.com/pinguxx/pirinola" class="footer-link" target="_blank" rel="noopener noreferrer">🌀 Pirinola</a>
+        <a href="https://github.com/pinguxx/shoots_ladders" class="footer-link" target="_blank" rel="noopener noreferrer">🐍 Serpientes y Escaleras</a>
+        <a href="https://github.com/pinguxx/oca" class="footer-link" target="_blank" rel="noopener noreferrer">🪿 El Juego de la Oca</a>
+      </div>
+      <div class="footer-copy">
+        Hecho con ❤️, cultura popular y Rust de alto rendimiento por <strong>@pinguxx</strong>.
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
