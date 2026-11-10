@@ -517,6 +517,47 @@ function initApp() {
 
   setupEventListeners();
   randomizePhrase();
+  initWebSocket();
+}
+
+// Live WebSocket connection to Rust Axum server
+function initWebSocket() {
+  if (typeof window === 'undefined' || !window.location || !window.location.host) return;
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = `${protocol}//${window.location.host}/ws`;
+
+  try {
+    const socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      console.log('🎪 Conectado al servidor WebSocket en Rust (Axum + Tokio)');
+    };
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.active_visitors !== undefined) {
+          const vEl = document.getElementById('activeVisitorsText');
+          if (vEl) vEl.textContent = `${data.active_visitors} en vivo`;
+        }
+        if (data.type === 'fair_shout' && data.text) {
+          const phraseEl = document.getElementById('miniBoothPhrase');
+          if (phraseEl) phraseEl.innerHTML = `📣 ${data.text}`;
+        }
+      } catch (e) {
+        if (event.data && typeof event.data === 'string') {
+          const phraseEl = document.getElementById('miniBoothPhrase');
+          if (phraseEl) phraseEl.innerHTML = `📣 ${event.data}`;
+        }
+      }
+    };
+
+    socket.onclose = () => {
+      setTimeout(initWebSocket, 4000);
+    };
+  } catch (err) {
+    // Silent fallback when served as standalone file
+  }
 }
 
 function randomizePhrase() {

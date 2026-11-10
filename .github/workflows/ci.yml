@@ -1,0 +1,64 @@
+name: La Feria Rust CI/CD & Quality Gates
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust-quality:
+    name: Rust Backend Quality, Tests & Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Cargo Format Check
+        run: cargo fmt -- --check
+
+      - name: Cargo Check
+        run: cargo check --all-targets
+
+      - name: Cargo Clippy Linter
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Cargo Test Suite
+        run: cargo test --all-targets --verbose
+
+      - name: Build Release Binary
+        run: cargo build --release
+
+      - name: Run Native Rust Bundler
+        run: |
+          cargo run --bin bundle
+          test -f dist/la_feria_standalone.html
+          echo "Standalone artifact bundle generated successfully by Rust binary!"
+
+  frontend-quality:
+    name: Frontend Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
+      - name: Validate JavaScript Syntax
+        run: |
+          node -c public/app.js

@@ -57,22 +57,26 @@
 
 ---
 
-## 🚀 Puesta en Marcha Local
+## 🚀 Puesta en Marcha Local con Rust
 
-No requiere NodeJS, npm ni dependencias de construcción para la landing page (HTML5, CSS3 y Vanilla JavaScript puros):
+El servidor web de alta velocidad, los endpoints de la API y el Hub de WebSockets corren nativamente sobre **Rust** con **Axum** y **Tokio**:
 
 ```bash
 # Clonar el repositorio
 git clone https://github.com/pinguxx/la-feria.git
 cd la-feria
 
-# Servir con cualquier servidor estático (ejemplos):
-python3 -m http.server 8080
-# o con npx serve
-npx serve -l 8080
+# Ejecutar el servidor en Rust (Axum + Tokio + WebSockets en puerto 3000)
+cargo run
+
+# Ejecutar tests automatizados
+cargo test
+
+# Generar bundle autónomo de un solo archivo (CLI en Rust, Zero Python)
+cargo run --bin bundle
 ```
 
-Abre tu navegador en `http://localhost:8080`.
+Abre tu navegador en `http://localhost:3000`.
 
 ---
 
