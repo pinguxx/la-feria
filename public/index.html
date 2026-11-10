@@ -49,21 +49,24 @@
     <a href="#" class="nav-brand">
       <span class="nav-logo-icon">🎪</span>
       <span class="nav-brand-text">LA FERIA</span>
-      <span class="nav-tagline">Juegos Tradicionales Mexicanos</span>
+      <span class="nav-tagline" id="navTagline">Juegos Tradicionales Mexicanos</span>
     </a>
 
     <div class="nav-controls">
-      <div class="ticket-badge" id="navTickets" title="Tus boletos ganados en la feria">
-        🎫 <span id="ticketCount">10</span> Boletos
+      <div class="ticket-badge" id="navTickets" title="Tus boletos ganados en la feria / Your earned tickets">
+        🎫 <span id="ticketCount">10</span> <span id="ticketWord">Boletos</span>
       </div>
-      <button class="btn-control" id="btnAudioToggle" title="Activar/Desactivar efectos de sonido">
+      <button class="btn-control" id="btnAudioToggle" title="Activar/Desactivar efectos de sonido / Toggle sound effects">
         🔇 Sonido: OFF
       </button>
-      <button class="btn-control" id="btnMusicToggle" title="Tocar música de organillo de feria">
+      <button class="btn-control" id="btnMusicToggle" title="Tocar música de organillo de feria / Play carousel music">
         🎵 Organillo: OFF
       </button>
-      <button class="btn-control" id="btnThemeToggle" title="Cambiar tema visual">
+      <button class="btn-control" id="btnThemeToggle" title="Cambiar tema visual / Change visual theme">
         🏮 Noche de Feria
+      </button>
+      <button class="btn-control" id="btnLangToggle" title="Cambiar idioma / Switch language" style="border-color: var(--accent-gold); color: var(--accent-gold); font-weight: 800;">
+        🌐 ES
       </button>
     </div>
   </header>
@@ -73,19 +76,19 @@
 
     <!-- Hero Section -->
     <section class="hero">
-      <div class="hero-tag">🇲🇽 Gran Kermés Virtual • Colección Oficial</div>
-      <h1 class="hero-title">¡PÁSELE MARCHANTE A LA FERIA!</h1>
-      <p class="hero-subtitle">
+      <div class="hero-tag" id="heroTag">🇲🇽 Gran Kermés Virtual • Colección Oficial</div>
+      <h1 class="hero-title" id="heroTitle">¡PÁSELE A LA FERIA!</h1>
+      <p class="hero-subtitle" id="heroSubtitle">
         Los juegos tradicionales más queridos de México y de siempre, reunidos para jugar en línea con amigos y familia directo en tu navegador.
       </p>
 
       <!-- Interactive Mini-Booth Widget -->
       <div class="hero-mini-booth">
         <div class="mini-booth-header">
-          <div class="mini-booth-title">
+          <div class="mini-booth-title" id="miniBoothTitle">
             <span>🔮</span> Puesto de la Suerte: ¡Tira la Canica de Prueba!
           </div>
-          <div style="font-family: var(--font-accent); font-size: 12px; color: var(--accent-gold);">
+          <div id="miniBoothSub" style="font-family: var(--font-accent); font-size: 12px; color: var(--accent-gold);">
             Gana boletos para los premios
           </div>
         </div>
@@ -93,17 +96,17 @@
         <div class="mini-booth-content">
           <div class="mini-canvas-container">
             <canvas id="miniFeriaCanvas" width="260" height="130"></canvas>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+            <div id="miniCanvasNote" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
               Rebote físico en clavos de latón
             </div>
           </div>
 
           <div class="mini-booth-actions">
             <div class="mini-booth-phrase" id="miniBoothPhrase">
-              🎪 «¡Pásele marchante, pásele a probar suerte!»
+              🎪 «¡Pásele, pásele a probar suerte!»
             </div>
             <button class="btn-launch-mini" id="btnLaunchMini">
-              <span>🚀</span> ¡Soltar Canica! (Gratis)
+              <span>🚀</span> <span id="btnLaunchText">¡Soltar Canica! (Gratis)</span>
             </button>
           </div>
         </div>
@@ -113,17 +116,17 @@
     <!-- Filters & Search Section -->
     <section class="filter-section" aria-label="Filtros de juegos">
       <div class="filter-pills">
-        <button class="filter-btn active" data-filter="all">
+        <button class="filter-btn active" data-filter="all" id="filterBtnAll">
           <span>🎪</span> Todos los Puestos (6)
         </button>
-        <button class="filter-btn" data-filter="destreza">
-          <span>🎯</span> Destreza & Física (2)
+        <button class="filter-btn" data-filter="destreza" id="filterBtnDestreza">
+          <span>🎯</span> Destreza & Puntería (2)
         </button>
-        <button class="filter-btn" data-filter="palabras">
+        <button class="filter-btn" data-filter="palabras" id="filterBtnPalabras">
           <span>✏️</span> Palabras & Mente (1)
         </button>
-        <button class="filter-btn" data-filter="tablero">
-          <span>🎲</span> Tablero Clásico (3)
+        <button class="filter-btn" data-filter="tablero" id="filterBtnTablero">
+          <span>🎲</span> Tablero Familiar (3)
         </button>
       </div>
 
@@ -141,9 +144,9 @@
     <!-- Prizes Showcase (Vitrina de Premios de la Feria) -->
     <section class="prizes-section" aria-label="Vitrina de premios">
       <div class="section-header">
-        <div class="section-tag">🎁 Puesto de Reclamación</div>
-        <h2 class="section-title">VITRINA DE PREMIOS DE FERIA</h2>
-        <p class="section-desc">
+        <div class="section-tag" id="prizesSectionTag">🎁 Puesto de Reclamación</div>
+        <h2 class="section-title" id="prizesSectionTitle">VITRINA DE PREMIOS DE FERIA</h2>
+        <p class="section-desc" id="prizesSectionDesc">
           Juega en los puestos, acumula tus boletos de la suerte y canjea los tesoros más auténticos de cualquier feria de pueblo mexicana.
         </p>
       </div>
@@ -168,7 +171,7 @@
   <!-- Footer -->
   <footer>
     <div class="footer-content">
-      <div class="footer-brand">🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA</div>
+      <div class="footer-brand" id="footerBrand">🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA</div>
       <div class="footer-links">
         <a href="https://canicas.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🔮 Canicas 3D</a>
         <a href="https://basta-azbj.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">✏️ Basta Online</a>
@@ -177,7 +180,7 @@
         <a href="https://shoots-ladders.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🐍 Serpientes y Escaleras</a>
         <a href="https://oca-ox87.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🪿 El Juego de la Oca</a>
       </div>
-      <div class="footer-copy">
+      <div class="footer-copy" id="footerCopy">
         Hecho con ❤️ y amor a los juegos tradicionales por <strong>@pinguxx</strong>.
       </div>
     </div>
