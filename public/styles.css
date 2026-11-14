@@ -263,7 +263,46 @@ body {
   gap: 12px;
 }
 
-/* Tickets Counter Badge */
+/* Pasaporte de la Feria Nav Badge */
+.passport-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.25));
+  border: 1px solid var(--accent-gold);
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.2);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.passport-badge:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.35));
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.35);
+  border-color: #fde68a;
+}
+
+.passport-nick {
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.passport-pill-stat {
+  background: var(--bg-card);
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--border-card);
+  font-size: 12px;
+}
+
+/* Legacy Tickets Counter Badge */
 .ticket-badge {
   display: inline-flex;
   align-items: center;
@@ -1061,6 +1100,134 @@ body {
 .code-string { color: #10b981; }
 .code-comment { color: #64748b; font-style: italic; }
 
+/* Salón de la Fama (Leaderboard) */
+.leaderboard-section {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  padding: 36px 28px;
+  margin-bottom: 60px;
+}
+
+.leaderboard-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.leaderboard-header-row {
+  display: grid;
+  grid-template-columns: 80px 1.5fr 1fr 1fr 1fr;
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--border-card);
+  font-family: var(--font-accent);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 80px 1.5fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-accent);
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.leaderboard-row:hover {
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.podium-rank {
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rank-1 { color: #fbbf24; font-size: 16px; font-weight: 900; }
+.rank-2 { color: #94a3b8; font-size: 15px; font-weight: 800; }
+.rank-3 { color: #d97706; font-size: 15px; font-weight: 800; }
+
+.player-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.player-avatar {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.passport-modal-card {
+  max-width: 520px;
+}
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.avatar-choice-btn {
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-card);
+  border-radius: 12px;
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.avatar-choice-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--accent-gold);
+}
+
+.avatar-choice-btn.selected {
+  border-color: var(--accent-gold);
+  background: rgba(251, 191, 36, 0.25);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+}
+
+.passport-form-input {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.passport-form-input:focus {
+  border-color: var(--accent-gold);
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;
@@ -1380,6 +1547,43 @@ footer {
     font-size: 11px;
     padding: 7px 8px;
     min-height: 36px;
+  }
+
+  /* Leaderboard Mobile */
+  .leaderboard-section {
+    padding: 24px 14px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+  }
+
+  .leaderboard-header-row {
+    grid-template-columns: 45px 1.4fr 1fr 1fr;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 45px 1.4fr 1fr 1fr;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .leaderboard-header-row span:last-child,
+  .leaderboard-row span:last-child {
+    display: none;
+  }
+
+  .passport-badge {
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .passport-nick {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* Modal */

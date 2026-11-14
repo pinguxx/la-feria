@@ -21,12 +21,16 @@ use std::{
 use tokio::sync::broadcast;
 use tower_http::services::ServeDir;
 
+pub mod db;
+use db::Database;
+
 #[derive(Clone)]
 pub struct AppState {
     pub visitors_count: Arc<AtomicUsize>,
     pub tickets_redeemed: Arc<AtomicUsize>,
     pub tx: broadcast::Sender<String>,
     pub start_time: Instant,
+    pub db: Database,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -214,6 +218,14 @@ pub fn app_router(state: AppState) -> Router {
         .route("/api/prizes", get(prizes_handler))
         .route("/api/stats", get(stats_handler))
         .route("/api/redeem", post(redeem_handler))
+        .route("/api/passport/quick", post(create_quick_passport_handler))
+        .route("/api/passport/{id}", get(get_passport_handler))
+        .route("/api/passport/pin", post(set_pin_handler))
+        .route("/api/passport/login", post(login_pin_handler))
+        .route("/api/rewards/award", post(award_rewards_handler))
+        .route("/api/passport/redeem", post(passport_redeem_handler))
+        .route("/api/leaderboard", get(global_leaderboard_handler))
+        .route("/api/leaderboard/{game_id}", get(game_leaderboard_handler))
         .route("/ws", get(ws_handler))
         .fallback_service(ServeDir::new("public"))
         .with_state(state)
@@ -298,6 +310,163 @@ async fn redeem_handler(
     )
 }
 
+#[derive(Debug, Deserialize)]
+pub struct QuickPassportRequest {
+    pub nickname: String,
+    pub avatar: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct SetPinRequest {
+    pub id: String,
+    pub pin: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LoginPinRequest {
+    pub nickname: String,
+    pub pin: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AwardRewardRequest {
+    pub passport_id: String,
+    pub game_id: String,
+    pub coins: i64,
+    pub tickets: i64,
+    pub score: i64,
+    pub note: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct PassportRedeemRequest {
+    pub passport_id: String,
+    pub prize_id: String,
+}
+
+async fn create_quick_passport_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<QuickPassportRequest>,
+) -> Result<Json<db::Passport>, (StatusCode, String)> {
+    state
+        .db
+        .create_guest_passport(&payload.nickname, &payload.avatar)
+        .map(Json)
+        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))
+}
+
+async fn get_passport_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> Result<Json<db::Passport>, StatusCode> {
+    match state.db.get_passport(&id) {
+        Ok(Some(p)) => Ok(Json(p)),
+        Ok(None) => Err(StatusCode::NOT_FOUND),
+        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+    }
+}
+
+async fn set_pin_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<SetPinRequest>,
+) -> Result<Json<serde_json::Value>, (StatusCode, String)> {
+    if payload.pin.len() < 4 {
+        return Err((
+            StatusCode::BAD_REQUEST,
+            "El PIN debe tener al menos 4 dígitos".into(),
+        ));
+    }
+    match state.db.set_pin(&payload.id, &payload.pin) {
+        Ok(true) => Ok(Json(serde_json::json!({ "success": true }))),
+        Ok(false) => Err((StatusCode::NOT_FOUND, "Pasaporte no encontrado".into())),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn login_pin_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<LoginPinRequest>,
+) -> Result<Json<db::Passport>, (StatusCode, String)> {
+    match state.db.login_with_pin(&payload.nickname, &payload.pin) {
+        Ok(Some(p)) => Ok(Json(p)),
+        Ok(None) => Err((StatusCode::UNAUTHORIZED, "Apodo o PIN incorrecto".into())),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn award_rewards_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<AwardRewardRequest>,
+) -> Result<Json<db::Passport>, (StatusCode, String)> {
+    match state.db.award_rewards(
+        &payload.passport_id,
+        &payload.game_id,
+        payload.coins,
+        payload.tickets,
+        payload.score,
+        payload.note.as_deref(),
+    ) {
+        Ok(Some(p)) => {
+            let announcement = format!(
+                "🏆 ¡{} acaba de ganar 🪙 +{} monedas y 🎫 +{} boletos en {}!",
+                p.nickname, payload.coins, payload.tickets, payload.game_id
+            );
+            let _ = state.tx.send(announcement);
+            Ok(Json(p))
+        }
+        Ok(None) => Err((StatusCode::NOT_FOUND, "Pasaporte no encontrado".into())),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn passport_redeem_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<PassportRedeemRequest>,
+) -> Result<Json<db::Passport>, (StatusCode, String)> {
+    let prizes = get_prizes_list();
+    let Some(prize) = prizes.into_iter().find(|p| p.id == payload.prize_id) else {
+        return Err((StatusCode::NOT_FOUND, "Premio no encontrado".into()));
+    };
+
+    match state.db.redeem_prize_for_passport(
+        &payload.passport_id,
+        &payload.prize_id,
+        prize.cost as i64,
+    ) {
+        Ok(Ok(p)) => {
+            let announcement = format!(
+                "🎁 ¡{} acaba de canjear: {}! «{}»",
+                p.nickname, prize.name, prize.phrase
+            );
+            let _ = state.tx.send(announcement);
+            Ok(Json(p))
+        }
+        Ok(Err(msg)) => Err((StatusCode::BAD_REQUEST, msg.into())),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn global_leaderboard_handler(
+    State(state): State<AppState>,
+) -> Result<Json<Vec<db::LeaderboardEntry>>, (StatusCode, String)> {
+    state
+        .db
+        .get_global_leaderboard(20)
+        .map(Json)
+        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))
+}
+
+async fn game_leaderboard_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(game_id): axum::extract::Path<String>,
+) -> Result<Json<Vec<db::GameLeaderboardEntry>>, (StatusCode, String)> {
+    state
+        .db
+        .get_game_leaderboard(&game_id, 20)
+        .map(Json)
+        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))
+}
+
 async fn ws_handler(ws: WebSocketUpgrade, State(state): State<AppState>) -> Response {
     ws.on_upgrade(move |socket| handle_ws(socket, state))
 }
@@ -380,12 +549,16 @@ async fn main() {
         .and_then(|p| p.parse::<u16>().ok())
         .unwrap_or(3000);
 
+    let db_path = std::env::var("DATABASE_PATH").unwrap_or_else(|_| "feria.db".to_string());
+    let db = Database::new(&db_path).expect("Error al inicializar la base de datos de La Feria");
+
     let (tx, _rx) = broadcast::channel(128);
     let state = AppState {
         visitors_count: Arc::new(AtomicUsize::new(0)),
         tickets_redeemed: Arc::new(AtomicUsize::new(0)),
         tx,
         start_time: Instant::now(),
+        db,
     };
 
     let app = app_router(state);
@@ -406,17 +579,21 @@ mod tests {
     use axum::http::Request;
     use tower::ServiceExt;
 
-    #[tokio::test]
-    async fn test_health_endpoint() {
+    fn test_state() -> AppState {
         let (tx, _) = broadcast::channel(16);
-        let state = AppState {
+        let db = Database::new_in_memory().unwrap();
+        AppState {
             visitors_count: Arc::new(AtomicUsize::new(0)),
             tickets_redeemed: Arc::new(AtomicUsize::new(0)),
             tx,
             start_time: Instant::now(),
-        };
+            db,
+        }
+    }
 
-        let app = app_router(state);
+    #[tokio::test]
+    async fn test_health_endpoint() {
+        let app = app_router(test_state());
 
         let response = app
             .oneshot(
@@ -433,15 +610,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_catalog_endpoint() {
-        let (tx, _) = broadcast::channel(16);
-        let state = AppState {
-            visitors_count: Arc::new(AtomicUsize::new(0)),
-            tickets_redeemed: Arc::new(AtomicUsize::new(0)),
-            tx,
-            start_time: Instant::now(),
-        };
-
-        let app = app_router(state);
+        let app = app_router(test_state());
 
         let response = app
             .oneshot(
@@ -454,5 +623,81 @@ mod tests {
             .unwrap();
 
         assert_eq!(response.status(), StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn test_passport_and_rewards_flow() {
+        let app = app_router(test_state());
+
+        // 1. Create quick guest passport
+        let req_body = serde_json::json!({
+            "nickname": "CharroTest",
+            "avatar": "🤼"
+        });
+
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/passport/quick")
+                    .header("content-type", "application/json")
+                    .body(axum::body::Body::from(req_body.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let passport: db::Passport = serde_json::from_slice(&body_bytes).unwrap();
+        assert_eq!(passport.nickname, "CharroTest");
+        assert_eq!(passport.coins, 50);
+
+        // 2. Award rewards
+        let award_body = serde_json::json!({
+            "passport_id": passport.id,
+            "game_id": "rayuela",
+            "coins": 20,
+            "tickets": 3,
+            "score": 100,
+            "note": "Tiro perfecto en la raya"
+        });
+
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/rewards/award")
+                    .header("content-type", "application/json")
+                    .body(axum::body::Body::from(award_body.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let updated: db::Passport = serde_json::from_slice(&body_bytes).unwrap();
+        assert_eq!(updated.coins, 70);
+        assert_eq!(updated.tickets, 8);
+
+        // 3. Leaderboard
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .uri("/api/leaderboard")
+                    .body(axum::body::Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let leaderboard: Vec<db::LeaderboardEntry> = serde_json::from_slice(&body_bytes).unwrap();
+        assert_eq!(leaderboard.len(), 1);
+        assert_eq!(leaderboard[0].nickname, "CharroTest");
     }
 }
