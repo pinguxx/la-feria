@@ -882,6 +882,23 @@ async function initPassport() {
         state.tickets = remote.tickets ?? 5;
         savePassportLocally(remote);
         updatePassportDisplay();
+      } else if (res.status === 404) {
+        // Pasaporte no está en la base de datos: sincronizar/crear de inmediato
+        const syncRes = await fetch('/api/passport/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: localPassport.id,
+            nickname: localPassport.nickname || 'Marchante',
+            avatar: localPassport.avatar || '🤼'
+          })
+        });
+        if (syncRes.ok) {
+          const synced = await syncRes.json();
+          state.passport = synced;
+          savePassportLocally(synced);
+          updatePassportDisplay();
+        }
       }
     } catch (e) {
       // Offline or static hosting
@@ -1074,7 +1091,7 @@ function selectAvatarOption(avatar) {
   audio.playWoodClick();
 }
 
-function savePassportProfile() {
+async function savePassportProfile() {
   const nickInput = document.getElementById('passportNickInput');
   const newNick = nickInput ? nickInput.value.trim() : '';
   if (newNick && state.passport) {
@@ -1083,6 +1100,28 @@ function savePassportProfile() {
   if (tempSelectedAvatar && state.passport) {
     state.passport.avatar = tempSelectedAvatar;
   }
+
+  // Sincronizar inmediatamente con backend SQLite en Rust
+  if (state.passport && state.passport.id) {
+    try {
+      const res = await fetch('/api/passport/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: state.passport.id,
+          nickname: state.passport.nickname,
+          avatar: state.passport.avatar
+        })
+      });
+      if (res.ok) {
+        const remote = await res.json();
+        state.passport = remote;
+      }
+    } catch (e) {
+      console.warn('No se pudo sincronizar perfil con el servidor:', e);
+    }
+  }
+
   savePassportLocally(state.passport);
   updatePassportDisplay();
   closePassportModal();
@@ -1093,13 +1132,36 @@ function savePassportProfile() {
 
 async function setPassportPin() {
   const pinInput = document.getElementById('inputNewPin');
+  const nickInput = document.getElementById('passportNickInput');
   const pin = pinInput ? pinInput.value.trim() : '';
+  const newNick = nickInput ? nickInput.value.trim() : (state.passport ? state.passport.nickname : '');
+
   if (!pin || pin.length < 4) {
     alert(state.lang === 'es' ? 'El PIN debe tener al menos 4 dígitos' : 'PIN must be at least 4 digits');
     return;
   }
 
+  if (newNick && state.passport) {
+    state.passport.nickname = newNick;
+  }
+  if (tempSelectedAvatar && state.passport) {
+    state.passport.avatar = tempSelectedAvatar;
+  }
+
   try {
+    // Asegurar que el pasaporte exista en el backend antes de set_pin
+    if (state.passport && state.passport.id) {
+      await fetch('/api/passport/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: state.passport.id,
+          nickname: state.passport.nickname,
+          avatar: state.passport.avatar
+        })
+      });
+    }
+
     const res = await fetch('/api/passport/pin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
