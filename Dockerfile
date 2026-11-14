@@ -37,10 +37,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN groupadd -g 10001 feria && \
     useradd -r -u 10001 -g feria -m -d /home/feria -s /sbin/nologin feria
 
-# Create persistent storage directory for SQLite WAL database
-RUN mkdir -p /data /app/public && \
-    chown -R feria:feria /app /data /home/feria && \
-    chmod 750 /data
+# Create storage directories and set permissions for feria user
+RUN mkdir -p /app/public /tmp /data && \
+    chown -R feria:feria /app /data /tmp /home/feria && \
+    chmod 775 /app /data /tmp
 
 # Copy compiled binary and static assets
 COPY --from=builder --chown=feria:feria /app/target/release/la-feria /app/la-feria
@@ -50,14 +50,13 @@ COPY --chown=feria:feria public /app/public
 USER feria
 
 # Production runtime environment variables
-ENV PORT=3000
-ENV DATABASE_PATH=/data/feria.db
+ENV DATABASE_PATH=/app/feria.db
 ENV RUST_LOG=la_feria=info,tower_http=info
 EXPOSE 3000
 
-# Container Healthcheck
+# Container Healthcheck (dynamic port support for Render)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:${PORT:-3000}/health || exit 1
 
 # Execute La Feria Axum server
-ENTRYPOINT ["/app/la-feria"]
+CMD ["/app/la-feria"]

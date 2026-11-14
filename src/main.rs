@@ -244,7 +244,13 @@ pub fn app_router(state: AppState) -> Router {
         .route("/api/leaderboard", get(global_leaderboard_handler))
         .route("/api/leaderboard/{game_id}", get(game_leaderboard_handler))
         .route("/ws", get(ws_handler))
-        .fallback_service(ServeDir::new("public"))
+        .fallback_service(ServeDir::new(if std::path::Path::new("public").is_dir() {
+            "public"
+        } else if std::path::Path::new("/app/public").is_dir() {
+            "/app/public"
+        } else {
+            "public"
+        }))
         .layer(cors)
         .layer(DefaultBodyLimit::max(128 * 1024))
         .layer(SetResponseHeaderLayer::overriding(
@@ -595,9 +601,10 @@ async fn handle_ws(socket: WebSocket, state: AppState) {
 
 async fn shutdown_signal() {
     let ctrl_c = async {
-        tokio::signal::ctrl_c()
-            .await
-            .expect("failed to install Ctrl+C handler");
+        if let Err(e) = tokio::signal::ctrl_c().await {
+            eprintln!("⚠️ Advertencia: Error en manejador Ctrl+C: {}", e);
+            std::future::pending::<()>().await;
+        }
     };
 
     #[cfg(unix)]
@@ -606,7 +613,8 @@ async fn shutdown_signal() {
             Ok(mut s) => {
                 s.recv().await;
             }
-            Err(_) => {
+            Err(e) => {
+                eprintln!("⚠️ Advertencia: Error en manejador SIGTERM: {}", e);
                 std::future::pending::<()>().await;
             }
         }
@@ -643,10 +651,49 @@ async fn main() {
     let default_db_path = if std::path::Path::new("/data").is_dir() {
         "/data/feria.db".to_string()
     } else {
-        "feria.db".to_string()
+        "./feria.db".to_string()
     };
     let db_path = std::env::var("DATABASE_PATH").unwrap_or(default_db_path);
-    let db = Database::new(&db_path).expect("Error al inicializar la base de datos de La Feria");
+
+    let db = match Database::new(&db_path) {
+        Ok(db) => {
+            println!("✅ Base de datos SQLite WAL inicializada en: {}", db_path);
+            db
+        }
+        Err(e) => {
+            eprintln!(
+                "⚠️ Advertencia: No se pudo abrir SQLite en '{}': {}. Probando fallback './feria.db'...",
+                db_path, e
+            );
+            match Database::new("./feria.db") {
+                Ok(db) => {
+                    println!("✅ Base de datos SQLite WAL inicializada en fallback: ./feria.db");
+                    db
+                }
+                Err(e2) => {
+                    eprintln!(
+                        "⚠️ Advertencia: Falló './feria.db': {}. Probando '/tmp/feria.db'...",
+                        e2
+                    );
+                    match Database::new("/tmp/feria.db") {
+                        Ok(db) => {
+                            println!("✅ Base de datos SQLite WAL inicializada en /tmp/feria.db");
+                            db
+                        }
+                        Err(e3) => {
+                            eprintln!(
+                                "⚠️ Advertencia: Falló '/tmp/feria.db': {}. Usando base de datos en memoria...",
+                                e3
+                            );
+                            Database::new_in_memory().expect(
+                                "Error crítico: no se pudo inicializar base de datos en memoria",
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     let (tx, _rx) = broadcast::channel(128);
     let state = AppState {
@@ -665,12 +712,22 @@ async fn main() {
         addr
     );
 
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app)
+    let listener = match tokio::net::TcpListener::bind(addr).await {
+        Ok(l) => l,
+        Err(e) => {
+            eprintln!("❌ Error crítico al enlazar el puerto {}: {}", addr, e);
+            std::process::exit(1);
+        }
+    };
+
+    if let Err(e) = axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
         .await
-        .unwrap();
-    println!("✓ Servidor de La Feria apagado ordenadamente.");
+    {
+        eprintln!("❌ Servidor de La Feria terminó con error: {}", e);
+    } else {
+        println!("✓ Servidor de La Feria apagado ordenadamente.");
+    }
 }
 
 #[cfg(test)]

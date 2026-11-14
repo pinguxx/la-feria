@@ -62,6 +62,11 @@ fn hash_pin(pin: &str) -> String {
 
 impl Database {
     pub fn new(path: &str) -> Result<Self, rusqlite::Error> {
+        if let Some(parent) = std::path::Path::new(path).parent() {
+            if !parent.as_os_str().is_empty() && !parent.exists() {
+                let _ = std::fs::create_dir_all(parent);
+            }
+        }
         let conn = Connection::open(path)?;
         let db = Self {
             conn: Arc::new(Mutex::new(conn)),
@@ -70,7 +75,6 @@ impl Database {
         Ok(db)
     }
 
-    #[cfg(test)]
     pub fn new_in_memory() -> Result<Self, rusqlite::Error> {
         let conn = Connection::open_in_memory()?;
         let db = Self {
