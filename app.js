@@ -5,7 +5,8 @@
 // Global State
 const state = {
   lang: 'es', // 'es' or 'en'
-  tickets: 10,
+  tickets: 5,
+  passport: null,
   activeFilter: 'all',
   searchQuery: '',
   theme: 'noche',
@@ -84,7 +85,32 @@ const I18N = {
     ],
     winGallo: (pts, tkt) => `🎉 <strong>¡EL GALLO DE ORO!</strong> Ganaste <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> y <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} boletos</span>`,
     winAcertado: (pts, tkt) => `🎯 <strong>¡Tiro Acertado!</strong> Ganaste <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> y <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} boletos</span>`,
-    redeemedPhrase: (name, phrase) => `🎁 <strong>¡Canjeaste: ${name}!</strong> <em>${phrase}</em>`
+    redeemedPhrase: (name, phrase) => `🎁 <strong>¡Canjeaste: ${name}!</strong> <em>${phrase}</em>`,
+    lbSectionTag: '🏆 Cuadro de Honor',
+    lbSectionTitle: 'SALÓN DE LA FAMA DE LA FERIA',
+    lbSectionDesc: 'Los mejores marchantes y jugadores de la kermés tradicional. ¡Gana partidas para subir en el podio!',
+    lbColRank: 'Rango',
+    lbColPlayer: 'Jugador',
+    lbColCoins: 'Monedas',
+    lbColTickets: 'Boletos',
+    lbColGames: 'Partidas',
+    passportModalTitle: '🪪 Pasaporte de la Feria',
+    passportModalSubtitle: 'Tu identidad y billetera de monedas y boletos en todos los juegos',
+    passportLabelNick: 'Tu Apodo de Marchante:',
+    passportLabelAvatar: 'Elige tu Avatar Tradicional:',
+    passportLabelId: 'Tu ID Secreto de Pasaporte:',
+    passportBtnCopyId: 'Copiar ID',
+    passportCopiedToast: '✓ ¡Copiado!',
+    passportBalanceLabel: 'Tu Billetera de la Suerte:',
+    passportSecPinTitle: '🔒 Protección con PIN de 4 Dígitos',
+    passportSecPinDesc: 'Asigna un PIN para proteger tu cuenta y poder recuperarla en cualquier dispositivo o navegador.',
+    passportInputPinPlaceholder: 'PIN de 4 dígitos (ej. 1234)',
+    passportBtnSetPin: 'Guardar PIN',
+    passportPinProtected: '✓ Pasaporte protegido con PIN',
+    passportLoginTitle: '🔄 ¿Ya tienes otro Pasaporte?',
+    passportLoginDesc: 'Ingresa tu apodo y PIN para cargar tu progreso:',
+    passportLoginBtn: 'Recuperar Pasaporte',
+    passportBtnSave: 'Guardar Cambios'
   },
   en: {
     navTagline: 'Traditional Mexican Games',
@@ -147,7 +173,32 @@ const I18N = {
     ],
     winGallo: (pts, tkt) => `🎉 <strong>THE GOLDEN ROOSTER!</strong> You won <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> and <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} tickets</span>`,
     winAcertado: (pts, tkt) => `🎯 <strong>Great Shot!</strong> You won <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> and <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} tickets</span>`,
-    redeemedPhrase: (name, phrase) => `🎁 <strong>Redeemed: ${name}!</strong> <em>${phrase}</em>`
+    redeemedPhrase: (name, phrase) => `🎁 <strong>Redeemed: ${name}!</strong> <em>${phrase}</em>`,
+    lbSectionTag: '🏆 Hall of Fame',
+    lbSectionTitle: 'FAIRGROUND HALL OF FAME',
+    lbSectionDesc: 'The greatest players and carnival masters. Win matches to climb the podium!',
+    lbColRank: 'Rank',
+    lbColPlayer: 'Player',
+    lbColCoins: 'Coins',
+    lbColTickets: 'Tickets',
+    lbColGames: 'Matches',
+    passportModalTitle: '🪪 Fair Passport',
+    passportModalSubtitle: 'Your identity and wallet of coins & tickets across all fair booths',
+    passportLabelNick: 'Your Carnival Nickname:',
+    passportLabelAvatar: 'Choose your Traditional Avatar:',
+    passportLabelId: 'Your Secret Passport ID:',
+    passportBtnCopyId: 'Copy ID',
+    passportCopiedToast: '✓ Copied!',
+    passportBalanceLabel: 'Your Lucky Carnival Wallet:',
+    passportSecPinTitle: '🔒 4-Digit PIN Cloud Protection',
+    passportSecPinDesc: 'Set a 4-digit PIN so you can restore your progress, coins, and tickets on any device or browser.',
+    passportInputPinPlaceholder: '4-digit PIN (e.g. 1234)',
+    passportBtnSetPin: 'Save PIN',
+    passportPinProtected: '✓ Passport protected with PIN',
+    passportLoginTitle: '🔄 Already have another Passport?',
+    passportLoginDesc: 'Enter your nickname and PIN to restore your progress:',
+    passportLoginBtn: 'Restore Passport',
+    passportBtnSave: 'Save Profile'
   }
 };
 
@@ -776,12 +827,419 @@ class MiniFeriaGame {
 
 let miniGame = null;
 
+// Utility & Security Helpers
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getGameLaunchUrl(baseUrl) {
+  try {
+    const url = new URL(baseUrl, window.location.href);
+    if (state.passport) {
+      url.searchParams.set('pass', state.passport.id);
+      url.searchParams.set('player', state.passport.nickname || 'Marchante');
+      url.searchParams.set('avatar', state.passport.avatar || '🤼');
+      url.searchParams.set('hub', window.location.origin);
+    }
+    return url.toString();
+  } catch (e) {
+    return baseUrl;
+  }
+}
+
+// Passport & Economy Constants
+const PASSPORT_STORAGE_KEY = 'la_feria_passport_v1';
+const AVATAR_OPTIONS = ['🤼', '🎭', '🤠', '🌺', '💀', '🐯', '🦅', '🌮', '👑', '🎪'];
+let tempSelectedAvatar = '🤼';
+
+// Passport Management
+async function initPassport() {
+  let localPassport = null;
+  try {
+    const raw = localStorage.getItem(PASSPORT_STORAGE_KEY);
+    if (raw) localPassport = JSON.parse(raw);
+  } catch (e) {
+    console.warn('LocalStorage unavailable', e);
+  }
+
+  if (localPassport && localPassport.id) {
+    state.passport = localPassport;
+    state.tickets = localPassport.tickets ?? 5;
+    updatePassportDisplay();
+
+    // Background sync with Axum Rust backend
+    try {
+      const res = await fetch(`/api/passport/${encodeURIComponent(localPassport.id)}`);
+      if (res.ok) {
+        const remote = await res.json();
+        state.passport = remote;
+        state.tickets = remote.tickets ?? 5;
+        savePassportLocally(remote);
+        updatePassportDisplay();
+      }
+    } catch (e) {
+      // Offline or static hosting
+    }
+  } else {
+    // Generate new guest passport
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const defaultNick = `Marchante_${randomNum}`;
+    const defaultAvatar = AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)];
+
+    try {
+      const res = await fetch('/api/passport/quick', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: defaultNick, avatar: defaultAvatar })
+      });
+      if (res.ok) {
+        state.passport = await res.json();
+      } else {
+        throw new Error('Quick passport endpoint returned ' + res.status);
+      }
+    } catch (e) {
+      // Client-side fallback for static GitHub pages
+      state.passport = {
+        id: 'guest_' + Math.random().toString(36).substring(2, 10),
+        nickname: defaultNick,
+        avatar: defaultAvatar,
+        coins: 50,
+        tickets: 5,
+        created_at: new Date().toISOString(),
+        has_pin: false
+      };
+    }
+    state.tickets = state.passport.tickets ?? 5;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+  }
+
+  renderBooths();
+}
+
+function savePassportLocally(p) {
+  try {
+    localStorage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(p));
+  } catch (e) {}
+}
+
+function updatePassportDisplay() {
+  if (!state.passport) return;
+  const avEl = document.getElementById('passportAvatar');
+  const nickEl = document.getElementById('passportNick');
+  const coinsEl = document.getElementById('passportCoins');
+  const ticketsEl = document.getElementById('passportTickets');
+
+  if (avEl) avEl.textContent = state.passport.avatar || '🤼';
+  if (nickEl) nickEl.textContent = state.passport.nickname || 'Invitado';
+  if (coinsEl) coinsEl.textContent = state.passport.coins ?? 50;
+  if (ticketsEl) ticketsEl.textContent = state.passport.tickets ?? 5;
+
+  state.tickets = state.passport.tickets ?? 5;
+  renderPrizes();
+}
+
+function openPassportModal() {
+  audio.playWoodClick();
+  const overlay = document.getElementById('passportModalOverlay');
+  const content = document.getElementById('passportModalContent');
+  if (!overlay || !content || !state.passport) return;
+
+  tempSelectedAvatar = state.passport.avatar || '🤼';
+  const t = I18N[state.lang] || I18N.es;
+
+  content.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+      <div style="font-size: 38px; background: var(--bg-elevated); padding: 8px 12px; border-radius: 14px; border: 1px solid var(--border-card);">${state.passport.avatar || '🤼'}</div>
+      <div>
+        <h2 style="font-family: var(--font-display); font-size: 22px; color: var(--accent-gold); margin-bottom: 2px;">${t.passportModalTitle}</h2>
+        <div style="font-family: var(--font-accent); color: var(--text-muted); font-size: 13px;">${t.passportModalSubtitle}</div>
+      </div>
+    </div>
+
+    <!-- Balance Summary -->
+    <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-around; text-align: center;">
+      <div>
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 2px;">${t.lbColCoins}</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--accent-gold);">🪙 ${state.passport.coins ?? 50}</div>
+      </div>
+      <div style="border-left: 1px solid var(--border-card); padding-left: 20px;">
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 2px;">${t.lbColTickets}</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--accent-green);">🎫 ${state.passport.tickets ?? 5}</div>
+      </div>
+    </div>
+
+    <!-- Nickname Input -->
+    <div style="margin-bottom: 16px;">
+      <label style="display: block; font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">${t.passportLabelNick}</label>
+      <input type="text" id="passportNickInput" class="passport-form-input" value="${escapeHtml(state.passport.nickname || '')}" maxlength="24" placeholder="Marchante" />
+    </div>
+
+    <!-- Avatar Picker -->
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">${t.passportLabelAvatar}</label>
+      <div class="avatar-grid" id="avatarPickerGrid">
+        ${AVATAR_OPTIONS.map(av => `
+          <button type="button" class="avatar-choice-btn ${av === tempSelectedAvatar ? 'selected' : ''}" onclick="selectAvatarOption('${av}')">${av}</button>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Passport ID & Copy -->
+    <div style="background: rgba(0,0,0,0.25); border: 1px dashed var(--border-card); border-radius: 12px; padding: 10px 14px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <span style="font-size: 11px; color: var(--text-muted); display: block;">${t.passportLabelId}</span>
+        <code style="font-size: 12px; color: #38bdf8;">${state.passport.id}</code>
+      </div>
+      <button type="button" class="btn-secondary" onclick="copyPassportId()" style="padding: 6px 12px; font-size: 11px; flex-shrink: 0;" id="btnCopyPassportId">
+        ${t.passportBtnCopyId}
+      </button>
+    </div>
+
+    <!-- Cloud PIN Protection Section -->
+    <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+      <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 4px;">
+        ${t.passportSecPinTitle}
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+        ${t.passportSecPinDesc}
+      </div>
+
+      ${state.passport.has_pin ? `
+        <div style="color: var(--accent-green); font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+          <span>🔒</span> ${t.passportPinProtected}
+        </div>
+      ` : `
+        <div style="display: flex; gap: 8px;">
+          <input type="password" id="inputNewPin" class="passport-form-input" style="margin-bottom: 0; max-width: 140px; text-align: center; letter-spacing: 4px;" maxlength="8" placeholder="••••" />
+          <button type="button" class="btn-secondary" onclick="setPassportPin()" style="padding: 8px 16px; font-size: 12px;">
+            ${t.passportBtnSetPin}
+          </button>
+        </div>
+      `}
+
+      <!-- Login / Restore section -->
+      <details style="margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+        <summary style="font-size: 12px; color: var(--accent-gold); cursor: pointer; font-weight: 700;">${t.passportLoginTitle}</summary>
+        <div style="font-size: 12px; color: var(--text-muted); margin: 8px 0;">${t.passportLoginDesc}</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <input type="text" id="loginNickInput" class="passport-form-input" style="margin-bottom: 0;" placeholder="Apodo" />
+          <div style="display: flex; gap: 8px;">
+            <input type="password" id="loginPinInput" class="passport-form-input" style="margin-bottom: 0; max-width: 140px; text-align: center; letter-spacing: 4px;" maxlength="8" placeholder="••••" />
+            <button type="button" class="btn-secondary" onclick="loginPassportPin()" style="padding: 8px 16px; font-size: 12px;">
+              ${t.passportLoginBtn}
+            </button>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button type="button" class="btn-secondary" onclick="closePassportModal()" style="padding: 10px 18px;">
+        ${t.modalCloseBtn}
+      </button>
+      <button type="button" class="btn-primary-play" onclick="savePassportProfile()" style="width: auto; padding: 10px 24px;">
+        ${t.passportBtnSave}
+      </button>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+}
+
+function closePassportModal() {
+  const overlay = document.getElementById('passportModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
+function selectAvatarOption(avatar) {
+  tempSelectedAvatar = avatar;
+  const btns = document.querySelectorAll('.avatar-choice-btn');
+  btns.forEach(btn => {
+    if (btn.textContent.trim() === avatar) {
+      btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
+    }
+  });
+  audio.playWoodClick();
+}
+
+function savePassportProfile() {
+  const nickInput = document.getElementById('passportNickInput');
+  const newNick = nickInput ? nickInput.value.trim() : '';
+  if (newNick && state.passport) {
+    state.passport.nickname = newNick;
+  }
+  if (tempSelectedAvatar && state.passport) {
+    state.passport.avatar = tempSelectedAvatar;
+  }
+  savePassportLocally(state.passport);
+  updatePassportDisplay();
+  closePassportModal();
+  renderBooths();
+  fetchLeaderboard();
+  audio.playBell();
+}
+
+async function setPassportPin() {
+  const pinInput = document.getElementById('inputNewPin');
+  const pin = pinInput ? pinInput.value.trim() : '';
+  if (!pin || pin.length < 4) {
+    alert(state.lang === 'es' ? 'El PIN debe tener al menos 4 dígitos' : 'PIN must be at least 4 digits');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/passport/pin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: state.passport.id, pin })
+    });
+    if (res.ok) {
+      state.passport.has_pin = true;
+      savePassportLocally(state.passport);
+      audio.playFanfare();
+      openPassportModal();
+    } else {
+      const err = await res.text();
+      alert('Error: ' + err);
+    }
+  } catch (e) {
+    state.passport.has_pin = true;
+    savePassportLocally(state.passport);
+    audio.playFanfare();
+    openPassportModal();
+  }
+}
+
+async function loginPassportPin() {
+  const nickInput = document.getElementById('loginNickInput');
+  const pinInput = document.getElementById('loginPinInput');
+  const nickname = nickInput ? nickInput.value.trim() : '';
+  const pin = pinInput ? pinInput.value.trim() : '';
+
+  if (!nickname || !pin) {
+    alert(state.lang === 'es' ? 'Ingresa tu apodo y PIN' : 'Enter your nickname and PIN');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/passport/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nickname, pin })
+    });
+    if (res.ok) {
+      const p = await res.json();
+      state.passport = p;
+      state.tickets = p.tickets ?? 5;
+      savePassportLocally(p);
+      updatePassportDisplay();
+      renderBooths();
+      fetchLeaderboard();
+      closePassportModal();
+      audio.playFanfare();
+    } else {
+      alert(state.lang === 'es' ? 'Apodo o PIN incorrecto' : 'Incorrect nickname or PIN');
+    }
+  } catch (e) {
+    alert(state.lang === 'es' ? 'No se pudo conectar con el servidor' : 'Could not reach server');
+  }
+}
+
+function copyPassportId() {
+  if (!state.passport || !state.passport.id) return;
+  navigator.clipboard.writeText(state.passport.id).then(() => {
+    const btn = document.getElementById('btnCopyPassportId');
+    const t = I18N[state.lang] || I18N.es;
+    if (btn) {
+      const prev = btn.textContent;
+      btn.textContent = t.passportCopiedToast;
+      btn.style.color = 'var(--accent-green)';
+      setTimeout(() => {
+        btn.textContent = prev;
+        btn.style.color = '';
+      }, 1500);
+    }
+  }).catch(() => {});
+}
+
+// Salón de la Fama / Leaderboard
+async function fetchLeaderboard() {
+  const container = document.getElementById('leaderboardList');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/leaderboard');
+    if (res.ok) {
+      const entries = await res.json();
+      if (Array.isArray(entries) && entries.length > 0) {
+        renderLeaderboardRows(entries);
+        return;
+      }
+    }
+  } catch (e) {
+    // Offline or static hosting
+  }
+
+  // Fallback realistic high-scores list
+  const defaultEntries = [
+    { id: 'p1', rank: 1, avatar: '👑', nickname: 'Don_Chema_Trompos', coins: 1420, tickets: 88, games_played: 45 },
+    { id: 'p2', rank: 2, avatar: '🤼', nickname: 'Santo_Enmascarado', coins: 950, tickets: 62, games_played: 31 },
+    { id: 'p3', rank: 3, avatar: '🌺', nickname: 'Adelita_Feria', coins: 780, tickets: 47, games_played: 24 },
+    { id: 'p4', rank: 4, avatar: '🤠', nickname: 'Charro_Negro', coins: 520, tickets: 33, games_played: 18 },
+    { id: (state.passport && state.passport.id) || 'p5', rank: 5, avatar: (state.passport && state.passport.avatar) || '🤼', nickname: (state.passport && state.passport.nickname) || 'Marchante_Novato', coins: (state.passport && state.passport.coins) || 50, tickets: (state.passport && state.passport.tickets) || 5, games_played: 1 }
+  ];
+  renderLeaderboardRows(defaultEntries);
+}
+
+function renderLeaderboardRows(entries) {
+  const container = document.getElementById('leaderboardList');
+  if (!container) return;
+
+  container.innerHTML = entries.map((entry, index) => {
+    const rank = index + 1;
+    let rankBadge = `${rank}°`;
+    let rankClass = '';
+    if (rank === 1) { rankBadge = '🥇'; rankClass = 'rank-1'; }
+    else if (rank === 2) { rankBadge = '🥈'; rankClass = 'rank-2'; }
+    else if (rank === 3) { rankBadge = '🥉'; rankClass = 'rank-3'; }
+
+    const isCurrent = state.passport && (entry.id === state.passport.id || entry.nickname === state.passport.nickname);
+    return `
+      <div class="leaderboard-row ${isCurrent ? 'leaderboard-current-user' : ''}">
+        <span class="podium-rank ${rankClass}">${rankBadge}</span>
+        <span class="player-info-cell">
+          <span class="player-avatar">${entry.avatar || '🤼'}</span>
+          <span>${escapeHtml(entry.nickname)}</span>
+          ${isCurrent ? '<span style="font-size: 10px; background: var(--accent-gold); color: #1e1b4b; padding: 2px 6px; border-radius: 999px; font-weight: 900; margin-left: 6px;">TÚ</span>' : ''}
+        </span>
+        <span style="font-weight: 800; color: var(--accent-gold);">🪙 ${entry.coins ?? 0}</span>
+        <span style="font-weight: 800; color: var(--accent-green);">🎫 ${entry.tickets ?? 0}</span>
+        <span style="color: var(--text-muted);">🎮 ${entry.games_played ?? 0}</span>
+      </div>
+    `;
+  }).join('');
+}
+
 // UI Handlers & Renderers
 function initApp() {
   updateLanguageElements();
+  initPassport();
   renderBooths();
   renderPrizes();
   updateTicketDisplay();
+  fetchLeaderboard();
 
   miniGame = new MiniFeriaGame('miniFeriaCanvas');
 
@@ -861,6 +1319,27 @@ function updateLanguageElements() {
   const prizesSectionDesc = document.getElementById('prizesSectionDesc');
   if (prizesSectionDesc) prizesSectionDesc.textContent = t.prizesDesc;
 
+  // Leaderboard Section
+  const lbTag = document.getElementById('lbSectionTag');
+  if (lbTag) lbTag.textContent = t.lbSectionTag;
+
+  const lbTitle = document.getElementById('lbSectionTitle');
+  if (lbTitle) lbTitle.textContent = t.lbSectionTitle;
+
+  const lbDesc = document.getElementById('lbSectionDesc');
+  if (lbDesc) lbDesc.textContent = t.lbSectionDesc;
+
+  const lbHeaderRow = document.querySelector('.leaderboard-header-row');
+  if (lbHeaderRow) {
+    lbHeaderRow.innerHTML = `
+      <span>${t.lbColRank}</span>
+      <span>${t.lbColPlayer}</span>
+      <span>${t.lbColCoins}</span>
+      <span>${t.lbColTickets}</span>
+      <span>${t.lbColGames}</span>
+    `;
+  }
+
   // Footer
   const footerBrand = document.getElementById('footerBrand');
   if (footerBrand) footerBrand.textContent = t.footerBrand;
@@ -932,25 +1411,59 @@ function randomizePhrase() {
   }
 }
 
-function onMiniGameWin(cup) {
-  state.tickets += cup.tickets;
-  updateTicketDisplay();
+async function onMiniGameWin(cup) {
+  const earnedTickets = cup.tickets || 1;
+  const earnedCoins = cup.pts || 10;
+
+  if (state.passport) {
+    state.passport.tickets = (state.passport.tickets || 0) + earnedTickets;
+    state.passport.coins = (state.passport.coins || 0) + earnedCoins;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+
+    // Persist to backend rewards API
+    try {
+      fetch('/api/rewards/award', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          passport_id: state.passport.id,
+          game_id: 'mini_feria',
+          coins: earnedCoins,
+          tickets: earnedTickets,
+          score: cup.pts || 10,
+          note: 'Puesto de la Suerte'
+        })
+      }).then(async res => {
+        if (res.ok) {
+          const updated = await res.json();
+          state.passport = updated;
+          savePassportLocally(updated);
+          updatePassportDisplay();
+          fetchLeaderboard();
+        }
+      }).catch(() => {});
+    } catch (e) {}
+  } else {
+    state.tickets += earnedTickets;
+    updateTicketDisplay();
+  }
 
   const phraseEl = document.getElementById('miniBoothPhrase');
   if (phraseEl) {
     const t = I18N[state.lang] || I18N.es;
     audio.playBell();
     if (cup.pts === 100) {
-      phraseEl.innerHTML = t.winGallo(cup.pts, cup.tickets);
+      phraseEl.innerHTML = t.winGallo(cup.pts, earnedTickets);
     } else {
-      phraseEl.innerHTML = t.winAcertado(cup.pts, cup.tickets);
+      phraseEl.innerHTML = t.winAcertado(cup.pts, earnedTickets);
     }
   }
 
-  const tb = document.getElementById('navTickets');
-  if (tb) {
-    tb.style.transform = 'scale(1.25)';
-    setTimeout(() => tb.style.transform = '', 300);
+  const badge = document.getElementById('btnPassportToggle');
+  if (badge) {
+    badge.style.transform = 'scale(1.15)';
+    setTimeout(() => badge.style.transform = '', 300);
   }
 }
 
@@ -998,6 +1511,7 @@ function renderBooths() {
 
   container.innerHTML = filtered.map(game => {
     const d = game[state.lang] || game.es;
+    const launchUrl = getGameLaunchUrl(game.playUrl);
     return `
       <article class="booth-card" data-game-id="${game.id}">
         <div class="booth-roof">
@@ -1017,7 +1531,7 @@ function renderBooths() {
             ${d.features.map(f => `<li><span>✦</span> ${f}</li>`).join('')}
           </ul>
           <div class="booth-actions">
-            <a href="${game.playUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" onclick="audio.playWoodClick()">
+            <a href="${launchUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" onclick="audio.playWoodClick()">
               ${t.playBtn}
             </a>
             <button class="btn-secondary" onclick="openGameModal('${game.id}')">
@@ -1035,11 +1549,12 @@ function renderPrizes() {
   if (!container) return;
 
   const t = I18N[state.lang] || I18N.es;
+  const currentTickets = state.passport ? state.passport.tickets : state.tickets;
 
   container.innerHTML = PRIZES_DATA.map(p => {
     const d = p[state.lang] || p.es;
     const owned = state.prizes[p.id] || 0;
-    const canAfford = state.tickets >= p.cost;
+    const canAfford = currentTickets >= p.cost;
     return `
       <div class="prize-card">
         <div class="prize-icon">${p.icon}</div>
@@ -1054,12 +1569,10 @@ function renderPrizes() {
   }).join('');
 }
 
-function redeemPrize(prizeId) {
+async function redeemPrize(prizeId) {
   const prize = PRIZES_DATA.find(p => p.id === prizeId);
-  if (!prize || state.tickets < prize.cost) return;
-
-  state.tickets -= prize.cost;
-  state.prizes[prizeId] = (state.prizes[prizeId] || 0) + 1;
+  const currentTickets = state.passport ? state.passport.tickets : state.tickets;
+  if (!prize || currentTickets < prize.cost) return;
 
   if (prizeId === 'pajarito') {
     audio.playBird();
@@ -1067,7 +1580,35 @@ function redeemPrize(prizeId) {
     audio.playFanfare();
   }
 
-  updateTicketDisplay();
+  state.prizes[prizeId] = (state.prizes[prizeId] || 0) + 1;
+
+  if (state.passport) {
+    state.passport.tickets -= prize.cost;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+
+    try {
+      const res = await fetch('/api/passport/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          passport_id: state.passport.id,
+          prize_id: prizeId
+        })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        state.passport = updated;
+        savePassportLocally(updated);
+        updatePassportDisplay();
+      }
+    } catch (e) {
+      // Offline fallback
+    }
+  } else {
+    state.tickets -= prize.cost;
+    updateTicketDisplay();
+  }
 
   const phraseEl = document.getElementById('miniBoothPhrase');
   if (phraseEl) {
@@ -1090,6 +1631,7 @@ function openGameModal(gameId) {
 
   const t = I18N[state.lang] || I18N.es;
   const d = game[state.lang] || game.es;
+  const launchUrl = getGameLaunchUrl(game.playUrl);
 
   content.innerHTML = `
     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
@@ -1120,7 +1662,7 @@ function openGameModal(gameId) {
       <button class="btn-secondary" onclick="closeGameModal()" style="padding: 10px 18px;">
         ${t.modalCloseBtn}
       </button>
-      <a href="${game.playUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" style="width: auto; padding: 10px 24px;">
+      <a href="${launchUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" style="width: auto; padding: 10px 24px;">
         ${t.modalPlayBtn}
       </a>
     </div>
@@ -1138,6 +1680,24 @@ function closeGameModal() {
 }
 
 function setupEventListeners() {
+  // Passport Profile Modal Toggle
+  const passportBtn = document.getElementById('btnPassportToggle');
+  if (passportBtn) {
+    passportBtn.addEventListener('click', openPassportModal);
+  }
+
+  const passportCloseBtn = document.getElementById('passportModalCloseBtn');
+  if (passportCloseBtn) {
+    passportCloseBtn.addEventListener('click', closePassportModal);
+  }
+
+  const passportOverlay = document.getElementById('passportModalOverlay');
+  if (passportOverlay) {
+    passportOverlay.addEventListener('click', (e) => {
+      if (e.target === passportOverlay) closePassportModal();
+    });
+  }
+
   // Launch Mini Game Button
   const launchBtn = document.getElementById('btnLaunchMini');
   if (launchBtn) {
@@ -1239,16 +1799,27 @@ function setupEventListeners() {
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeGameModal();
+    if (e.key === 'Escape') {
+      closeGameModal();
+      closePassportModal();
+    }
   });
 }
 
-// Global hook for inline handlers
+// Global hooks for inline handlers
 window.openGameModal = openGameModal;
 window.closeGameModal = closeGameModal;
+window.openPassportModal = openPassportModal;
+window.closePassportModal = closePassportModal;
+window.selectAvatarOption = selectAvatarOption;
+window.savePassportProfile = savePassportProfile;
+window.setPassportPin = setPassportPin;
+window.loginPassportPin = loginPassportPin;
+window.copyPassportId = copyPassportId;
 window.redeemPrize = redeemPrize;
 window.toggleLanguage = toggleLanguage;
 window.audio = audio;
 
 // Bootstrap
 document.addEventListener('DOMContentLoaded', initApp);
+

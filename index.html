@@ -53,9 +53,12 @@
     </a>
 
     <div class="nav-controls">
-      <div class="ticket-badge" id="navTickets" title="Tus boletos ganados en la feria / Your earned tickets">
-        🎫 <span id="ticketCount">10</span> <span id="ticketWord">Boletos</span>
-      </div>
+      <button class="passport-badge" id="btnPassportToggle" title="Tu Pasaporte de la Feria • Monedas y Boletos / Your Fair Passport">
+        <span id="passportAvatar">🤼</span>
+        <span id="passportNick" class="passport-nick">Invitado</span>
+        <span class="passport-pill-stat">🪙 <strong id="passportCoins">50</strong></span>
+        <span class="passport-pill-stat">🎫 <strong id="passportTickets">5</strong></span>
+      </button>
       <button class="btn-control" id="btnAudioToggle" title="Activar/Desactivar efectos de sonido / Toggle sound effects">
         🔇 Sonido: OFF
       </button>
@@ -156,6 +159,30 @@
       </div>
     </section>
 
+    <!-- Salón de la Fama (Hall of Fame & High Scores) -->
+    <section class="leaderboard-section" id="leaderboardSection" aria-label="Salón de la Fama">
+      <div class="section-header">
+        <div class="section-tag" id="lbSectionTag">🏆 Cuadro de Honor</div>
+        <h2 class="section-title" id="lbSectionTitle">SALÓN DE LA FAMA DE LA FERIA</h2>
+        <p class="section-desc" id="lbSectionDesc">
+          Los mejores marchantes y jugadores de la kermés tradicional. ¡Gana partidas para subir en el podio!
+        </p>
+      </div>
+
+      <div class="leaderboard-card">
+        <div class="leaderboard-header-row">
+          <span>Rango</span>
+          <span>Jugador</span>
+          <span>Monedas</span>
+          <span>Boletos</span>
+          <span>Partidas</span>
+        </div>
+        <div class="leaderboard-body" id="leaderboardList">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Modal for Rules and Details -->
@@ -164,6 +191,16 @@
       <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">✕</button>
       <div class="modal-content" id="modalContent">
         <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Passport Profile & Cloud PIN -->
+  <div class="modal-overlay" id="passportModalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-container passport-modal-card">
+      <button class="modal-close-btn" id="passportModalCloseBtn" aria-label="Cerrar ventana">✕</button>
+      <div class="modal-content" id="passportModalContent">
+        <!-- Injected dynamically by app.js -->
       </div>
     </div>
   </div>
