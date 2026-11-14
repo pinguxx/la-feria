@@ -50,10 +50,10 @@ const I18N = {
       elTrompo: '🎪 30'
     },
     btnLaunch: '<span>🚀</span> ¡Soltar Canica! (Gratis)',
-    filterAll: '<span>🎪</span> Todos los Puestos (6)',
-    filterDestreza: '<span>🎯</span> Destreza & Puntería (2)',
+    filterAll: '<span>🎪</span> Todos los Puestos (8)',
+    filterDestreza: '<span>🎯</span> Destreza & Puntería (3)',
     filterPalabras: '<span>✏️</span> Palabras & Mente (1)',
-    filterTablero: '<span>🎲</span> Tablero Familiar (3)',
+    filterTablero: '<span>🎲</span> Tablero & Cartas (4)',
     searchPlaceholder: 'Buscar juego o puesto de feria...',
     noBoothsTitle: 'No encontramos ningún puesto',
     noBoothsDesc: 'Prueba buscando otra palabra clave o limpia los filtros.',
@@ -74,7 +74,9 @@ const I18N = {
     phrases: [
       '🎪 «¡Pásele, pásele a probar suerte!»',
       '🔮 «¡Una canica más y se lleva la alcancía!»',
+      '🪙 «¡Tiro en la raya! ¡Puntería de campeón!»',
       '🎴 «¡El gallo, la sirena y el catrín!»',
+      '🃏 «¡Cierro con tercia y corrida! ¡Obligado!»',
       '🌀 «¡Ponga uno, pongan dos, todos ponen!»',
       '✏️ «¡Basta para mí, basta para todos!»',
       '🐍 «¡Cuidado con la víbora de la mar!»',
@@ -111,10 +113,10 @@ const I18N = {
       elTrompo: '🎪 30'
     },
     btnLaunch: '<span>🚀</span> Drop Marble! (Free)',
-    filterAll: '<span>🎪</span> All Game Booths (6)',
-    filterDestreza: '<span>🎯</span> Skill & Aim (2)',
+    filterAll: '<span>🎪</span> All Game Booths (8)',
+    filterDestreza: '<span>🎯</span> Skill & Aim (3)',
     filterPalabras: '<span>✏️</span> Words & Mind (1)',
-    filterTablero: '<span>🎲</span> Family Board Games (3)',
+    filterTablero: '<span>🎲</span> Board & Cards (4)',
     searchPlaceholder: 'Search game or fair booth...',
     noBoothsTitle: 'No booths found',
     noBoothsDesc: 'Try searching with another keyword or clear the filters.',
@@ -135,7 +137,9 @@ const I18N = {
     phrases: [
       '🎪 "Step right up, step right up and try your luck!"',
       '🔮 "One more marble to win the piggy bank!"',
+      '🪙 "Right on the line! Champion precision!"',
       '🎴 "The rooster, the mermaid, and the gentleman!"',
+      '🃏 "Closing with set and run! ¡Obligado!"',
       '🌀 "Put one, put two, everybody in!"',
       '✏️ "Basta for me, basta for everyone!"',
       '🐍 "Watch out for the snake tail!"',
@@ -345,6 +349,37 @@ const GAMES_DATA = [
     }
   },
   {
+    id: 'rayuela',
+    icon: '🪙',
+    categories: ['destreza', 'multiplayer'],
+    playUrl: 'https://rayuela-tgrr.onrender.com',
+    repoUrl: 'https://github.com/pinguxx/rayuela',
+    es: {
+      title: 'Rayuela Mexicana',
+      subtitle: 'El Cajón de Barro & Tirada a la Raya',
+      categoryBadge: 'Destreza & Puntería',
+      desc: 'El histórico juego tradicional de puntería con monedas. Lanza tu moneda con arco parabólico hacia el cajón de arcilla húmeda para clavarla en la línea divisoria o quedar más cerca que tus rivales.',
+      features: [
+        'Cajón de arcilla húmeda con absorción de impacto y clavadas en el barro',
+        'Cámara foto-finish cenital con calibrador digital milimétrico',
+        'Partidas multijugador con código QR y bots con personalidades mexicanas'
+      ],
+      rules: 'Arrastra hacia atrás o desliza para medir la fuerza y ángulo del tiro parabólico. Tu moneda vuela hacia el cajón de barro. Si raya la línea central ganas puntos máximos, y si clavas la moneda de canto en la arcilla recibes bono de clavada. La cámara foto-finish dictamina la distancia exacta.'
+    },
+    en: {
+      title: 'Mexican Rayuela',
+      subtitle: 'The Clay Box & Coin Pitching',
+      categoryBadge: 'Skill & Aim',
+      desc: 'The classic Mexican coin-pitching game of precision. Toss heavy coins in a parabolic arc toward a moist clay-filled box to land flush on the center line or edge out your opponents.',
+      features: [
+        'Moist clay box with realistic impact physics and edge-stick bonuses',
+        'Overhead photo-finish camera with millimeter digital caliper',
+        'Real-time multiplayer with QR codes and Mexican AI bot personalities'
+      ],
+      rules: 'Drag back or swipe to gauge throw power and angle. Your coin arcs into the clay box. Landing flush on the center crease scores maximum points. A perpendicular edge-stick into the wet clay awards a special bonus. A digital photo-finish caliper measures final distances.'
+    }
+  },
+  {
     id: 'basta',
     icon: '✏️',
     categories: ['palabras', 'multiplayer'],
@@ -372,6 +407,37 @@ const GAMES_DATA = [
         'Democratic real-time word voting and quick party shouts'
       ],
       rules: 'A random letter is picked. Everyone fills their categories as fast as possible. The first to finish shouts "Basta!". Unique words score 100 points, duplicates score 50.'
+    }
+  },
+  {
+    id: 'conquian',
+    icon: '🃏',
+    categories: ['tablero', 'multiplayer'],
+    playUrl: 'https://conquian-31gh.onrender.com',
+    repoUrl: 'https://github.com/pinguxx/conquian',
+    es: {
+      title: 'Conquián Mexicano',
+      subtitle: 'Rummy Tradicional de 2 a 6 Jugadores',
+      categoryBadge: 'Baraja & Estrategia',
+      desc: 'El antepasado del Rummy más jugado en México con Baraja Española de 40 cartas. Forma tercias y corridas, aprovecha el anillo estricto de reclamos, fuerza jugadas con ¡Obligado! y acumula el pozo en Tablas.',
+      features: [
+        'Baraja Española (Oros, Copas, Espadas, Bastos) o baraja de Poker',
+        'Mecánica oficial de ¡Obligado!, reacomodo de tercias y arrastre de fichas',
+        'Salas multijugador de 2 a 6 personas con bots de cantina y modo Tablas'
+      ],
+      rules: 'Baja combinaciones válidas de al menos 3 cartas (tercias del mismo número o corridas del mismo palo, donde el 7 y el 10 son consecutivos). Si alguien tira una carta que amplía tu combinación en mesa, ¡te pueden obligar a tomarla y descartar! El primero en bajar 9 u 11 cartas gana la ronda.'
+    },
+    en: {
+      title: 'Mexican Conquian',
+      subtitle: 'Traditional 2–6 Player Mexican Rummy',
+      categoryBadge: 'Cards & Strategy',
+      desc: 'The founding ancestor of Western Rummy played with the 40-card Spanish deck. Form sets and runs, claim offered discards in clockwise order, trigger ¡Obligado! (forcing), and roll over pots on Tablas.',
+      features: [
+        'Traditional Baraja Española (Coins, Cups, Swords, Clubs) or Poker suits',
+        'Authentic ¡Obligado! forcing, table meld borrowing, and pot rollover',
+        'Real-time 2 to 6 player rooms with Cantina AI bots and QR invite codes'
+      ],
+      rules: 'Meld valid combinations of 3+ cards (sets of identical rank or suited runs where 7 and 10 are consecutive). If an offered card extends your meld on the table, opponents can force you to take it with ¡Obligado! First player to meld all required cards (9 or 11) wins the hand.'
     }
   },
   {
