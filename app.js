@@ -43,6 +43,12 @@ const I18N = {
     miniBoothSub: 'Gana boletos para los premios',
     miniCanvasNote: 'Rebote físico en clavos de latón',
     miniPhraseDefault: '🎪 «¡Pásele, pásele a probar suerte!»',
+    cups: {
+      laCalavera: '💀 10',
+      laCampana: '🔔 50',
+      elGallo: '👑 100',
+      elTrompo: '🎪 30'
+    },
     btnLaunch: '<span>🚀</span> ¡Soltar Canica! (Gratis)',
     filterAll: '<span>🎪</span> Todos los Puestos (6)',
     filterDestreza: '<span>🎯</span> Destreza & Puntería (2)',
@@ -98,6 +104,12 @@ const I18N = {
     miniBoothSub: 'Earn tickets for fair prizes',
     miniCanvasNote: 'Physics bounce on brass pins',
     miniPhraseDefault: '🎪 "Step right up, step right up and try your luck!"',
+    cups: {
+      laCalavera: '💀 10',
+      laCampana: '🔔 50',
+      elGallo: '👑 100',
+      elTrompo: '🎪 30'
+    },
     btnLaunch: '<span>🚀</span> Drop Marble! (Free)',
     filterAll: '<span>🎪</span> All Game Booths (6)',
     filterDestreza: '<span>🎯</span> Skill & Aim (2)',
@@ -605,7 +617,7 @@ class MiniFeriaGame {
       this.ctx.fillRect(cup.x, 105, cup.w, 22);
       this.ctx.strokeRect(cup.x, 105, cup.w, 22);
 
-      const label = langDict.cups[cup.labelKey] || cup.labelDefault;
+      const label = (langDict && langDict.cups && langDict.cups[cup.labelKey]) || cup.labelDefault;
       this.ctx.fillStyle = '#f8fafc';
       this.ctx.font = 'bold 10px Fredoka, sans-serif';
       this.ctx.textAlign = 'center';
