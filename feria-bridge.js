@@ -77,42 +77,34 @@
     const style = document.createElement('style');
     style.id = 'feria-bridge-styles';
     style.textContent = `
-      .feria-bridge-container {
-        position: fixed;
-        top: 12px;
-        left: 12px;
-        z-index: 999999;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        pointer-events: auto;
-      }
-
       .feria-bridge-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(15, 23, 42, 0.88);
-        color: #f8fafc;
+        gap: 6px;
+        background: rgba(15, 23, 42, 0.92);
+        color: #fef08a;
         text-decoration: none;
-        padding: 7px 14px;
+        padding: 5px 12px;
         border-radius: 9999px;
         border: 1.5px solid #f59e0b;
-        font-size: 13px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 12.5px;
         font-weight: 700;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(245, 158, 11, 0.25);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 0 10px rgba(245, 158, 11, 0.25);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         transition: transform 0.2s, background 0.2s, box-shadow 0.2s, border-color 0.2s;
         user-select: none;
+        cursor: pointer;
+        white-space: nowrap;
+        pointer-events: auto;
       }
 
       .feria-bridge-btn:hover {
         background: rgba(30, 41, 59, 0.98);
         border-color: #fbbf24;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 16px rgba(251, 191, 36, 0.45);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 14px rgba(251, 191, 36, 0.45);
         color: #ffffff;
       }
 
@@ -120,8 +112,22 @@
         transform: translateY(0);
       }
 
+      .feria-bridge-in-header {
+        position: relative;
+        z-index: 50;
+        margin-right: 6px;
+      }
+
+      .feria-bridge-floating {
+        position: fixed;
+        bottom: 18px;
+        left: 18px;
+        z-index: 999999;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5), 0 0 14px rgba(245, 158, 11, 0.35);
+      }
+
       .feria-bridge-icon {
-        font-size: 16px;
+        font-size: 15px;
         line-height: 1;
       }
 
@@ -133,30 +139,30 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        background: rgba(245, 158, 11, 0.18);
-        border: 1px solid rgba(245, 158, 11, 0.4);
-        padding: 2px 8px;
+        background: rgba(245, 158, 11, 0.22);
+        border: 1px solid rgba(245, 158, 11, 0.45);
+        padding: 2px 7px;
         border-radius: 999px;
-        font-size: 11.5px;
+        font-size: 11px;
         color: #fbbf24;
         margin-left: 2px;
       }
 
       @media (max-width: 640px) {
-        .feria-bridge-container {
-          top: 8px;
-          left: 8px;
-        }
         .feria-bridge-btn {
-          padding: 5px 10px;
-          font-size: 11.5px;
-          gap: 5px;
+          padding: 4px 9px;
+          font-size: 11px;
+          gap: 4px;
+        }
+        .feria-bridge-floating {
+          bottom: 12px;
+          left: 12px;
         }
         .feria-bridge-icon {
-          font-size: 14px;
+          font-size: 13px;
         }
         .feria-bridge-player-pill {
-          display: none; /* Ahorra espacio en pantallas móviles pequeñas */
+          display: none;
         }
       }
     `;
@@ -165,53 +171,63 @@
 
   // 5. Inyectar botón en el DOM
   function injectBridgeUI() {
-    if (document.getElementById('feria-bridge-widget')) return;
-
+    let link = document.getElementById('feria-bridge-widget');
     injectStyles();
 
-    const container = document.createElement('div');
-    container.id = 'feria-bridge-widget';
-    container.className = 'feria-bridge-container';
+    if (!link) {
+      link = document.createElement('a');
+      link.id = 'feria-bridge-widget';
+      link.href = hubUrl;
+      link.setAttribute('rel', 'noopener noreferrer');
 
-    const link = document.createElement('a');
-    link.href = hubUrl;
-    link.className = 'feria-bridge-btn';
-    link.setAttribute('rel', 'noopener noreferrer');
-
-    if (isFromFeria) {
-      link.title = 'Volver al portal principal de La Feria';
-      link.innerHTML = `
-        <span class="feria-bridge-icon" aria-hidden="true">🎪</span>
-        <span class="feria-bridge-label">Volver a la Feria</span>
-        ${playerName ? `<span class="feria-bridge-player-pill">${playerAvatar} ${escapeHtml(playerName)}</span>` : ''}
-      `;
-    } else {
-      // Modo Standalone: Invitación a descubrir la feria
-      link.title = 'Explorar la colección completa de Juegos Tradicionales Mexicanos en La Feria';
-      link.innerHTML = `
-        <span class="feria-bridge-icon" aria-hidden="true">🎪</span>
-        <span class="feria-bridge-label">La Feria</span>
-      `;
+      if (isFromFeria) {
+        link.title = 'Volver al portal principal de La Feria';
+        link.innerHTML = `
+          <span class="feria-bridge-icon" aria-hidden="true">🎪</span>
+          <span class="feria-bridge-label">Volver a la Feria</span>
+          ${playerName ? `<span class="feria-bridge-player-pill">${playerAvatar} ${escapeHtml(playerName)}</span>` : ''}
+        `;
+      } else {
+        link.title = 'Explorar la colección completa de Juegos Tradicionales Mexicanos en La Feria';
+        link.innerHTML = `
+          <span class="feria-bridge-icon" aria-hidden="true">🎪</span>
+          <span class="feria-bridge-label">La Feria</span>
+        `;
+      }
     }
 
-    container.appendChild(link);
-    document.body.appendChild(container);
+    // Buscar si existe barra de acciones en cabecera
+    const headerActions = document.querySelector('.header-actions, .header-controls');
+    if (headerActions) {
+      if (link.parentElement !== headerActions) {
+        link.className = 'feria-bridge-btn feria-bridge-in-header';
+        headerActions.insertBefore(link, headerActions.firstChild);
+      }
+    } else {
+      if (!link.parentElement) {
+        link.className = 'feria-bridge-btn feria-bridge-floating';
+        document.body.appendChild(link);
+      }
+    }
   }
 
   // 6. Pre-llenar inputs de nombre de jugador si vienen del pasaporte
   function autofillPlayerInfo() {
     if (!playerName) return;
 
-    // Buscar inputs usuales de nickname / jugador
     const selectors = [
+      '#input-name',
       '#input-player-name',
       '#playerName',
       '#player-name',
+      '#player',
       '#username',
       '#nickname',
+      '#name',
       'input[name="playerName"]',
       'input[name="player_name"]',
-      'input[name="nickname"]'
+      'input[name="nickname"]',
+      'input[name="name"]'
     ];
 
     for (const sel of selectors) {
@@ -223,16 +239,40 @@
         break;
       }
     }
+
+    if (playerAvatar) {
+      try {
+        const pickerItems = document.querySelectorAll('.picker-item, .avatar-option, .avatar-btn, [data-avatar]');
+        for (const btn of pickerItems) {
+          if (btn.textContent && btn.textContent.includes(playerAvatar)) {
+            btn.click();
+            break;
+          }
+        }
+      } catch (_) {}
+    }
+  }
+
+  function initBridge() {
+    injectBridgeUI();
+    autofillPlayerInfo();
+
+    // Re-checar si componentes de interfaz se cargan dinámicamente
+    setTimeout(() => {
+      injectBridgeUI();
+      autofillPlayerInfo();
+    }, 400);
+
+    setTimeout(() => {
+      injectBridgeUI();
+      autofillPlayerInfo();
+    }, 1200);
   }
 
   // Iniciar cuando el DOM esté listo
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      injectBridgeUI();
-      autofillPlayerInfo();
-    });
+    document.addEventListener('DOMContentLoaded', initBridge);
   } else {
-    injectBridgeUI();
-    autofillPlayerInfo();
+    initBridge();
   }
 })();
