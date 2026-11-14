@@ -439,7 +439,10 @@ body {
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
   width: 100%;
   max-width: 260px;
-  height: 130px;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  touch-action: manipulation;
+  cursor: pointer;
 }
 
 .mini-booth-actions {
@@ -582,7 +585,7 @@ body {
 /* Booths / Games Grid */
 .booths-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 28px;
   margin-bottom: 60px;
 }
@@ -1161,3 +1164,306 @@ footer {
   font-size: 13px;
   color: var(--text-muted);
 }
+
+/* ========================================================================== */
+/* 📱 MOBILE & RESPONSIVE OPTIMIZATIONS (Smartphones & Tablets)                */
+/* ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Navigation */
+  .top-nav {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-controls {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .btn-control {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .ticket-badge {
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  /* Filters & Search */
+  .filter-section {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .filter-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .search-box {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Layout Spacing */
+  .container {
+    padding: 0 14px;
+  }
+
+  /* Papel Picado Garland */
+  .papel-flag {
+    width: 42px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 24px 10px 20px;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  /* Mini Booth */
+  .hero-mini-booth {
+    padding: 16px 12px;
+    border-radius: 16px;
+    margin-bottom: 28px;
+  }
+
+  .mini-booth-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .mini-booth-title {
+    font-size: 14px;
+  }
+
+  .mini-booth-phrase {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .btn-launch-mini {
+    padding: 12px 16px;
+    font-size: 14px;
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* Game Booth Cards */
+  .booths-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .booth-card {
+    border-radius: 16px;
+  }
+
+  .booth-header {
+    padding: 18px 14px 12px;
+  }
+
+  .booth-icon-box {
+    width: 54px;
+    height: 54px;
+    font-size: 28px;
+    border-radius: 14px;
+  }
+
+  .booth-body {
+    padding: 0 14px 16px;
+  }
+
+  .booth-title {
+    font-size: 20px;
+  }
+
+  .booth-features li {
+    font-size: 12px;
+  }
+
+  .btn-primary-play {
+    padding: 12px 14px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .btn-secondary {
+    padding: 10px 12px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+
+  /* Prizes Showcase */
+  .prizes-section {
+    padding: 24px 14px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+  }
+
+  .prizes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .prize-card {
+    padding: 14px 10px;
+  }
+
+  .prize-icon {
+    font-size: 34px;
+  }
+
+  .prize-name {
+    font-size: 13px;
+  }
+
+  .prize-cost {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .btn-redeem {
+    font-size: 11px;
+    padding: 7px 8px;
+    min-height: 36px;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    max-height: 85vh;
+    border-radius: 20px 20px 10px 10px;
+  }
+
+  .modal-content {
+    padding: 20px 16px 28px;
+  }
+
+  .modal-close-btn {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 28px 14px;
+  }
+
+  .footer-brand {
+    font-size: 17px;
+  }
+
+  .footer-links {
+    gap: 12px;
+  }
+
+  .footer-link {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 440px) {
+  /* Extra Small Devices (iPhone SE, narrow Android viewports) */
+  .top-nav {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .nav-brand-text {
+    font-size: 18px;
+  }
+
+  .nav-logo-icon {
+    font-size: 22px;
+  }
+
+  .nav-controls {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .ticket-badge {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .btn-control {
+    padding: 5px 7px;
+    font-size: 10.5px;
+    gap: 3px;
+  }
+
+  .papel-flag {
+    width: 32px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .papel-flag:nth-child(n+8) {
+    display: none;
+  }
+}
+
+@media (max-width: 340px) {
+  .prizes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

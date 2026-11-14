@@ -538,6 +538,13 @@ class MiniFeriaGame {
 
     this.setupBoard();
     this.renderStatic();
+
+    // Tap or click on canvas to launch marble on mobile & desktop
+    this.canvas.addEventListener('click', () => this.launch());
+    this.canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.launch();
+    }, { passive: false });
   }
 
   setupBoard() {
