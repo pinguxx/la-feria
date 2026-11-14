@@ -1,0 +1,3738 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="noche">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#0a111c" />
+  <meta name="description" content="🎪 La Feria • Colección de juegos tradicionales mexicanos multijugador en línea: Canicas 3D, Basta Online, Lotería Mexicana, Pirinola, Serpientes y Escaleras y El Juego de la Oca." />
+  <title>🎪 La Feria • Juegos Tradicionales Mexicanos Online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+/* ========================================================================== */
+/* 🎪 LA FERIA • JUEGOS TRADICIONALES MEXICANOS • DESIGN SYSTEM               */
+/* ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+:root,
+html[data-theme="noche"] {
+  --bg-main: #0a111c;
+  --bg-gradient: radial-gradient(circle at 50% 10%, #172842 0%, #0a111c 80%);
+  --bg-card: rgba(18, 30, 49, 0.88);
+  --bg-card-hover: rgba(26, 43, 70, 0.95);
+  --bg-elevated: #1e3352;
+  --bg-booth-roof: repeating-linear-gradient(45deg, #e11d48, #e11d48 18px, #fff1f2 18px, #fff1f2 36px);
+  --border-card: rgba(251, 191, 36, 0.28);
+  --border-bright: #fbbf24;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+  --accent-gold: #fbbf24;
+  --accent-rose: #f43f5e;
+  --accent-cyan: #06b6d4;
+  --accent-green: #10b981;
+  --accent-orange: #f97316;
+  --accent-purple: #a855f7;
+  --shadow-bulb: 0 0 16px rgba(251, 191, 36, 0.65);
+  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 20px 48px rgba(251, 191, 36, 0.25);
+  --font-display: 'Bungee', cursive, sans-serif;
+  --font-accent: 'Fredoka', sans-serif;
+  --font-body: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+}
+
+html[data-theme="dia"] {
+  --bg-main: #fcf9f2;
+  --bg-gradient: radial-gradient(circle at 50% 10%, #fff7ed 0%, #fcf9f2 80%);
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-card-hover: #ffffff;
+  --bg-elevated: #f4ede0;
+  --border-card: rgba(234, 88, 12, 0.25);
+  --border-bright: #ea580c;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-inverse: #f8fafc;
+  --accent-gold: #d97706;
+  --accent-rose: #e11d48;
+  --accent-cyan: #0891b2;
+  --accent-green: #059669;
+  --accent-orange: #ea580c;
+  --accent-purple: #9333ea;
+  --shadow-bulb: 0 0 12px rgba(234, 88, 12, 0.4);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 18px 40px rgba(234, 88, 12, 0.18);
+}
+
+html[data-theme="talavera"] {
+  --bg-main: #061325;
+  --bg-gradient: radial-gradient(circle at 50% 10%, #0d2850 0%, #061325 80%);
+  --bg-card: rgba(10, 29, 58, 0.92);
+  --bg-card-hover: rgba(16, 44, 86, 0.96);
+  --bg-elevated: #163c72;
+  --bg-booth-roof: repeating-linear-gradient(45deg, #1d4ed8, #1d4ed8 18px, #eff6ff 18px, #eff6ff 36px);
+  --border-card: rgba(96, 165, 250, 0.35);
+  --border-bright: #60a5fa;
+  --text-main: #eff6ff;
+  --text-muted: #93c5fd;
+  --text-inverse: #0b192c;
+  --accent-gold: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-cyan: #38bdf8;
+  --accent-green: #34d399;
+  --accent-orange: #fb923c;
+  --accent-purple: #c084fc;
+  --shadow-bulb: 0 0 16px rgba(56, 189, 248, 0.6);
+  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.55);
+  --shadow-card-hover: 0 20px 48px rgba(56, 189, 248, 0.3);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-main);
+  background-image: var(--bg-gradient);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Papel Picado Garland */
+.papel-garland {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0 10px;
+  background: transparent;
+  z-index: 30;
+  border-bottom: 2px dashed rgba(251, 191, 36, 0.2);
+}
+
+.papel-flag {
+  width: 60px;
+  height: 64px;
+  clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transform-origin: top center;
+  animation: papelSway 4s ease-in-out infinite alternate;
+  position: relative;
+}
+
+.papel-flag::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 24px;
+  height: 24px;
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+}
+
+.papel-flag:nth-child(1) { background: #f43f5e; animation-delay: 0.1s; }
+.papel-flag:nth-child(2) { background: #06b6d4; animation-delay: 0.5s; }
+.papel-flag:nth-child(3) { background: #fbbf24; animation-delay: 0.9s; }
+.papel-flag:nth-child(4) { background: #10b981; animation-delay: 0.3s; }
+.papel-flag:nth-child(5) { background: #a855f7; animation-delay: 0.7s; }
+.papel-flag:nth-child(6) { background: #f97316; animation-delay: 0.2s; }
+.papel-flag:nth-child(7) { background: #ec4899; animation-delay: 0.6s; }
+.papel-flag:nth-child(8) { background: #3b82f6; animation-delay: 1.0s; }
+.papel-flag:nth-child(9) { background: #eab308; animation-delay: 0.4s; }
+.papel-flag:nth-child(10) { background: #14b8a6; animation-delay: 0.8s; }
+
+@keyframes papelSway {
+  0% { transform: rotate(-5deg); }
+  50% { transform: rotate(4deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+/* Lightbulbs String */
+.lights-string {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 6px 12px;
+  position: relative;
+  z-index: 25;
+}
+
+.light-bulb {
+  width: 14px;
+  height: 20px;
+  border-radius: 50% 50% 40% 40%;
+  position: relative;
+  animation: bulbTwinkle 2.5s infinite alternate;
+}
+
+.light-bulb::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 3px;
+  width: 8px;
+  height: 4px;
+  background: #475569;
+  border-radius: 2px 2px 0 0;
+}
+
+.light-bulb:nth-child(odd) {
+  background: #fbbf24;
+  box-shadow: 0 0 12px #fbbf24;
+  animation-delay: 0.2s;
+}
+
+.light-bulb:nth-child(even) {
+  background: #f43f5e;
+  box-shadow: 0 0 12px #f43f5e;
+  animation-delay: 0.8s;
+}
+
+.light-bulb:nth-child(3n) {
+  background: #06b6d4;
+  box-shadow: 0 0 12px #06b6d4;
+  animation-delay: 1.4s;
+}
+
+.light-bulb:nth-child(4n) {
+  background: #10b981;
+  box-shadow: 0 0 12px #10b981;
+  animation-delay: 0.5s;
+}
+
+@keyframes bulbTwinkle {
+  0%, 100% { opacity: 0.95; filter: brightness(1.2); }
+  50% { opacity: 0.65; filter: brightness(0.85); }
+}
+
+/* Top Navigation Bar */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: rgba(10, 17, 28, 0.65);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border-card);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-logo-icon {
+  font-size: 28px;
+  animation: bounceLogo 3s ease infinite;
+}
+
+@keyframes bounceLogo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.nav-brand-text {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 10px rgba(251, 191, 36, 0.4);
+}
+
+.nav-tagline {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav-tagline { display: inline-block; }
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Pasaporte de la Feria Nav Badge */
+.passport-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.25));
+  border: 1px solid var(--accent-gold);
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.2);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.passport-badge:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(245, 158, 11, 0.35));
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.35);
+  border-color: #fde68a;
+}
+
+.passport-nick {
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.passport-pill-stat {
+  background: var(--bg-card);
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--border-card);
+  font-size: 12px;
+}
+
+/* Legacy Tickets Counter Badge */
+.ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1e1b4b;
+  font-family: var(--font-accent);
+  font-weight: 800;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #fde68a;
+}
+
+.ticket-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.55);
+}
+
+.ticket-badge:active {
+  transform: scale(0.96);
+}
+
+/* Sound and Theme Buttons */
+.btn-control {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.btn-control:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-bright);
+  color: var(--accent-gold);
+}
+
+/* Container */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+  padding: 48px 20px 40px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  color: var(--accent-rose);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  line-height: 1.1;
+  color: var(--accent-gold);
+  text-shadow: 0 4px 20px rgba(251, 191, 36, 0.45), 0 2px 4px rgba(0,0,0,0.8);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  color: var(--text-muted);
+  max-width: 760px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+.hero-subtitle strong {
+  color: var(--text-main);
+}
+
+/* Quick Action / Mini-Booth Hero Widget */
+.hero-mini-booth {
+  background: var(--bg-card);
+  border: 2px solid var(--border-bright);
+  border-radius: 20px;
+  max-width: 680px;
+  margin: 0 auto 40px;
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-mini-booth::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, #f43f5e, #f43f5e 20px, #fbbf24 20px, #fbbf24 40px, #10b981 40px, #10b981 60px, #06b6d4 60px, #06b6d4 80px);
+}
+
+.mini-booth-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-card);
+}
+
+.mini-booth-title {
+  font-family: var(--font-accent);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-booth-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .mini-booth-content {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.mini-canvas-container {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+  padding: 10px;
+  border: 1px solid var(--border-card);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#miniFeriaCanvas {
+  background: #0f172a;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.mini-booth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.mini-booth-phrase {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: var(--bg-elevated);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-rose);
+  min-height: 48px;
+  display: block;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.mini-booth-phrase strong {
+  color: var(--accent-gold);
+  font-weight: 800;
+}
+
+.btn-launch-mini {
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  color: #ffffff;
+  font-family: var(--font-accent);
+  font-weight: 800;
+  font-size: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.4);
+  transition: all 0.2s;
+}
+
+.btn-launch-mini:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.6);
+}
+
+.btn-launch-mini:active {
+  transform: translateY(1px);
+}
+
+/* Category Filters & Search */
+.filter-section {
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .filter-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-muted);
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-btn:hover {
+  color: var(--text-main);
+  border-color: var(--border-bright);
+}
+
+.filter-btn.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #1a1608;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.35);
+}
+
+.search-box {
+  position: relative;
+  min-width: 260px;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 10px 14px 10px 38px;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Booths / Games Grid */
+.booths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 28px;
+  margin-bottom: 60px;
+}
+
+/* Single Game Booth Card */
+.booth-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.booth-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--border-bright);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Booth Roof / Awning (Toldo de Feria) */
+.booth-roof {
+  height: 24px;
+  width: 100%;
+  background: var(--bg-booth-roof);
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.booth-roof-valance {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-image: radial-gradient(circle at 10px 0, transparent 8px, #fff1f2 8px);
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
+}
+
+.booth-card:nth-child(2) .booth-roof {
+  background: repeating-linear-gradient(45deg, #059669, #059669 18px, #ecfdf5 18px, #ecfdf5 36px);
+}
+.booth-card:nth-child(3) .booth-roof {
+  background: repeating-linear-gradient(45deg, #d97706, #d97706 18px, #fffbeb 18px, #fffbeb 36px);
+}
+.booth-card:nth-child(4) .booth-roof {
+  background: repeating-linear-gradient(45deg, #7c3aed, #7c3aed 18px, #f5f3ff 18px, #f5f3ff 36px);
+}
+.booth-card:nth-child(5) .booth-roof {
+  background: repeating-linear-gradient(45deg, #0284c7, #0284c7 18px, #f0f9ff 18px, #f0f9ff 36px);
+}
+.booth-card:nth-child(6) .booth-roof {
+  background: repeating-linear-gradient(45deg, #ea580c, #ea580c 18px, #fff7ed 18px, #fff7ed 36px);
+}
+.booth-card:nth-child(7) .booth-roof {
+  background: repeating-linear-gradient(45deg, #0d9488, #0d9488 18px, #f0fdfa 18px, #f0fdfa 36px);
+}
+.booth-card:nth-child(8) .booth-roof {
+  background: repeating-linear-gradient(45deg, #db2777, #db2777 18px, #fdf2f8 18px, #fdf2f8 36px);
+}
+
+/* Card Visual Header */
+.booth-header {
+  padding: 24px 20px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.booth-icon-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.booth-card:hover .booth-icon-box {
+  transform: scale(1.1) rotate(-4deg);
+}
+
+.booth-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--accent-green);
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.badge-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.badge-players {
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Card Body */
+.booth-body {
+  padding: 0 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.booth-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.booth-subtitle {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+.booth-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+/* Feature Bullets */
+.booth-features {
+  list-style: none;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.booth-features li {
+  font-size: 13px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.booth-features li span {
+  color: var(--accent-rose);
+  font-size: 14px;
+}
+
+/* Tech Pills */
+.booth-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border-card);
+}
+
+.tech-tag {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-family: var(--font-accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Card Actions */
+.booth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.btn-primary-play {
+  width: 100%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1e1b4b;
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary-play:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.55);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 9px 12px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-bright);
+  color: var(--accent-gold);
+}
+
+/* Prizes Showcase / Vitrina de Premios */
+.prizes-section {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  padding: 36px 24px;
+  margin-bottom: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.prizes-section::before {
+  content: '🎡';
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  font-size: 140px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-tag {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.section-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.prizes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+}
+
+.prize-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  padding: 20px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.prize-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-gold);
+}
+
+.prize-icon {
+  font-size: 44px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.prize-name {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.prize-cost {
+  font-family: var(--font-accent);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  background: rgba(251, 191, 36, 0.12);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.btn-redeem {
+  margin-top: auto;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-redeem:hover:not(:disabled) {
+  background: var(--accent-rose);
+  border-color: var(--accent-rose);
+  color: #ffffff;
+}
+
+.btn-redeem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Architecture Showcase */
+.architecture-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 24px;
+  padding: 36px 28px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .architecture-section {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+.arch-info h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+.arch-info p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.arch-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.arch-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.arch-item-title {
+  font-family: var(--font-accent);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.arch-item-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.arch-code-preview {
+  background: #080d14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #38bdf8;
+  overflow-x: auto;
+}
+
+.code-keyword { color: #f43f5e; font-weight: 700; }
+.code-fn { color: #fbbf24; }
+.code-string { color: #10b981; }
+.code-comment { color: #64748b; font-style: italic; }
+
+/* Salón de la Fama (Leaderboard) */
+.leaderboard-section {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  padding: 36px 28px;
+  margin-bottom: 60px;
+}
+
+.leaderboard-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.leaderboard-header-row {
+  display: grid;
+  grid-template-columns: 80px 1.5fr 1fr 1fr 1fr;
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--border-card);
+  font-family: var(--font-accent);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 80px 1.5fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-accent);
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.leaderboard-row:hover {
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.podium-rank {
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rank-1 { color: #fbbf24; font-size: 16px; font-weight: 900; }
+.rank-2 { color: #94a3b8; font-size: 15px; font-weight: 800; }
+.rank-3 { color: #d97706; font-size: 15px; font-weight: 800; }
+
+.player-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.player-avatar {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.passport-modal-card {
+  max-width: 520px;
+}
+
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+
+.avatar-choice-btn {
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-card);
+  border-radius: 12px;
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.avatar-choice-btn:hover {
+  transform: scale(1.1);
+  border-color: var(--accent-gold);
+}
+
+.avatar-choice-btn.selected {
+  border-color: var(--accent-gold);
+  background: rgba(251, 191, 36, 0.25);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+}
+
+.passport-form-input {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text-main);
+  font-family: var(--font-accent);
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.passport-form-input:focus {
+  border-color: var(--accent-gold);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-container {
+  background: var(--bg-card);
+  border: 2px solid var(--border-bright);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  position: relative;
+  animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-card);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: var(--accent-rose);
+  color: #ffffff;
+}
+
+.modal-content {
+  padding: 28px;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--border-card);
+  padding: 40px 20px;
+  text-align: center;
+  background: rgba(10, 17, 28, 0.85);
+  margin-top: 40px;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--accent-gold);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+}
+
+.footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: var(--accent-gold);
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ========================================================================== */
+/* 📱 MOBILE & RESPONSIVE OPTIMIZATIONS (Smartphones & Tablets)                */
+/* ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Navigation */
+  .top-nav {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-controls {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .btn-control {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .ticket-badge {
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  /* Filters & Search */
+  .filter-section {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .filter-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .search-box {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Layout Spacing */
+  .container {
+    padding: 0 14px;
+  }
+
+  /* Papel Picado Garland */
+  .papel-flag {
+    width: 42px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 24px 10px 20px;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  /* Mini Booth */
+  .hero-mini-booth {
+    padding: 16px 12px;
+    border-radius: 16px;
+    margin-bottom: 28px;
+  }
+
+  .mini-booth-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .mini-booth-title {
+    font-size: 14px;
+  }
+
+  .mini-booth-phrase {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .btn-launch-mini {
+    padding: 12px 16px;
+    font-size: 14px;
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* Game Booth Cards */
+  .booths-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .booth-card {
+    border-radius: 16px;
+  }
+
+  .booth-header {
+    padding: 18px 14px 12px;
+  }
+
+  .booth-icon-box {
+    width: 54px;
+    height: 54px;
+    font-size: 28px;
+    border-radius: 14px;
+  }
+
+  .booth-body {
+    padding: 0 14px 16px;
+  }
+
+  .booth-title {
+    font-size: 20px;
+  }
+
+  .booth-features li {
+    font-size: 12px;
+  }
+
+  .btn-primary-play {
+    padding: 12px 14px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .btn-secondary {
+    padding: 10px 12px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+
+  /* Prizes Showcase */
+  .prizes-section {
+    padding: 24px 14px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+  }
+
+  .prizes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .prize-card {
+    padding: 14px 10px;
+  }
+
+  .prize-icon {
+    font-size: 34px;
+  }
+
+  .prize-name {
+    font-size: 13px;
+  }
+
+  .prize-cost {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .btn-redeem {
+    font-size: 11px;
+    padding: 7px 8px;
+    min-height: 36px;
+  }
+
+  /* Leaderboard Mobile */
+  .leaderboard-section {
+    padding: 24px 14px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+  }
+
+  .leaderboard-header-row {
+    grid-template-columns: 45px 1.4fr 1fr 1fr;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 45px 1.4fr 1fr 1fr;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .leaderboard-header-row span:last-child,
+  .leaderboard-row span:last-child {
+    display: none;
+  }
+
+  .passport-badge {
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .passport-nick {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    max-height: 85vh;
+    border-radius: 20px 20px 10px 10px;
+  }
+
+  .modal-content {
+    padding: 20px 16px 28px;
+  }
+
+  .modal-close-btn {
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 28px 14px;
+  }
+
+  .footer-brand {
+    font-size: 17px;
+  }
+
+  .footer-links {
+    gap: 12px;
+  }
+
+  .footer-link {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 440px) {
+  /* Extra Small Devices (iPhone SE, narrow Android viewports) */
+  .top-nav {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .nav-brand-text {
+    font-size: 18px;
+  }
+
+  .nav-logo-icon {
+    font-size: 22px;
+  }
+
+  .nav-controls {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .ticket-badge {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .btn-control {
+    padding: 5px 7px;
+    font-size: 10.5px;
+    gap: 3px;
+  }
+
+  .papel-flag {
+    width: 32px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .papel-flag:nth-child(n+8) {
+    display: none;
+  }
+}
+
+@media (max-width: 340px) {
+  .prizes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+</style>
+</head>
+<body>
+
+  <!-- Festive Papel Picado Garland -->
+  <div class="papel-garland" aria-hidden="true">
+    <div class="papel-flag">🎪</div>
+    <div class="papel-flag">🔮</div>
+    <div class="papel-flag">🪙</div>
+    <div class="papel-flag">✏️</div>
+    <div class="papel-flag">🎴</div>
+    <div class="papel-flag">🃏</div>
+    <div class="papel-flag">🌀</div>
+    <div class="papel-flag">🐍</div>
+    <div class="papel-flag">🪿</div>
+    <div class="papel-flag">🎉</div>
+  </div>
+
+  <!-- Fairground String Lights -->
+  <div class="lights-string" aria-hidden="true">
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+    <div class="light-bulb"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="top-nav">
+    <a href="#" class="nav-brand">
+      <span class="nav-logo-icon">🎪</span>
+      <span class="nav-brand-text">LA FERIA</span>
+      <span class="nav-tagline" id="navTagline">Juegos Tradicionales Mexicanos</span>
+    </a>
+
+    <div class="nav-controls">
+      <button class="passport-badge" id="btnPassportToggle" title="Tu Pasaporte de la Feria • Monedas y Boletos / Your Fair Passport">
+        <span id="passportAvatar">🤼</span>
+        <span id="passportNick" class="passport-nick">Invitado</span>
+        <span class="passport-pill-stat">🪙 <strong id="passportCoins">50</strong></span>
+        <span class="passport-pill-stat">🎫 <strong id="passportTickets">5</strong></span>
+      </button>
+      <button class="btn-control" id="btnAudioToggle" title="Activar/Desactivar efectos de sonido / Toggle sound effects">
+        🔇 Sonido: OFF
+      </button>
+      <button class="btn-control" id="btnMusicToggle" title="Tocar música de organillo de feria / Play carousel music">
+        🎵 Organillo: OFF
+      </button>
+      <button class="btn-control" id="btnThemeToggle" title="Cambiar tema visual / Change visual theme">
+        🏮 Noche de Feria
+      </button>
+      <button class="btn-control" id="btnLangToggle" title="Cambiar idioma / Switch language" style="border-color: var(--accent-gold); color: var(--accent-gold); font-weight: 800;">
+        🌐 ES
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-tag" id="heroTag">🇲🇽 Gran Kermés Virtual • Colección Oficial</div>
+      <h1 class="hero-title" id="heroTitle">¡PÁSELE A LA FERIA!</h1>
+      <p class="hero-subtitle" id="heroSubtitle">
+        Los juegos tradicionales más queridos de México y de siempre, reunidos para jugar en línea con amigos y familia directo en tu navegador.
+      </p>
+
+      <!-- Interactive Mini-Booth Widget -->
+      <div class="hero-mini-booth">
+        <div class="mini-booth-header">
+          <div class="mini-booth-title" id="miniBoothTitle">
+            <span>🔮</span> Puesto de la Suerte: ¡Tira la Canica de Prueba!
+          </div>
+          <div id="miniBoothSub" style="font-family: var(--font-accent); font-size: 12px; color: var(--accent-gold);">
+            Gana boletos para los premios
+          </div>
+        </div>
+
+        <div class="mini-booth-content">
+          <div class="mini-canvas-container">
+            <canvas id="miniFeriaCanvas" width="260" height="130"></canvas>
+            <div id="miniCanvasNote" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+              Rebote físico en clavos de latón
+            </div>
+          </div>
+
+          <div class="mini-booth-actions">
+            <div class="mini-booth-phrase" id="miniBoothPhrase">
+              🎪 «¡Pásele, pásele a probar suerte!»
+            </div>
+            <button class="btn-launch-mini" id="btnLaunchMini">
+              <span>🚀</span> <span id="btnLaunchText">¡Soltar Canica! (Gratis)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters & Search Section -->
+    <section class="filter-section" aria-label="Filtros de juegos">
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all" id="filterBtnAll">
+          <span>🎪</span> Todos los Puestos (8)
+        </button>
+        <button class="filter-btn" data-filter="destreza" id="filterBtnDestreza">
+          <span>🎯</span> Destreza & Puntería (3)
+        </button>
+        <button class="filter-btn" data-filter="palabras" id="filterBtnPalabras">
+          <span>✏️</span> Palabras & Mente (1)
+        </button>
+        <button class="filter-btn" data-filter="tablero" id="filterBtnTablero">
+          <span>🎲</span> Tablero & Cartas (4)
+        </button>
+      </div>
+
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar juego o puesto de feria..." />
+      </div>
+    </section>
+
+    <!-- Booths Grid (The 8 Games) -->
+    <section id="boothsGrid" class="booths-grid" aria-label="Catálogo de juegos de la feria">
+      <!-- Injected by app.js -->
+    </section>
+
+    <!-- Prizes Showcase (Vitrina de Premios de la Feria) -->
+    <section class="prizes-section" aria-label="Vitrina de premios">
+      <div class="section-header">
+        <div class="section-tag" id="prizesSectionTag">🎁 Puesto de Reclamación</div>
+        <h2 class="section-title" id="prizesSectionTitle">VITRINA DE PREMIOS DE FERIA</h2>
+        <p class="section-desc" id="prizesSectionDesc">
+          Juega en los puestos, acumula tus boletos de la suerte y canjea los tesoros más auténticos de cualquier feria de pueblo mexicana.
+        </p>
+      </div>
+
+      <div id="prizesGrid" class="prizes-grid">
+        <!-- Injected by app.js -->
+      </div>
+    </section>
+
+    <!-- Salón de la Fama (Hall of Fame & High Scores) -->
+    <section class="leaderboard-section" id="leaderboardSection" aria-label="Salón de la Fama">
+      <div class="section-header">
+        <div class="section-tag" id="lbSectionTag">🏆 Cuadro de Honor</div>
+        <h2 class="section-title" id="lbSectionTitle">SALÓN DE LA FAMA DE LA FERIA</h2>
+        <p class="section-desc" id="lbSectionDesc">
+          Los mejores marchantes y jugadores de la kermés tradicional. ¡Gana partidas para subir en el podio!
+        </p>
+      </div>
+
+      <div class="leaderboard-card">
+        <div class="leaderboard-header-row">
+          <span>Rango</span>
+          <span>Jugador</span>
+          <span>Monedas</span>
+          <span>Boletos</span>
+          <span>Partidas</span>
+        </div>
+        <div class="leaderboard-body" id="leaderboardList">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal for Rules and Details -->
+  <div class="modal-overlay" id="gameModalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">✕</button>
+      <div class="modal-content" id="modalContent">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Passport Profile & Cloud PIN -->
+  <div class="modal-overlay" id="passportModalOverlay" role="dialog" aria-modal="true">
+    <div class="modal-container passport-modal-card">
+      <button class="modal-close-btn" id="passportModalCloseBtn" aria-label="Cerrar ventana">✕</button>
+      <div class="modal-content" id="passportModalContent">
+        <!-- Injected dynamically by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand" id="footerBrand">🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA</div>
+      <div class="footer-links">
+        <a href="https://canicas.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🔮 Canicas 3D</a>
+        <a href="https://rayuela-tgrr.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🪙 Rayuela en Barro</a>
+        <a href="https://basta-azbj.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">✏️ Basta Online</a>
+        <a href="https://conquian-31gh.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🃏 Conquián Online</a>
+        <a href="https://loteria-zhet.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🎴 Lotería</a>
+        <a href="https://pirinola.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🌀 Pirinola</a>
+        <a href="https://shoots-ladders.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🐍 Serpientes y Escaleras</a>
+        <a href="https://oca-ox87.onrender.com" class="footer-link" target="_blank" rel="noopener noreferrer">🪿 El Juego de la Oca</a>
+      </div>
+      <div class="footer-copy" id="footerCopy">
+        Hecho con ❤️ y amor a los juegos tradicionales por <strong>@pinguxx</strong>.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+// ==========================================================================
+// 🎪 LA FERIA • JUEGOS TRADICIONALES MEXICANOS • BILINGUAL APP (ES / EN)
+// ==========================================================================
+
+// Global State
+const state = {
+  lang: 'es', // 'es' or 'en'
+  tickets: 5,
+  passport: null,
+  activeFilter: 'all',
+  searchQuery: '',
+  theme: 'noche',
+  audioEnabled: false,
+  musicPlaying: false,
+  activeModalGameId: null,
+  prizes: {
+    puerquito: 0,
+    luchador: 0,
+    algodon: 0,
+    pajarito: 0,
+    trompo: 0
+  }
+};
+
+// Bilingual Dictionaries
+const I18N = {
+  es: {
+    navTagline: 'Juegos Tradicionales Mexicanos',
+    ticketWord: 'Boletos',
+    soundOn: '🔊 Sonido: ON',
+    soundOff: '🔇 Sonido: OFF',
+    musicOn: '🎶 Organillo: ON',
+    musicOff: '🎵 Organillo: OFF',
+    langToggle: '🌐 ES',
+    themes: {
+      noche: '🏮 Noche de Feria',
+      dia: '☀️ Día de Fiesta',
+      talavera: '🏺 Talavera Colonial'
+    },
+    heroTag: '🇲🇽 Gran Kermés Virtual • Colección Oficial',
+    heroTitle: '¡PÁSELE A LA FERIA!',
+    heroSubtitle: 'Los juegos tradicionales más queridos de México y de siempre, reunidos para jugar en línea con amigos y familia directo en tu navegador.',
+    miniBoothTitle: '<span>🔮</span> Puesto de la Suerte: ¡Tira la Canica de Prueba!',
+    miniBoothSub: 'Gana boletos para los premios',
+    miniCanvasNote: 'Rebote físico en clavos de latón',
+    miniPhraseDefault: '🎪 «¡Pásele, pásele a probar suerte!»',
+    cups: {
+      laCalavera: '💀 10',
+      laCampana: '🔔 50',
+      elGallo: '👑 100',
+      elTrompo: '🎪 30'
+    },
+    btnLaunch: '<span>🚀</span> ¡Soltar Canica! (Gratis)',
+    filterAll: '<span>🎪</span> Todos los Puestos (8)',
+    filterDestreza: '<span>🎯</span> Destreza & Puntería (3)',
+    filterPalabras: '<span>✏️</span> Palabras & Mente (1)',
+    filterTablero: '<span>🎲</span> Tablero & Cartas (4)',
+    searchPlaceholder: 'Buscar juego o puesto de feria...',
+    noBoothsTitle: 'No encontramos ningún puesto',
+    noBoothsDesc: 'Prueba buscando otra palabra clave o limpia los filtros.',
+    playBtn: '<span>🎮</span> ¡Jugar Ahora!',
+    rulesBtn: '<span>📖</span> Ver Reglas',
+    prizesTag: '🎁 Puesto de Reclamación',
+    prizesTitle: 'VITRINA DE PREMIOS DE FERIA',
+    prizesDesc: 'Juega en los puestos, acumula tus boletos de la suerte y canjea los tesoros más auténticos de cualquier feria de pueblo mexicana.',
+    redeemBtn: 'Canjear Premio',
+    needMoreTickets: 'Faltan boletos',
+    ownedText: '✓ Tienes',
+    modalRulesTitle: '📜 ¿Cómo se juega?',
+    modalIncludesTitle: '🌟 Lo que incluye este puesto:',
+    modalCloseBtn: 'Cerrar',
+    modalPlayBtn: '<span>🎮</span> ¡Entrar a Jugar!',
+    footerBrand: '🎪 LA FERIA • JUEGOS MEXICANOS EN LÍNEA',
+    footerCopy: 'Hecho con ❤️ y amor a los juegos tradicionales por <strong>@pinguxx</strong>.',
+    phrases: [
+      '🎪 «¡Pásele, pásele a probar suerte!»',
+      '🔮 «¡Una canica más y se lleva la alcancía!»',
+      '🪙 «¡Tiro en la raya! ¡Puntería de campeón!»',
+      '🎴 «¡El gallo, la sirena y el catrín!»',
+      '🃏 «¡Cierro con tercia y corrida! ¡Obligado!»',
+      '🌀 «¡Ponga uno, pongan dos, todos ponen!»',
+      '✏️ «¡Basta para mí, basta para todos!»',
+      '🐍 «¡Cuidado con la víbora de la mar!»',
+      '🪿 «¡De oca a oca y tiro porque me toca!»'
+    ],
+    winGallo: (pts, tkt) => `🎉 <strong>¡EL GALLO DE ORO!</strong> Ganaste <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> y <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} boletos</span>`,
+    winAcertado: (pts, tkt) => `🎯 <strong>¡Tiro Acertado!</strong> Ganaste <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> y <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} boletos</span>`,
+    redeemedPhrase: (name, phrase) => `🎁 <strong>¡Canjeaste: ${name}!</strong> <em>${phrase}</em>`,
+    lbSectionTag: '🏆 Cuadro de Honor',
+    lbSectionTitle: 'SALÓN DE LA FAMA DE LA FERIA',
+    lbSectionDesc: 'Los mejores marchantes y jugadores de la kermés tradicional. ¡Gana partidas para subir en el podio!',
+    lbColRank: 'Rango',
+    lbColPlayer: 'Jugador',
+    lbColCoins: 'Monedas',
+    lbColTickets: 'Boletos',
+    lbColGames: 'Partidas',
+    passportModalTitle: '🪪 Pasaporte de la Feria',
+    passportModalSubtitle: 'Tu identidad y billetera de monedas y boletos en todos los juegos',
+    passportLabelNick: 'Tu Apodo de Marchante:',
+    passportLabelAvatar: 'Elige tu Avatar Tradicional:',
+    passportLabelId: 'Tu ID Secreto de Pasaporte:',
+    passportBtnCopyId: 'Copiar ID',
+    passportCopiedToast: '✓ ¡Copiado!',
+    passportBalanceLabel: 'Tu Billetera de la Suerte:',
+    passportSecPinTitle: '🔒 Protección con PIN de 4 Dígitos',
+    passportSecPinDesc: 'Asigna un PIN para proteger tu cuenta y poder recuperarla en cualquier dispositivo o navegador.',
+    passportInputPinPlaceholder: 'PIN de 4 dígitos (ej. 1234)',
+    passportBtnSetPin: 'Guardar PIN',
+    passportPinProtected: '✓ Pasaporte protegido con PIN',
+    passportLoginTitle: '🔄 ¿Ya tienes otro Pasaporte?',
+    passportLoginDesc: 'Ingresa tu apodo y PIN para cargar tu progreso:',
+    passportLoginBtn: 'Recuperar Pasaporte',
+    passportBtnSave: 'Guardar Cambios'
+  },
+  en: {
+    navTagline: 'Traditional Mexican Games',
+    ticketWord: 'Tickets',
+    soundOn: '🔊 Sound: ON',
+    soundOff: '🔇 Sound: OFF',
+    musicOn: '🎶 Music: ON',
+    musicOff: '🎵 Music: OFF',
+    langToggle: '🌐 EN',
+    themes: {
+      noche: '🏮 Night Fair',
+      dia: '☀️ Festive Day',
+      talavera: '🏺 Colonial Talavera'
+    },
+    heroTag: '🇲🇽 Virtual Fairground • Official Collection',
+    heroTitle: 'WELCOME TO THE FAIR!',
+    heroSubtitle: 'The most cherished classic and traditional Mexican games, gathered to play online with friends and family right in your browser.',
+    miniBoothTitle: '<span>🔮</span> Lucky Booth: Launch a Test Marble!',
+    miniBoothSub: 'Earn tickets for fair prizes',
+    miniCanvasNote: 'Physics bounce on brass pins',
+    miniPhraseDefault: '🎪 "Step right up, step right up and try your luck!"',
+    cups: {
+      laCalavera: '💀 10',
+      laCampana: '🔔 50',
+      elGallo: '👑 100',
+      elTrompo: '🎪 30'
+    },
+    btnLaunch: '<span>🚀</span> Drop Marble! (Free)',
+    filterAll: '<span>🎪</span> All Game Booths (8)',
+    filterDestreza: '<span>🎯</span> Skill & Aim (3)',
+    filterPalabras: '<span>✏️</span> Words & Mind (1)',
+    filterTablero: '<span>🎲</span> Board & Cards (4)',
+    searchPlaceholder: 'Search game or fair booth...',
+    noBoothsTitle: 'No booths found',
+    noBoothsDesc: 'Try searching with another keyword or clear the filters.',
+    playBtn: '<span>🎮</span> Play Now!',
+    rulesBtn: '<span>📖</span> View Rules',
+    prizesTag: '🎁 Prize Redemption Counter',
+    prizesTitle: 'FAIR PRIZE SHOWCASE',
+    prizesDesc: 'Play in the booths, collect your lucky tickets, and redeem authentic classic Mexican carnival treasures.',
+    redeemBtn: 'Redeem Prize',
+    needMoreTickets: 'Need more tickets',
+    ownedText: '✓ Owned:',
+    modalRulesTitle: '📜 How to Play?',
+    modalIncludesTitle: "🌟 What's inside this booth:",
+    modalCloseBtn: 'Close',
+    modalPlayBtn: '<span>🎮</span> Jump in & Play!',
+    footerBrand: '🎪 LA FERIA • TRADITIONAL MEXICAN GAMES ONLINE',
+    footerCopy: 'Made with ❤️ and passion for traditional games by <strong>@pinguxx</strong>.',
+    phrases: [
+      '🎪 "Step right up, step right up and try your luck!"',
+      '🔮 "One more marble to win the piggy bank!"',
+      '🪙 "Right on the line! Champion precision!"',
+      '🎴 "The rooster, the mermaid, and the gentleman!"',
+      '🃏 "Closing with set and run! ¡Obligado!"',
+      '🌀 "Put one, put two, everybody in!"',
+      '✏️ "Basta for me, basta for everyone!"',
+      '🐍 "Watch out for the snake tail!"',
+      '🪿 "From goose to goose as my turn comes!"'
+    ],
+    winGallo: (pts, tkt) => `🎉 <strong>THE GOLDEN ROOSTER!</strong> You won <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> and <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} tickets</span>`,
+    winAcertado: (pts, tkt) => `🎯 <strong>Great Shot!</strong> You won <span style="font-weight: 800; color: var(--accent-gold); white-space: nowrap;">${pts} pts</span> and <span style="font-weight: 800; color: var(--accent-green); white-space: nowrap;">+${tkt} tickets</span>`,
+    redeemedPhrase: (name, phrase) => `🎁 <strong>Redeemed: ${name}!</strong> <em>${phrase}</em>`,
+    lbSectionTag: '🏆 Hall of Fame',
+    lbSectionTitle: 'FAIRGROUND HALL OF FAME',
+    lbSectionDesc: 'The greatest players and carnival masters. Win matches to climb the podium!',
+    lbColRank: 'Rank',
+    lbColPlayer: 'Player',
+    lbColCoins: 'Coins',
+    lbColTickets: 'Tickets',
+    lbColGames: 'Matches',
+    passportModalTitle: '🪪 Fair Passport',
+    passportModalSubtitle: 'Your identity and wallet of coins & tickets across all fair booths',
+    passportLabelNick: 'Your Carnival Nickname:',
+    passportLabelAvatar: 'Choose your Traditional Avatar:',
+    passportLabelId: 'Your Secret Passport ID:',
+    passportBtnCopyId: 'Copy ID',
+    passportCopiedToast: '✓ Copied!',
+    passportBalanceLabel: 'Your Lucky Carnival Wallet:',
+    passportSecPinTitle: '🔒 4-Digit PIN Cloud Protection',
+    passportSecPinDesc: 'Set a 4-digit PIN so you can restore your progress, coins, and tickets on any device or browser.',
+    passportInputPinPlaceholder: '4-digit PIN (e.g. 1234)',
+    passportBtnSetPin: 'Save PIN',
+    passportPinProtected: '✓ Passport protected with PIN',
+    passportLoginTitle: '🔄 Already have another Passport?',
+    passportLoginDesc: 'Enter your nickname and PIN to restore your progress:',
+    passportLoginBtn: 'Restore Passport',
+    passportBtnSave: 'Save Profile'
+  }
+};
+
+// Procedural Web Audio Engine
+class FairAudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.musicInterval = null;
+    this.musicStep = 0;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioCtx();
+    }
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  playWoodClick() {
+    if (!state.audioEnabled) return;
+    this.init();
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const now = this.ctx.currentTime;
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.05);
+
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.05);
+  }
+
+  playBell() {
+    if (!state.audioEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    [1046.5, 2093].forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(idx === 0 ? 0.3 : 0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.9);
+    });
+  }
+
+  playPlunger() {
+    if (!state.audioEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(480, now + 0.12);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  playBird() {
+    if (!state.audioEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(1800, now);
+    osc.frequency.linearRampToValueAtTime(2600, now + 0.08);
+    osc.frequency.linearRampToValueAtTime(1900, now + 0.16);
+    osc.frequency.linearRampToValueAtTime(2700, now + 0.24);
+
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.28);
+  }
+
+  playFanfare() {
+    if (!state.audioEnabled) return;
+    this.init();
+    const now = this.ctx.currentTime;
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((freq, idx) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const noteTime = now + idx * 0.08;
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, noteTime);
+
+      gain.gain.setValueAtTime(0.2, noteTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, noteTime + 0.4);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(noteTime);
+      osc.stop(noteTime + 0.4);
+    });
+  }
+
+  toggleMusic() {
+    this.init();
+    if (this.musicPlaying) {
+      clearInterval(this.musicInterval);
+      this.musicPlaying = false;
+      return false;
+    } else {
+      this.musicPlaying = true;
+      const organilloMelody = [
+        523.25, 659.25, 783.99, 1046.5, 783.99, 659.25,
+        587.33, 698.46, 880.00, 1046.5, 880.00, 698.46,
+        493.88, 587.33, 783.99, 987.77, 783.99, 587.33,
+        523.25, 659.25, 783.99, 1046.5, 783.99, 659.25
+      ];
+      this.musicStep = 0;
+      this.musicInterval = setInterval(() => {
+        if (!this.musicPlaying || !state.audioEnabled) return;
+        const now = this.ctx.currentTime;
+        const freq = organilloMelody[this.musicStep % organilloMelody.length];
+        this.musicStep++;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      }, 200);
+      return true;
+    }
+  }
+}
+
+const audio = new FairAudioEngine();
+
+// Bilingual Games Database
+const GAMES_DATA = [
+  {
+    id: 'canicas',
+    icon: '🔮',
+    categories: ['destreza', 'multiplayer'],
+    playUrl: 'https://canicas.onrender.com',
+    es: {
+      title: 'Canicas Mexicanas 3D',
+      subtitle: 'Feria de Clavos & Patio de Tierra',
+      categoryBadge: 'Destreza & Puntería',
+      desc: 'Lanza tu canica de vidrio con el resorte de latón, sortea 56 clavos de madera y embócala en los hoyitos pintados de la feria, o juega en el patio de tierra al Círculo y la Hoyita.',
+      features: [
+        'Tablero de feria con clavos y hoyitos de puntaje',
+        'Modo Patio de tierra: El Círculo y La Hoyita',
+        'Física de rebote realista y sonido de campana'
+      ],
+      rules: 'Ajusta la fuerza del resorte con el ratón o barra espaciadora. Tu canica rodará por el arco superior y rebotará en los clavos de latón. Si cae en el hoyo de "El Gallo de Oro", ganas 100 puntos y combo doble si ya había canica.'
+    },
+    en: {
+      title: 'Mexican Marbles 3D',
+      subtitle: 'Nail Pinboard & Dirt Patio',
+      categoryBadge: 'Skill & Aim',
+      desc: 'Launch your glass marble with the brass plunger chute, bounce through 56 nails, and sink into painted point holes or play the classic dirt patio modes (The Circle and The Hole).',
+      features: [
+        'Traditional carnival nailboard with score holes',
+        'Dirt patio modes: The Circle and The Hole',
+        'Realistic bounce physics and brass bell sound'
+      ],
+      rules: 'Adjust the plunger power with your mouse or spacebar. Your marble shoots along the curved arch and ricochets through brass pins. Landing in the "Golden Rooster" scores 100 pts and combo bonus.'
+    }
+  },
+  {
+    id: 'rayuela',
+    icon: '🪙',
+    categories: ['destreza', 'multiplayer'],
+    playUrl: 'https://rayuela-tgrr.onrender.com',
+    repoUrl: 'https://github.com/pinguxx/rayuela',
+    es: {
+      title: 'Rayuela Mexicana',
+      subtitle: 'El Cajón de Barro & Tirada a la Raya',
+      categoryBadge: 'Destreza & Puntería',
+      desc: 'El histórico juego tradicional de puntería con monedas. Lanza tu moneda con arco parabólico hacia el cajón de arcilla húmeda para clavarla en la línea divisoria o quedar más cerca que tus rivales.',
+      features: [
+        'Cajón de arcilla húmeda con absorción de impacto y clavadas en el barro',
+        'Cámara foto-finish cenital con calibrador digital milimétrico',
+        'Partidas multijugador con código QR y bots con personalidades mexicanas'
+      ],
+      rules: 'Arrastra hacia atrás o desliza para medir la fuerza y ángulo del tiro parabólico. Tu moneda vuela hacia el cajón de barro. Si raya la línea central ganas puntos máximos, y si clavas la moneda de canto en la arcilla recibes bono de clavada. La cámara foto-finish dictamina la distancia exacta.'
+    },
+    en: {
+      title: 'Mexican Rayuela',
+      subtitle: 'The Clay Box & Coin Pitching',
+      categoryBadge: 'Skill & Aim',
+      desc: 'The classic Mexican coin-pitching game of precision. Toss heavy coins in a parabolic arc toward a moist clay-filled box to land flush on the center line or edge out your opponents.',
+      features: [
+        'Moist clay box with realistic impact physics and edge-stick bonuses',
+        'Overhead photo-finish camera with millimeter digital caliper',
+        'Real-time multiplayer with QR codes and Mexican AI bot personalities'
+      ],
+      rules: 'Drag back or swipe to gauge throw power and angle. Your coin arcs into the clay box. Landing flush on the center crease scores maximum points. A perpendicular edge-stick into the wet clay awards a special bonus. A digital photo-finish caliper measures final distances.'
+    }
+  },
+  {
+    id: 'basta',
+    icon: '✏️',
+    categories: ['palabras', 'multiplayer'],
+    playUrl: 'https://basta-azbj.onrender.com',
+    es: {
+      title: 'Basta Online',
+      subtitle: 'Stop / Tutti Frutti Tradicional',
+      categoryBadge: 'Palabras & Mente',
+      desc: 'El clásico juego de lápiz y papel llevado al multijugador moderno. Compite por escribir Nombre, Apellido, Ciudad, Flor o Fruto antes de que alguien grite "¡Basta para mí, basta para todos!".',
+      features: [
+        'Estilo hoja de libreta escolar con categorías clásicas',
+        'Partidas multijugador y bots divertidos para jugar solo',
+        'Votación democrática de palabras y gritos rápidos de fiesta'
+      ],
+      rules: 'Se sortea una letra al azar. Todos llenan sus categorías a contrarreloj. El primero en completar grita "¡Basta!". Durante la votación, las respuestas únicas valen 100 puntos y las repetidas 50.'
+    },
+    en: {
+      title: 'Basta Online',
+      subtitle: 'Classic Word Stop / Scattergories',
+      categoryBadge: 'Words & Mind',
+      desc: 'The iconic Mexican pen-and-paper word game. Race against friends and witty bots to fill Name, Last Name, Country, Fruit, and more before someone shouts "Basta!".',
+      features: [
+        'Nostalgic school notebook aesthetic with classic categories',
+        'Multiplayer rooms and funny bots for solo play',
+        'Democratic real-time word voting and quick party shouts'
+      ],
+      rules: 'A random letter is picked. Everyone fills their categories as fast as possible. The first to finish shouts "Basta!". Unique words score 100 points, duplicates score 50.'
+    }
+  },
+  {
+    id: 'conquian',
+    icon: '🃏',
+    categories: ['tablero', 'multiplayer'],
+    playUrl: 'https://conquian-31gh.onrender.com',
+    repoUrl: 'https://github.com/pinguxx/conquian',
+    es: {
+      title: 'Conquián Mexicano',
+      subtitle: 'Rummy Tradicional de 2 a 6 Jugadores',
+      categoryBadge: 'Baraja & Estrategia',
+      desc: 'El antepasado del Rummy más jugado en México con Baraja Española de 40 cartas. Forma tercias y corridas, aprovecha el anillo estricto de reclamos, fuerza jugadas con ¡Obligado! y acumula el pozo en Tablas.',
+      features: [
+        'Baraja Española (Oros, Copas, Espadas, Bastos) o baraja de Poker',
+        'Mecánica oficial de ¡Obligado!, reacomodo de tercias y arrastre de fichas',
+        'Salas multijugador de 2 a 6 personas con bots de cantina y modo Tablas'
+      ],
+      rules: 'Baja combinaciones válidas de al menos 3 cartas (tercias del mismo número o corridas del mismo palo, donde el 7 y el 10 son consecutivos). Si alguien tira una carta que amplía tu combinación en mesa, ¡te pueden obligar a tomarla y descartar! El primero en bajar 9 u 11 cartas gana la ronda.'
+    },
+    en: {
+      title: 'Mexican Conquian',
+      subtitle: 'Traditional 2–6 Player Mexican Rummy',
+      categoryBadge: 'Cards & Strategy',
+      desc: 'The founding ancestor of Western Rummy played with the 40-card Spanish deck. Form sets and runs, claim offered discards in clockwise order, trigger ¡Obligado! (forcing), and roll over pots on Tablas.',
+      features: [
+        'Traditional Baraja Española (Coins, Cups, Swords, Clubs) or Poker suits',
+        'Authentic ¡Obligado! forcing, table meld borrowing, and pot rollover',
+        'Real-time 2 to 6 player rooms with Cantina AI bots and QR invite codes'
+      ],
+      rules: 'Meld valid combinations of 3+ cards (sets of identical rank or suited runs where 7 and 10 are consecutive). If an offered card extends your meld on the table, opponents can force you to take it with ¡Obligado! First player to meld all required cards (9 or 11) wins the hand.'
+    }
+  },
+  {
+    id: 'loteria',
+    icon: '🎴',
+    categories: ['tablero', 'multiplayer'],
+    playUrl: 'https://loteria-zhet.onrender.com',
+    es: {
+      title: 'Lotería Mexicana',
+      subtitle: 'Tablas, Frijolitos y Gritón',
+      categoryBadge: '¡Lotería Tradicional!',
+      desc: '¡Corre y se va con la primera! Disfruta la tradicional Lotería Mexicana con sus 54 cartas ilustradas, frijolitos para marcar tu tabla y voz de cantador con pregones populares.',
+      features: [
+        'Las 54 cartas oficiales con frijolitos para marcar',
+        'Voz de cantador con pregones populares tradicionales',
+        'Modalidades: Cuarteta, Centro, Línea o Tabla Llena'
+      ],
+      rules: 'El cantador canta cada carta con un pregón tradicional. Si la carta cantada está en tu tabla de 4x4, haz clic sobre ella para colocar un frijolito. Completa la figura y sé el primero en gritar "¡Buenas!" o "¡Lotería!".'
+    },
+    en: {
+      title: 'Mexican Loteria',
+      subtitle: 'Boards, Beans & Caller',
+      categoryBadge: 'Traditional Loteria',
+      desc: 'The beloved Mexican bingo game! Play with 54 authentic illustrated cards, place beans to mark your board, and listen to the traditional card caller chants.',
+      features: [
+        'All 54 official classic cards with bean markers',
+        'Automated traditional caller with folklore chants',
+        'Modes: Four Corners, Center, Line, or Full Board'
+      ],
+      rules: 'The caller announces each card with traditional folk rhymes. Click matching cards on your 4x4 board to drop a bean marker. Complete the pattern and be the first to call "Buenas!" or "Loteria!".'
+    }
+  },
+  {
+    id: 'pirinola',
+    icon: '🌀',
+    categories: ['destreza', 'multiplayer'],
+    playUrl: 'https://pirinola.onrender.com',
+    es: {
+      title: 'La Pirinola',
+      subtitle: 'Toma Todo & Pozo de Fichas',
+      categoryBadge: 'Toma Todo & Azar',
+      desc: 'El emblemático trompito mexicano de 6 caras. Pon tu ficha en el pozo central, dale cuerda al tiro y prepárate para la tensión cuando el trompo desacelera y cae en "¡Toma Todo!".',
+      features: [
+        'Las 6 caras clásicas: Pon Uno, Pon Dos, Toma Todo...',
+        'Giro 3D realista con física de bamboleo',
+        'Apuestas de fichas comunitarias y modo fiesta'
+      ],
+      rules: 'Cada jugador comienza con una bolsa de fichas o monedas y aporta una al pozo ("Todos ponen"). En tu turno, impulsa la pirinola. Cumple la orden de la cara que quede hacia arriba. ¡El que vacía el pozo con Toma Todo se lleva la gloria!'
+    },
+    en: {
+      title: 'The Pirinola',
+      subtitle: 'Toma Todo & Coin Pot',
+      categoryBadge: 'Toma Todo & Chance',
+      desc: 'The iconic 6-sided Mexican spinning top. Contribute to the central pot, spin the top, and watch it wobble to a halt on "Take One", "Put Two", or the jackpot "Toma Todo"!',
+      features: [
+        'All 6 classic sides: Put One, Put Two, Take All...',
+        'Realistic 3D spin and gyroscopic wobble physics',
+        'Community chip pot and party multiplayer mode'
+      ],
+      rules: 'Each player starts with chips and adds one to the pot ("Todos ponen"). Spin the pirinola on your turn and follow the upper face rule. The player who rolls Toma Todo claims the entire pot!'
+    }
+  },
+  {
+    id: 'shoots_ladders',
+    icon: '🐍',
+    categories: ['tablero', 'multiplayer'],
+    playUrl: 'https://shoots-ladders.onrender.com',
+    es: {
+      title: 'Serpientes y Escaleras',
+      subtitle: 'El Tablero de las 100 Casillas',
+      categoryBadge: 'Tablero Familiar',
+      desc: 'Sube hacia la victoria por las escaleras de madera o resbala hasta el fondo por las colas de las víboras en este legendario juego de mesa ilustrado para toda la familia.',
+      features: [
+        'Tablero clásico de 100 casillas ilustrado',
+        'Tiradas de dados, escaleras altas y resbalones en víboras',
+        'Salas para jugar con amigos y familia en turnos'
+      ],
+      rules: 'Por turnos, tira el dado y avanza tu ficha tantas casillas como indique. Si caes al pie de una escalera, subes de inmediato. Si caes en la cabeza de una serpiente, resbalas hasta su cola. Gana el primero en llegar exactamente a la casilla 100.'
+    },
+    en: {
+      title: 'Snakes and Ladders',
+      subtitle: 'The 100-Square Board Game',
+      categoryBadge: 'Family Board Game',
+      desc: 'Climb toward victory up tall wooden ladders or slide down treacherous snake tails on this legendary illustrated 100-square board for players of all ages.',
+      features: [
+        'Richly illustrated vintage 100-tile board',
+        'Dice rolls, steep shortcuts, and sneaky snakes',
+        'Turn-based rooms to play with friends and family'
+      ],
+      rules: 'Take turns rolling the dice and moving forward. Land on a ladder base to climb up; land on a snake head to slide back down. First player to reach square 100 wins!'
+    }
+  },
+  {
+    id: 'oca',
+    icon: '🪿',
+    categories: ['tablero', 'multiplayer'],
+    playUrl: 'https://oca-ox87.onrender.com',
+    es: {
+      title: 'El Juego de la Oca',
+      subtitle: 'De Oca a Oca y Tiro Porque Me Toca',
+      categoryBadge: 'Clásico de Mesa',
+      desc: 'El viaje en espiral más célebre de los juegos de mesa. Cruza el puente, evita la posada, no caigas en el pozo ni en la calavera y salta de oca en oca hasta el Gran Jardín de la Oca.',
+      features: [
+        'Espiral clásica de 63 casillas con casillas especiales',
+        'Tiro doble de dados y saltos de oca en oca',
+        'El puente, la posada, el laberinto, el pozo y la muerte'
+      ],
+      rules: 'Tira los dos dados y avanza por la espiral. Si caes en una casilla con oca, repites el tiro diciendo "De oca a oca y tiro porque me toca". Ten cuidado con la casilla 58 (La Calavera), que te regresa al inicio de la espiral.'
+    },
+    en: {
+      title: 'Game of the Goose',
+      subtitle: 'From Goose to Goose as My Turn Comes',
+      categoryBadge: 'Classic Board Game',
+      desc: 'The celebrated spiral board journey. Cross the bridge, beware the inn, avoid the well and the skull, and jump from goose to goose all the way to the Great Garden.',
+      features: [
+        'Complete 63-square spiral track with special hazards',
+        'Double dice roll and goose-to-goose bonus leaps',
+        'The Bridge, The Inn, The Maze, The Well, and The Skull'
+      ],
+      rules: 'Roll two dice and advance along the spiral. Landing on a Goose lets you advance again. Watch out for square 58 (Death/Skull), which sends you all the way back to the start.'
+    }
+  }
+];
+
+// Bilingual Prizes Database
+const PRIZES_DATA = [
+  {
+    id: 'puerquito',
+    icon: '🐷',
+    cost: 5,
+    es: { name: 'Alcancía de Puerquito de Yeso', phrase: '¡A romperla cuando esté llena!' },
+    en: { name: 'Clay Piggy Bank', phrase: 'Smash it open when it is full!' }
+  },
+  {
+    id: 'luchador',
+    icon: '🤼',
+    cost: 10,
+    es: { name: 'Luchador con Rebabas de Plástico', phrase: '¡El Santo contra las momias!' },
+    en: { name: 'Plastic Masked Wrestler Toy', phrase: 'El Santo vs. the mummies!' }
+  },
+  {
+    id: 'algodon',
+    icon: '🍭',
+    cost: 15,
+    es: { name: 'Algodón de Azúcar Rosa', phrase: '¡Dulce y esponjoso de feria!' },
+    en: { name: 'Pink Cotton Candy', phrase: 'Sweet and fluffy fairground treat!' }
+  },
+  {
+    id: 'pajarito',
+    icon: '🐦',
+    cost: 20,
+    es: { name: 'Silbato de Pajarito con Agua', phrase: '¡Póngale agua para que trine!' },
+    en: { name: 'Water Bird Warble Whistle', phrase: 'Add water to hear it chirp!' }
+  },
+  {
+    id: 'trompo',
+    icon: '🪀',
+    cost: 25,
+    es: { name: 'Trompo de Madera con Piola', phrase: '¡Sáquelo a bailar en la uña!' },
+    en: { name: 'Wooden Top with String', phrase: 'Spin it right on your fingernail!' }
+  }
+];
+
+// Mini-Feria Canvas Physics Simulation
+class MiniFeriaGame {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.width = this.canvas.width = 260;
+    this.height = this.canvas.height = 130;
+    this.marble = null;
+    this.pins = [];
+    this.cups = [];
+    this.animating = false;
+
+    this.setupBoard();
+    this.renderStatic();
+
+    // Tap or click on canvas to launch marble on mobile & desktop
+    this.canvas.addEventListener('click', () => this.launch());
+    this.canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.launch();
+    }, { passive: false });
+  }
+
+  setupBoard() {
+    this.pins = [];
+    const rows = [
+      { y: 35, count: 5, offset: 45, spacing: 42 },
+      { y: 65, count: 6, offset: 25, spacing: 42 },
+      { y: 95, count: 5, offset: 45, spacing: 42 }
+    ];
+
+    rows.forEach(r => {
+      for (let i = 0; i < r.count; i++) {
+        this.pins.push({
+          x: r.offset + i * r.spacing,
+          y: r.y,
+          r: 3.5
+        });
+      }
+    });
+
+    this.cups = [
+      { x: 10, w: 55, pts: 10, tickets: 1, labelKey: 'laCalavera', labelDefault: '💀 10' },
+      { x: 75, w: 50, pts: 50, tickets: 2, labelKey: 'laCampana', labelDefault: '🔔 50' },
+      { x: 135, w: 50, pts: 100, tickets: 3, labelKey: 'elGallo', labelDefault: '👑 100' },
+      { x: 195, w: 55, pts: 30, tickets: 1, labelKey: 'elTrompo', labelDefault: '🎪 30' }
+    ];
+  }
+
+  renderStatic() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    const bgGrad = this.ctx.createLinearGradient(0, 0, 0, this.height);
+    bgGrad.addColorStop(0, '#132338');
+    bgGrad.addColorStop(1, '#0c1624');
+    this.ctx.fillStyle = bgGrad;
+    this.ctx.fillRect(0, 0, this.width, this.height);
+
+    this.pins.forEach(pin => {
+      this.ctx.beginPath();
+      this.ctx.arc(pin.x, pin.y, pin.r, 0, Math.PI * 2);
+      this.ctx.fillStyle = '#fbbf24';
+      this.ctx.fill();
+      this.ctx.strokeStyle = '#d97706';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+
+      this.ctx.beginPath();
+      this.ctx.arc(pin.x - 1, pin.y - 1, 1, 0, Math.PI * 2);
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.fill();
+    });
+
+    const langDict = I18N[state.lang] || I18N.es;
+    this.cups.forEach(cup => {
+      this.ctx.fillStyle = 'rgba(251, 191, 36, 0.15)';
+      this.ctx.strokeStyle = '#fbbf24';
+      this.ctx.lineWidth = 1;
+      this.ctx.fillRect(cup.x, 105, cup.w, 22);
+      this.ctx.strokeRect(cup.x, 105, cup.w, 22);
+
+      const label = (langDict && langDict.cups && langDict.cups[cup.labelKey]) || cup.labelDefault;
+      this.ctx.fillStyle = '#f8fafc';
+      this.ctx.font = 'bold 10px Fredoka, sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.fillText(label, cup.x + cup.w / 2, 120);
+    });
+
+    if (this.marble) {
+      this.ctx.beginPath();
+      this.ctx.arc(this.marble.x, this.marble.y, this.marble.r, 0, Math.PI * 2);
+      const mGrad = this.ctx.createRadialGradient(
+        this.marble.x - 2, this.marble.y - 2, 1,
+        this.marble.x, this.marble.y, this.marble.r
+      );
+      mGrad.addColorStop(0, '#ffffff');
+      mGrad.addColorStop(0.3, '#38bdf8');
+      mGrad.addColorStop(1, '#0284c7');
+      this.ctx.fillStyle = mGrad;
+      this.ctx.fill();
+      this.ctx.strokeStyle = '#bae6fd';
+      this.ctx.lineWidth = 1;
+      this.ctx.stroke();
+    }
+  }
+
+  launch() {
+    if (this.animating) return;
+    this.animating = true;
+    audio.playPlunger();
+
+    this.marble = {
+      x: 110 + (Math.random() * 40 - 20),
+      y: 10,
+      vx: (Math.random() - 0.5) * 2,
+      vy: 1.5,
+      r: 6
+    };
+
+    const update = () => {
+      if (!this.marble) return;
+
+      this.marble.vy += 0.22;
+      this.marble.x += this.marble.vx;
+      this.marble.y += this.marble.vy;
+
+      if (this.marble.x - this.marble.r < 4) {
+        this.marble.x = 4 + this.marble.r;
+        this.marble.vx = -this.marble.vx * 0.7;
+        audio.playWoodClick();
+      } else if (this.marble.x + this.marble.r > this.width - 4) {
+        this.marble.x = this.width - 4 - this.marble.r;
+        this.marble.vx = -this.marble.vx * 0.7;
+        audio.playWoodClick();
+      }
+
+      this.pins.forEach(pin => {
+        const dx = this.marble.x - pin.x;
+        const dy = this.marble.y - pin.y;
+        const dist = Math.hypot(dx, dy);
+        const minDist = this.marble.r + pin.r;
+
+        if (dist < minDist) {
+          const angle = Math.atan2(dy, dx);
+          this.marble.x = pin.x + Math.cos(angle) * minDist;
+          this.marble.y = pin.y + Math.sin(angle) * minDist;
+
+          const speed = Math.hypot(this.marble.vx, this.marble.vy);
+          this.marble.vx = Math.cos(angle) * speed * 0.75 + (Math.random() - 0.5);
+          this.marble.vy = Math.sin(angle) * speed * 0.75;
+          audio.playWoodClick();
+        }
+      });
+
+      if (this.marble.y >= 115) {
+        this.animating = false;
+        let awardedCup = this.cups.find(c => this.marble.x >= c.x && this.marble.x <= c.x + c.w);
+        if (!awardedCup) awardedCup = this.cups[1];
+
+        onMiniGameWin(awardedCup);
+        this.renderStatic();
+        return;
+      }
+
+      this.renderStatic();
+      requestAnimationFrame(update);
+    };
+
+    requestAnimationFrame(update);
+  }
+}
+
+let miniGame = null;
+
+// Utility & Security Helpers
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getGameLaunchUrl(baseUrl) {
+  try {
+    const url = new URL(baseUrl, window.location.href);
+    if (state.passport) {
+      url.searchParams.set('pass', state.passport.id);
+      url.searchParams.set('player', state.passport.nickname || 'Marchante');
+      url.searchParams.set('avatar', state.passport.avatar || '🤼');
+      url.searchParams.set('hub', window.location.origin);
+    }
+    return url.toString();
+  } catch (e) {
+    return baseUrl;
+  }
+}
+
+// Passport & Economy Constants
+const PASSPORT_STORAGE_KEY = 'la_feria_passport_v1';
+const AVATAR_OPTIONS = ['🤼', '🎭', '🤠', '🌺', '💀', '🐯', '🦅', '🌮', '👑', '🎪'];
+let tempSelectedAvatar = '🤼';
+
+// Passport Management
+async function initPassport() {
+  let localPassport = null;
+  try {
+    const raw = localStorage.getItem(PASSPORT_STORAGE_KEY);
+    if (raw) localPassport = JSON.parse(raw);
+  } catch (e) {
+    console.warn('LocalStorage unavailable', e);
+  }
+
+  if (localPassport && localPassport.id) {
+    state.passport = localPassport;
+    state.tickets = localPassport.tickets ?? 5;
+    updatePassportDisplay();
+
+    // Background sync with Axum Rust backend
+    try {
+      const res = await fetch(`/api/passport/${encodeURIComponent(localPassport.id)}`);
+      if (res.ok) {
+        const remote = await res.json();
+        state.passport = remote;
+        state.tickets = remote.tickets ?? 5;
+        savePassportLocally(remote);
+        updatePassportDisplay();
+      }
+    } catch (e) {
+      // Offline or static hosting
+    }
+  } else {
+    // Generate new guest passport
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const defaultNick = `Marchante_${randomNum}`;
+    const defaultAvatar = AVATAR_OPTIONS[Math.floor(Math.random() * AVATAR_OPTIONS.length)];
+
+    try {
+      const res = await fetch('/api/passport/quick', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: defaultNick, avatar: defaultAvatar })
+      });
+      if (res.ok) {
+        state.passport = await res.json();
+      } else {
+        throw new Error('Quick passport endpoint returned ' + res.status);
+      }
+    } catch (e) {
+      // Client-side fallback for static GitHub pages
+      state.passport = {
+        id: 'guest_' + Math.random().toString(36).substring(2, 10),
+        nickname: defaultNick,
+        avatar: defaultAvatar,
+        coins: 50,
+        tickets: 5,
+        created_at: new Date().toISOString(),
+        has_pin: false
+      };
+    }
+    state.tickets = state.passport.tickets ?? 5;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+  }
+
+  renderBooths();
+}
+
+function savePassportLocally(p) {
+  try {
+    localStorage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(p));
+  } catch (e) {}
+}
+
+function updatePassportDisplay() {
+  if (!state.passport) return;
+  const avEl = document.getElementById('passportAvatar');
+  const nickEl = document.getElementById('passportNick');
+  const coinsEl = document.getElementById('passportCoins');
+  const ticketsEl = document.getElementById('passportTickets');
+
+  if (avEl) avEl.textContent = state.passport.avatar || '🤼';
+  if (nickEl) nickEl.textContent = state.passport.nickname || 'Invitado';
+  if (coinsEl) coinsEl.textContent = state.passport.coins ?? 50;
+  if (ticketsEl) ticketsEl.textContent = state.passport.tickets ?? 5;
+
+  state.tickets = state.passport.tickets ?? 5;
+  renderPrizes();
+}
+
+function openPassportModal() {
+  audio.playWoodClick();
+  const overlay = document.getElementById('passportModalOverlay');
+  const content = document.getElementById('passportModalContent');
+  if (!overlay || !content || !state.passport) return;
+
+  tempSelectedAvatar = state.passport.avatar || '🤼';
+  const t = I18N[state.lang] || I18N.es;
+
+  content.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+      <div style="font-size: 38px; background: var(--bg-elevated); padding: 8px 12px; border-radius: 14px; border: 1px solid var(--border-card);">${state.passport.avatar || '🤼'}</div>
+      <div>
+        <h2 style="font-family: var(--font-display); font-size: 22px; color: var(--accent-gold); margin-bottom: 2px;">${t.passportModalTitle}</h2>
+        <div style="font-family: var(--font-accent); color: var(--text-muted); font-size: 13px;">${t.passportModalSubtitle}</div>
+      </div>
+    </div>
+
+    <!-- Balance Summary -->
+    <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-around; text-align: center;">
+      <div>
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 2px;">${t.lbColCoins}</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--accent-gold);">🪙 ${state.passport.coins ?? 50}</div>
+      </div>
+      <div style="border-left: 1px solid var(--border-card); padding-left: 20px;">
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 2px;">${t.lbColTickets}</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--accent-green);">🎫 ${state.passport.tickets ?? 5}</div>
+      </div>
+    </div>
+
+    <!-- Nickname Input -->
+    <div style="margin-bottom: 16px;">
+      <label style="display: block; font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">${t.passportLabelNick}</label>
+      <input type="text" id="passportNickInput" class="passport-form-input" value="${escapeHtml(state.passport.nickname || '')}" maxlength="24" placeholder="Marchante" />
+    </div>
+
+    <!-- Avatar Picker -->
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">${t.passportLabelAvatar}</label>
+      <div class="avatar-grid" id="avatarPickerGrid">
+        ${AVATAR_OPTIONS.map(av => `
+          <button type="button" class="avatar-choice-btn ${av === tempSelectedAvatar ? 'selected' : ''}" onclick="selectAvatarOption('${av}')">${av}</button>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Passport ID & Copy -->
+    <div style="background: rgba(0,0,0,0.25); border: 1px dashed var(--border-card); border-radius: 12px; padding: 10px 14px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+      <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <span style="font-size: 11px; color: var(--text-muted); display: block;">${t.passportLabelId}</span>
+        <code style="font-size: 12px; color: #38bdf8;">${state.passport.id}</code>
+      </div>
+      <button type="button" class="btn-secondary" onclick="copyPassportId()" style="padding: 6px 12px; font-size: 11px; flex-shrink: 0;" id="btnCopyPassportId">
+        ${t.passportBtnCopyId}
+      </button>
+    </div>
+
+    <!-- Cloud PIN Protection Section -->
+    <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 14px; margin-bottom: 20px;">
+      <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 4px;">
+        ${t.passportSecPinTitle}
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+        ${t.passportSecPinDesc}
+      </div>
+
+      ${state.passport.has_pin ? `
+        <div style="color: var(--accent-green); font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+          <span>🔒</span> ${t.passportPinProtected}
+        </div>
+      ` : `
+        <div style="display: flex; gap: 8px;">
+          <input type="password" id="inputNewPin" class="passport-form-input" style="margin-bottom: 0; max-width: 140px; text-align: center; letter-spacing: 4px;" maxlength="8" placeholder="••••" />
+          <button type="button" class="btn-secondary" onclick="setPassportPin()" style="padding: 8px 16px; font-size: 12px;">
+            ${t.passportBtnSetPin}
+          </button>
+        </div>
+      `}
+
+      <!-- Login / Restore section -->
+      <details style="margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+        <summary style="font-size: 12px; color: var(--accent-gold); cursor: pointer; font-weight: 700;">${t.passportLoginTitle}</summary>
+        <div style="font-size: 12px; color: var(--text-muted); margin: 8px 0;">${t.passportLoginDesc}</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <input type="text" id="loginNickInput" class="passport-form-input" style="margin-bottom: 0;" placeholder="Apodo" />
+          <div style="display: flex; gap: 8px;">
+            <input type="password" id="loginPinInput" class="passport-form-input" style="margin-bottom: 0; max-width: 140px; text-align: center; letter-spacing: 4px;" maxlength="8" placeholder="••••" />
+            <button type="button" class="btn-secondary" onclick="loginPassportPin()" style="padding: 8px 16px; font-size: 12px;">
+              ${t.passportLoginBtn}
+            </button>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+      <button type="button" class="btn-secondary" onclick="closePassportModal()" style="padding: 10px 18px;">
+        ${t.modalCloseBtn}
+      </button>
+      <button type="button" class="btn-primary-play" onclick="savePassportProfile()" style="width: auto; padding: 10px 24px;">
+        ${t.passportBtnSave}
+      </button>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+}
+
+function closePassportModal() {
+  const overlay = document.getElementById('passportModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
+function selectAvatarOption(avatar) {
+  tempSelectedAvatar = avatar;
+  const btns = document.querySelectorAll('.avatar-choice-btn');
+  btns.forEach(btn => {
+    if (btn.textContent.trim() === avatar) {
+      btn.classList.add('selected');
+    } else {
+      btn.classList.remove('selected');
+    }
+  });
+  audio.playWoodClick();
+}
+
+function savePassportProfile() {
+  const nickInput = document.getElementById('passportNickInput');
+  const newNick = nickInput ? nickInput.value.trim() : '';
+  if (newNick && state.passport) {
+    state.passport.nickname = newNick;
+  }
+  if (tempSelectedAvatar && state.passport) {
+    state.passport.avatar = tempSelectedAvatar;
+  }
+  savePassportLocally(state.passport);
+  updatePassportDisplay();
+  closePassportModal();
+  renderBooths();
+  fetchLeaderboard();
+  audio.playBell();
+}
+
+async function setPassportPin() {
+  const pinInput = document.getElementById('inputNewPin');
+  const pin = pinInput ? pinInput.value.trim() : '';
+  if (!pin || pin.length < 4) {
+    alert(state.lang === 'es' ? 'El PIN debe tener al menos 4 dígitos' : 'PIN must be at least 4 digits');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/passport/pin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: state.passport.id, pin })
+    });
+    if (res.ok) {
+      state.passport.has_pin = true;
+      savePassportLocally(state.passport);
+      audio.playFanfare();
+      openPassportModal();
+    } else {
+      const err = await res.text();
+      alert('Error: ' + err);
+    }
+  } catch (e) {
+    state.passport.has_pin = true;
+    savePassportLocally(state.passport);
+    audio.playFanfare();
+    openPassportModal();
+  }
+}
+
+async function loginPassportPin() {
+  const nickInput = document.getElementById('loginNickInput');
+  const pinInput = document.getElementById('loginPinInput');
+  const nickname = nickInput ? nickInput.value.trim() : '';
+  const pin = pinInput ? pinInput.value.trim() : '';
+
+  if (!nickname || !pin) {
+    alert(state.lang === 'es' ? 'Ingresa tu apodo y PIN' : 'Enter your nickname and PIN');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/passport/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nickname, pin })
+    });
+    if (res.ok) {
+      const p = await res.json();
+      state.passport = p;
+      state.tickets = p.tickets ?? 5;
+      savePassportLocally(p);
+      updatePassportDisplay();
+      renderBooths();
+      fetchLeaderboard();
+      closePassportModal();
+      audio.playFanfare();
+    } else {
+      alert(state.lang === 'es' ? 'Apodo o PIN incorrecto' : 'Incorrect nickname or PIN');
+    }
+  } catch (e) {
+    alert(state.lang === 'es' ? 'No se pudo conectar con el servidor' : 'Could not reach server');
+  }
+}
+
+function copyPassportId() {
+  if (!state.passport || !state.passport.id) return;
+  navigator.clipboard.writeText(state.passport.id).then(() => {
+    const btn = document.getElementById('btnCopyPassportId');
+    const t = I18N[state.lang] || I18N.es;
+    if (btn) {
+      const prev = btn.textContent;
+      btn.textContent = t.passportCopiedToast;
+      btn.style.color = 'var(--accent-green)';
+      setTimeout(() => {
+        btn.textContent = prev;
+        btn.style.color = '';
+      }, 1500);
+    }
+  }).catch(() => {});
+}
+
+// Salón de la Fama / Leaderboard
+async function fetchLeaderboard() {
+  const container = document.getElementById('leaderboardList');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/leaderboard');
+    if (res.ok) {
+      const entries = await res.json();
+      if (Array.isArray(entries) && entries.length > 0) {
+        renderLeaderboardRows(entries);
+        return;
+      }
+    }
+  } catch (e) {
+    // Offline or static hosting
+  }
+
+  // Fallback realistic high-scores list
+  const defaultEntries = [
+    { id: 'p1', rank: 1, avatar: '👑', nickname: 'Don_Chema_Trompos', coins: 1420, tickets: 88, games_played: 45 },
+    { id: 'p2', rank: 2, avatar: '🤼', nickname: 'Santo_Enmascarado', coins: 950, tickets: 62, games_played: 31 },
+    { id: 'p3', rank: 3, avatar: '🌺', nickname: 'Adelita_Feria', coins: 780, tickets: 47, games_played: 24 },
+    { id: 'p4', rank: 4, avatar: '🤠', nickname: 'Charro_Negro', coins: 520, tickets: 33, games_played: 18 },
+    { id: (state.passport && state.passport.id) || 'p5', rank: 5, avatar: (state.passport && state.passport.avatar) || '🤼', nickname: (state.passport && state.passport.nickname) || 'Marchante_Novato', coins: (state.passport && state.passport.coins) || 50, tickets: (state.passport && state.passport.tickets) || 5, games_played: 1 }
+  ];
+  renderLeaderboardRows(defaultEntries);
+}
+
+function renderLeaderboardRows(entries) {
+  const container = document.getElementById('leaderboardList');
+  if (!container) return;
+
+  container.innerHTML = entries.map((entry, index) => {
+    const rank = index + 1;
+    let rankBadge = `${rank}°`;
+    let rankClass = '';
+    if (rank === 1) { rankBadge = '🥇'; rankClass = 'rank-1'; }
+    else if (rank === 2) { rankBadge = '🥈'; rankClass = 'rank-2'; }
+    else if (rank === 3) { rankBadge = '🥉'; rankClass = 'rank-3'; }
+
+    const isCurrent = state.passport && (entry.id === state.passport.id || entry.nickname === state.passport.nickname);
+    return `
+      <div class="leaderboard-row ${isCurrent ? 'leaderboard-current-user' : ''}">
+        <span class="podium-rank ${rankClass}">${rankBadge}</span>
+        <span class="player-info-cell">
+          <span class="player-avatar">${entry.avatar || '🤼'}</span>
+          <span>${escapeHtml(entry.nickname)}</span>
+          ${isCurrent ? '<span style="font-size: 10px; background: var(--accent-gold); color: #1e1b4b; padding: 2px 6px; border-radius: 999px; font-weight: 900; margin-left: 6px;">TÚ</span>' : ''}
+        </span>
+        <span style="font-weight: 800; color: var(--accent-gold);">🪙 ${entry.coins ?? 0}</span>
+        <span style="font-weight: 800; color: var(--accent-green);">🎫 ${entry.tickets ?? 0}</span>
+        <span style="color: var(--text-muted);">🎮 ${entry.games_played ?? 0}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// UI Handlers & Renderers
+function initApp() {
+  updateLanguageElements();
+  initPassport();
+  renderBooths();
+  renderPrizes();
+  updateTicketDisplay();
+  fetchLeaderboard();
+
+  miniGame = new MiniFeriaGame('miniFeriaCanvas');
+
+  setupEventListeners();
+  randomizePhrase();
+  initWebSocket();
+}
+
+function updateLanguageElements() {
+  const t = I18N[state.lang] || I18N.es;
+
+  // Nav
+  const navTagline = document.getElementById('navTagline');
+  if (navTagline) navTagline.textContent = t.navTagline;
+
+  const ticketWord = document.getElementById('ticketWord');
+  if (ticketWord) ticketWord.textContent = t.ticketWord;
+
+  const langBtn = document.getElementById('btnLangToggle');
+  if (langBtn) langBtn.textContent = t.langToggle;
+
+  const audioBtn = document.getElementById('btnAudioToggle');
+  if (audioBtn) audioBtn.textContent = state.audioEnabled ? t.soundOn : t.soundOff;
+
+  const musicBtn = document.getElementById('btnMusicToggle');
+  if (musicBtn) musicBtn.textContent = audio.musicPlaying ? t.musicOn : t.musicOff;
+
+  const themeBtn = document.getElementById('btnThemeToggle');
+  if (themeBtn) themeBtn.textContent = t.themes[state.theme] || t.themes.noche;
+
+  // Hero
+  const heroTag = document.getElementById('heroTag');
+  if (heroTag) heroTag.textContent = t.heroTag;
+
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) heroTitle.textContent = t.heroTitle;
+
+  const heroSubtitle = document.getElementById('heroSubtitle');
+  if (heroSubtitle) heroSubtitle.textContent = t.heroSubtitle;
+
+  // Mini Booth
+  const miniBoothTitle = document.getElementById('miniBoothTitle');
+  if (miniBoothTitle) miniBoothTitle.innerHTML = t.miniBoothTitle;
+
+  const miniBoothSub = document.getElementById('miniBoothSub');
+  if (miniBoothSub) miniBoothSub.textContent = t.miniBoothSub;
+
+  const miniCanvasNote = document.getElementById('miniCanvasNote');
+  if (miniCanvasNote) miniCanvasNote.textContent = t.miniCanvasNote;
+
+  const btnLaunchText = document.getElementById('btnLaunchText');
+  if (btnLaunchText) btnLaunchText.textContent = state.lang === 'es' ? '¡Soltar Canica! (Gratis)' : 'Drop Marble! (Free)';
+
+  // Filter Buttons
+  const fAll = document.getElementById('filterBtnAll');
+  if (fAll) fAll.innerHTML = t.filterAll;
+
+  const fDestreza = document.getElementById('filterBtnDestreza');
+  if (fDestreza) fDestreza.innerHTML = t.filterDestreza;
+
+  const fPalabras = document.getElementById('filterBtnPalabras');
+  if (fPalabras) fPalabras.innerHTML = t.filterPalabras;
+
+  const fTablero = document.getElementById('filterBtnTablero');
+  if (fTablero) fTablero.innerHTML = t.filterTablero;
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+  // Prizes Header
+  const prizesSectionTag = document.getElementById('prizesSectionTag');
+  if (prizesSectionTag) prizesSectionTag.textContent = t.prizesTag;
+
+  const prizesSectionTitle = document.getElementById('prizesSectionTitle');
+  if (prizesSectionTitle) prizesSectionTitle.textContent = t.prizesTitle;
+
+  const prizesSectionDesc = document.getElementById('prizesSectionDesc');
+  if (prizesSectionDesc) prizesSectionDesc.textContent = t.prizesDesc;
+
+  // Leaderboard Section
+  const lbTag = document.getElementById('lbSectionTag');
+  if (lbTag) lbTag.textContent = t.lbSectionTag;
+
+  const lbTitle = document.getElementById('lbSectionTitle');
+  if (lbTitle) lbTitle.textContent = t.lbSectionTitle;
+
+  const lbDesc = document.getElementById('lbSectionDesc');
+  if (lbDesc) lbDesc.textContent = t.lbSectionDesc;
+
+  const lbHeaderRow = document.querySelector('.leaderboard-header-row');
+  if (lbHeaderRow) {
+    lbHeaderRow.innerHTML = `
+      <span>${t.lbColRank}</span>
+      <span>${t.lbColPlayer}</span>
+      <span>${t.lbColCoins}</span>
+      <span>${t.lbColTickets}</span>
+      <span>${t.lbColGames}</span>
+    `;
+  }
+
+  // Footer
+  const footerBrand = document.getElementById('footerBrand');
+  if (footerBrand) footerBrand.textContent = t.footerBrand;
+
+  const footerCopy = document.getElementById('footerCopy');
+  if (footerCopy) footerCopy.innerHTML = t.footerCopy;
+
+  // Redraw canvas with localized cups
+  if (miniGame) miniGame.renderStatic();
+}
+
+function setLanguage(newLang) {
+  state.lang = newLang;
+  audio.playWoodClick();
+  updateLanguageElements();
+  renderBooths();
+  renderPrizes();
+  randomizePhrase();
+
+  // If modal is currently open, refresh it
+  if (state.activeModalGameId) {
+    openGameModal(state.activeModalGameId);
+  }
+}
+
+function toggleLanguage() {
+  const next = state.lang === 'es' ? 'en' : 'es';
+  setLanguage(next);
+}
+
+// Live WebSocket connection to Rust Axum server
+function initWebSocket() {
+  if (typeof window === 'undefined' || !window.location || !window.location.host) return;
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const wsUrl = `${protocol}//${window.location.host}/ws`;
+
+  try {
+    const socket = new WebSocket(wsUrl);
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'fair_shout' && data.text) {
+          const phraseEl = document.getElementById('miniBoothPhrase');
+          if (phraseEl) phraseEl.innerHTML = `📣 ${data.text}`;
+        }
+      } catch (e) {
+        if (event.data && typeof event.data === 'string') {
+          const phraseEl = document.getElementById('miniBoothPhrase');
+          if (phraseEl) phraseEl.innerHTML = `📣 ${event.data}`;
+        }
+      }
+    };
+
+    socket.onclose = () => {
+      setTimeout(initWebSocket, 5000);
+    };
+  } catch (err) {
+    // Silent fallback
+  }
+}
+
+function randomizePhrase() {
+  const el = document.getElementById('miniBoothPhrase');
+  if (el) {
+    const t = I18N[state.lang] || I18N.es;
+    const p = t.phrases[Math.floor(Math.random() * t.phrases.length)];
+    el.textContent = p;
+  }
+}
+
+async function onMiniGameWin(cup) {
+  const earnedTickets = cup.tickets || 1;
+  const earnedCoins = cup.pts || 10;
+
+  if (state.passport) {
+    state.passport.tickets = (state.passport.tickets || 0) + earnedTickets;
+    state.passport.coins = (state.passport.coins || 0) + earnedCoins;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+
+    // Persist to backend rewards API
+    try {
+      fetch('/api/rewards/award', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          passport_id: state.passport.id,
+          game_id: 'mini_feria',
+          coins: earnedCoins,
+          tickets: earnedTickets,
+          score: cup.pts || 10,
+          note: 'Puesto de la Suerte'
+        })
+      }).then(async res => {
+        if (res.ok) {
+          const updated = await res.json();
+          state.passport = updated;
+          savePassportLocally(updated);
+          updatePassportDisplay();
+          fetchLeaderboard();
+        }
+      }).catch(() => {});
+    } catch (e) {}
+  } else {
+    state.tickets += earnedTickets;
+    updateTicketDisplay();
+  }
+
+  const phraseEl = document.getElementById('miniBoothPhrase');
+  if (phraseEl) {
+    const t = I18N[state.lang] || I18N.es;
+    audio.playBell();
+    if (cup.pts === 100) {
+      phraseEl.innerHTML = t.winGallo(cup.pts, earnedTickets);
+    } else {
+      phraseEl.innerHTML = t.winAcertado(cup.pts, earnedTickets);
+    }
+  }
+
+  const badge = document.getElementById('btnPassportToggle');
+  if (badge) {
+    badge.style.transform = 'scale(1.15)';
+    setTimeout(() => badge.style.transform = '', 300);
+  }
+}
+
+function updateTicketDisplay() {
+  const badge = document.getElementById('ticketCount');
+  if (badge) {
+    badge.textContent = state.tickets;
+  }
+  const ticketWord = document.getElementById('ticketWord');
+  if (ticketWord) {
+    const t = I18N[state.lang] || I18N.es;
+    ticketWord.textContent = t.ticketWord;
+  }
+  renderPrizes();
+}
+
+function renderBooths() {
+  const container = document.getElementById('boothsGrid');
+  if (!container) return;
+
+  const t = I18N[state.lang] || I18N.es;
+  const query = state.searchQuery.toLowerCase().trim();
+
+  const filtered = GAMES_DATA.filter(g => {
+    const lData = g[state.lang] || g.es;
+    const matchesCategory = state.activeFilter === 'all' || g.categories.includes(state.activeFilter);
+    const matchesSearch = !query ||
+      lData.title.toLowerCase().includes(query) ||
+      lData.subtitle.toLowerCase().includes(query) ||
+      lData.desc.toLowerCase().includes(query) ||
+      lData.categoryBadge.toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px; background: var(--bg-card); border-radius: 20px; border: 1px dashed var(--border-card);">
+        <div style="font-size: 48px; margin-bottom: 12px;">🔍</div>
+        <h3 style="font-family: var(--font-display); color: var(--accent-gold); font-size: 20px; margin-bottom: 8px;">${t.noBoothsTitle}</h3>
+        <p style="color: var(--text-muted); font-size: 14px;">${t.noBoothsDesc}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(game => {
+    const d = game[state.lang] || game.es;
+    const launchUrl = getGameLaunchUrl(game.playUrl);
+    return `
+      <article class="booth-card" data-game-id="${game.id}">
+        <div class="booth-roof">
+          <div class="booth-roof-valance"></div>
+        </div>
+        <div class="booth-header">
+          <div class="booth-icon-box">${game.icon}</div>
+          <div class="booth-badges">
+            <span class="badge-players">${d.categoryBadge}</span>
+          </div>
+        </div>
+        <div class="booth-body">
+          <h3 class="booth-title">${d.title}</h3>
+          <div class="booth-subtitle">${d.subtitle}</div>
+          <p class="booth-desc">${d.desc}</p>
+          <ul class="booth-features">
+            ${d.features.map(f => `<li><span>✦</span> ${f}</li>`).join('')}
+          </ul>
+          <div class="booth-actions">
+            <a href="${launchUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" onclick="audio.playWoodClick()">
+              ${t.playBtn}
+            </a>
+            <button class="btn-secondary" onclick="openGameModal('${game.id}')">
+              ${t.rulesBtn}
+            </button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderPrizes() {
+  const container = document.getElementById('prizesGrid');
+  if (!container) return;
+
+  const t = I18N[state.lang] || I18N.es;
+  const currentTickets = state.passport ? state.passport.tickets : state.tickets;
+
+  container.innerHTML = PRIZES_DATA.map(p => {
+    const d = p[state.lang] || p.es;
+    const owned = state.prizes[p.id] || 0;
+    const canAfford = currentTickets >= p.cost;
+    return `
+      <div class="prize-card">
+        <div class="prize-icon">${p.icon}</div>
+        <div class="prize-name">${d.name}</div>
+        <div class="prize-cost">🎫 ${p.cost} ${t.ticketWord}</div>
+        ${owned > 0 ? `<div style="font-size: 11px; color: var(--accent-green); font-weight: 800;">${t.ownedText} ${owned}</div>` : ''}
+        <button class="btn-redeem" onclick="redeemPrize('${p.id}')" ${!canAfford ? 'disabled' : ''}>
+          ${canAfford ? t.redeemBtn : t.needMoreTickets}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+async function redeemPrize(prizeId) {
+  const prize = PRIZES_DATA.find(p => p.id === prizeId);
+  const currentTickets = state.passport ? state.passport.tickets : state.tickets;
+  if (!prize || currentTickets < prize.cost) return;
+
+  if (prizeId === 'pajarito') {
+    audio.playBird();
+  } else {
+    audio.playFanfare();
+  }
+
+  state.prizes[prizeId] = (state.prizes[prizeId] || 0) + 1;
+
+  if (state.passport) {
+    state.passport.tickets -= prize.cost;
+    savePassportLocally(state.passport);
+    updatePassportDisplay();
+
+    try {
+      const res = await fetch('/api/passport/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          passport_id: state.passport.id,
+          prize_id: prizeId
+        })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        state.passport = updated;
+        savePassportLocally(updated);
+        updatePassportDisplay();
+      }
+    } catch (e) {
+      // Offline fallback
+    }
+  } else {
+    state.tickets -= prize.cost;
+    updateTicketDisplay();
+  }
+
+  const phraseEl = document.getElementById('miniBoothPhrase');
+  if (phraseEl) {
+    const t = I18N[state.lang] || I18N.es;
+    const d = prize[state.lang] || prize.es;
+    phraseEl.innerHTML = t.redeemedPhrase(d.name, d.phrase);
+  }
+}
+
+function openGameModal(gameId) {
+  const game = GAMES_DATA.find(g => g.id === gameId);
+  if (!game) return;
+
+  state.activeModalGameId = gameId;
+  audio.playWoodClick();
+
+  const overlay = document.getElementById('gameModalOverlay');
+  const content = document.getElementById('modalContent');
+  if (!overlay || !content) return;
+
+  const t = I18N[state.lang] || I18N.es;
+  const d = game[state.lang] || game.es;
+  const launchUrl = getGameLaunchUrl(game.playUrl);
+
+  content.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+      <div style="font-size: 40px; background: var(--bg-elevated); padding: 10px; border-radius: 14px; border: 1px solid var(--border-card);">${game.icon}</div>
+      <div>
+        <h2 style="font-family: var(--font-display); font-size: 24px; color: var(--accent-gold);">${d.title}</h2>
+        <div style="font-family: var(--font-accent); color: var(--accent-rose); font-weight: 700; font-size: 14px;">${d.subtitle}</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 20px; font-size: 15px; color: var(--text-muted); line-height: 1.6;">
+      ${d.desc}
+    </div>
+
+    <div style="background: var(--bg-elevated); border: 1px solid var(--border-card); border-radius: 14px; padding: 16px; margin-bottom: 20px;">
+      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 8px;">${t.modalRulesTitle}</h4>
+      <p style="font-size: 14px; color: var(--text-main); line-height: 1.6;">${d.rules}</p>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+      <h4 style="font-family: var(--font-accent); font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">${t.modalIncludesTitle}</h4>
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 6px;">
+        ${d.features.map(f => `<li style="font-size: 13px; color: var(--text-muted);">✦ ${f}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+      <button class="btn-secondary" onclick="closeGameModal()" style="padding: 10px 18px;">
+        ${t.modalCloseBtn}
+      </button>
+      <a href="${launchUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary-play" style="width: auto; padding: 10px 24px;">
+        ${t.modalPlayBtn}
+      </a>
+    </div>
+  `;
+
+  overlay.classList.add('active');
+}
+
+function closeGameModal() {
+  state.activeModalGameId = null;
+  const overlay = document.getElementById('gameModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+}
+
+function setupEventListeners() {
+  // Passport Profile Modal Toggle
+  const passportBtn = document.getElementById('btnPassportToggle');
+  if (passportBtn) {
+    passportBtn.addEventListener('click', openPassportModal);
+  }
+
+  const passportCloseBtn = document.getElementById('passportModalCloseBtn');
+  if (passportCloseBtn) {
+    passportCloseBtn.addEventListener('click', closePassportModal);
+  }
+
+  const passportOverlay = document.getElementById('passportModalOverlay');
+  if (passportOverlay) {
+    passportOverlay.addEventListener('click', (e) => {
+      if (e.target === passportOverlay) closePassportModal();
+    });
+  }
+
+  // Launch Mini Game Button
+  const launchBtn = document.getElementById('btnLaunchMini');
+  if (launchBtn) {
+    launchBtn.addEventListener('click', () => {
+      if (miniGame) miniGame.launch();
+    });
+  }
+
+  // Language Toggle Button (ES / EN)
+  const langBtn = document.getElementById('btnLangToggle');
+  if (langBtn) {
+    langBtn.addEventListener('click', toggleLanguage);
+  }
+
+  // Audio Toggle Button
+  const audioBtn = document.getElementById('btnAudioToggle');
+  if (audioBtn) {
+    audioBtn.addEventListener('click', () => {
+      state.audioEnabled = !state.audioEnabled;
+      const t = I18N[state.lang] || I18N.es;
+      if (state.audioEnabled) {
+        audioBtn.textContent = t.soundOn;
+        audioBtn.style.borderColor = 'var(--accent-green)';
+        audio.playBell();
+      } else {
+        audioBtn.textContent = t.soundOff;
+        audioBtn.style.borderColor = '';
+        if (audio.musicPlaying) audio.toggleMusic();
+      }
+    });
+  }
+
+  // Music Toggle Button
+  const musicBtn = document.getElementById('btnMusicToggle');
+  if (musicBtn) {
+    musicBtn.addEventListener('click', () => {
+      if (!state.audioEnabled) {
+        state.audioEnabled = true;
+        const ab = document.getElementById('btnAudioToggle');
+        const t = I18N[state.lang] || I18N.es;
+        if (ab) ab.textContent = t.soundOn;
+      }
+      const isPlaying = audio.toggleMusic();
+      const t = I18N[state.lang] || I18N.es;
+      musicBtn.textContent = isPlaying ? t.musicOn : t.musicOff;
+      musicBtn.style.borderColor = isPlaying ? 'var(--accent-gold)' : '';
+    });
+  }
+
+  // Theme Toggle Button
+  const themeBtn = document.getElementById('btnThemeToggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const themes = ['noche', 'dia', 'talavera'];
+      const currentIndex = themes.indexOf(state.theme);
+      state.theme = themes[(currentIndex + 1) % themes.length];
+      document.documentElement.setAttribute('data-theme', state.theme);
+
+      const t = I18N[state.lang] || I18N.es;
+      themeBtn.textContent = t.themes[state.theme] || t.themes.noche;
+      audio.playWoodClick();
+      if (miniGame) miniGame.renderStatic();
+    });
+  }
+
+  // Category filter pills
+  const pills = document.querySelectorAll('.filter-btn');
+  pills.forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      pills.forEach(p => p.classList.remove('active'));
+      const target = e.currentTarget;
+      target.classList.add('active');
+      state.activeFilter = target.getAttribute('data-filter') || 'all';
+      audio.playWoodClick();
+      renderBooths();
+    });
+  });
+
+  // Search Input
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      renderBooths();
+    });
+  }
+
+  // Modal Close Button & Backdrop
+  const closeBtn = document.getElementById('modalCloseBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeGameModal);
+  }
+
+  const modalOverlay = document.getElementById('gameModalOverlay');
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeGameModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeGameModal();
+      closePassportModal();
+    }
+  });
+}
+
+// Global hooks for inline handlers
+window.openGameModal = openGameModal;
+window.closeGameModal = closeGameModal;
+window.openPassportModal = openPassportModal;
+window.closePassportModal = closePassportModal;
+window.selectAvatarOption = selectAvatarOption;
+window.savePassportProfile = savePassportProfile;
+window.setPassportPin = setPassportPin;
+window.loginPassportPin = loginPassportPin;
+window.copyPassportId = copyPassportId;
+window.redeemPrize = redeemPrize;
+window.toggleLanguage = toggleLanguage;
+window.audio = audio;
+
+// Bootstrap
+document.addEventListener('DOMContentLoaded', initApp);
+
+
+</script>
+</body>
+</html>
