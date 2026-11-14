@@ -1,9 +1,12 @@
 use axum::{
     extract::{
         ws::{Message, WebSocket, WebSocketUpgrade},
-        State,
+        DefaultBodyLimit, State,
     },
-    http::StatusCode,
+    http::{
+        header::{CONTENT_TYPE, REFERRER_POLICY, X_CONTENT_TYPE_OPTIONS, X_FRAME_OPTIONS},
+        HeaderValue, Method, StatusCode,
+    },
     response::{IntoResponse, Response},
     routing::{get, post},
     Json, Router,
@@ -19,7 +22,9 @@ use std::{
     time::Instant,
 };
 use tokio::sync::broadcast;
+use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
+use tower_http::set_header::SetResponseHeaderLayer;
 
 pub mod db;
 use db::Database;
@@ -212,8 +217,20 @@ fn get_prizes_list() -> Vec<PrizeInfo> {
 }
 
 pub fn app_router(state: AppState) -> Router {
+    let cors = CorsLayer::new()
+        .allow_origin(tower_http::cors::Any)
+        .allow_methods([
+            Method::GET,
+            Method::POST,
+            Method::PUT,
+            Method::DELETE,
+            Method::OPTIONS,
+        ])
+        .allow_headers([CONTENT_TYPE, axum::http::header::AUTHORIZATION]);
+
     Router::new()
         .route("/health", get(health_handler))
+        .route("/ready", get(ready_handler))
         .route("/api/games", get(games_handler))
         .route("/api/prizes", get(prizes_handler))
         .route("/api/stats", get(stats_handler))
@@ -228,6 +245,20 @@ pub fn app_router(state: AppState) -> Router {
         .route("/api/leaderboard/{game_id}", get(game_leaderboard_handler))
         .route("/ws", get(ws_handler))
         .fallback_service(ServeDir::new("public"))
+        .layer(cors)
+        .layer(DefaultBodyLimit::max(128 * 1024))
+        .layer(SetResponseHeaderLayer::overriding(
+            X_CONTENT_TYPE_OPTIONS,
+            HeaderValue::from_static("nosniff"),
+        ))
+        .layer(SetResponseHeaderLayer::overriding(
+            X_FRAME_OPTIONS,
+            HeaderValue::from_static("SAMEORIGIN"),
+        ))
+        .layer(SetResponseHeaderLayer::overriding(
+            REFERRER_POLICY,
+            HeaderValue::from_static("strict-origin-when-cross-origin"),
+        ))
         .with_state(state)
 }
 
@@ -239,6 +270,26 @@ async fn health_handler() -> impl IntoResponse {
         "language": "Rust",
         "framework": "Axum 0.8 + Tokio",
     }))
+}
+
+async fn ready_handler(State(state): State<AppState>) -> impl IntoResponse {
+    match state.db.get_global_leaderboard(1) {
+        Ok(_) => (
+            StatusCode::OK,
+            Json(serde_json::json!({
+                "status": "ready",
+                "database": "connected",
+                "app": "la-feria"
+            })),
+        ),
+        Err(e) => (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(serde_json::json!({
+                "status": "not_ready",
+                "database_error": e.to_string()
+            })),
+        ),
+    }
 }
 
 async fn games_handler() -> impl IntoResponse {
@@ -542,14 +593,59 @@ async fn handle_ws(socket: WebSocket, state: AppState) {
     let _ = state.tx.send(leave_announcement.to_string());
 }
 
+async fn shutdown_signal() {
+    let ctrl_c = async {
+        tokio::signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        match tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate()) {
+            Ok(mut s) => {
+                s.recv().await;
+            }
+            Err(_) => {
+                std::future::pending::<()>().await;
+            }
+        }
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {
+            println!("🛑 Señal Ctrl+C recibida. Iniciando apagado ordenado de La Feria...");
+        },
+        _ = terminate => {
+            println!("🛑 Señal SIGTERM recibida de Render/Docker. Iniciando apagado ordenado...");
+        },
+    }
+}
+
 #[tokio::main]
 async fn main() {
+    // Inicializar logging estructurado para producción
+    tracing_subscriber::fmt()
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| "la_feria=info,tower_http=info".into()),
+        )
+        .init();
+
     let port = std::env::var("PORT")
         .ok()
         .and_then(|p| p.parse::<u16>().ok())
         .unwrap_or(3000);
 
-    let db_path = std::env::var("DATABASE_PATH").unwrap_or_else(|_| "feria.db".to_string());
+    let default_db_path = if std::path::Path::new("/data").is_dir() {
+        "/data/feria.db".to_string()
+    } else {
+        "feria.db".to_string()
+    };
+    let db_path = std::env::var("DATABASE_PATH").unwrap_or(default_db_path);
     let db = Database::new(&db_path).expect("Error al inicializar la base de datos de La Feria");
 
     let (tx, _rx) = broadcast::channel(128);
@@ -565,12 +661,16 @@ async fn main() {
 
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     println!(
-        "🎪 Servidor de La Feria corriendo en Rust (Axum + Tokio) en http://{}",
+        "🎪 Servidor de La Feria corriendo en Rust (Axum + Tokio + SQLite WAL) en http://{}",
         addr
     );
 
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await
+        .unwrap();
+    println!("✓ Servidor de La Feria apagado ordenadamente.");
 }
 
 #[cfg(test)]
@@ -599,6 +699,23 @@ mod tests {
             .oneshot(
                 Request::builder()
                     .uri("/health")
+                    .body(axum::body::Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn test_ready_endpoint() {
+        let app = app_router(test_state());
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .uri("/ready")
                     .body(axum::body::Body::empty())
                     .unwrap(),
             )
@@ -649,7 +766,9 @@ mod tests {
             .unwrap();
 
         assert_eq!(response.status(), StatusCode::OK);
-        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16)
+            .await
+            .unwrap();
         let passport: db::Passport = serde_json::from_slice(&body_bytes).unwrap();
         assert_eq!(passport.nickname, "CharroTest");
         assert_eq!(passport.coins, 50);
@@ -678,7 +797,9 @@ mod tests {
             .unwrap();
 
         assert_eq!(response.status(), StatusCode::OK);
-        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16)
+            .await
+            .unwrap();
         let updated: db::Passport = serde_json::from_slice(&body_bytes).unwrap();
         assert_eq!(updated.coins, 70);
         assert_eq!(updated.tickets, 8);
@@ -695,7 +816,9 @@ mod tests {
             .unwrap();
 
         assert_eq!(response.status(), StatusCode::OK);
-        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16).await.unwrap();
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16)
+            .await
+            .unwrap();
         let leaderboard: Vec<db::LeaderboardEntry> = serde_json::from_slice(&body_bytes).unwrap();
         assert_eq!(leaderboard.len(), 1);
         assert_eq!(leaderboard[0].nickname, "CharroTest");

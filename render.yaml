@@ -4,6 +4,16 @@ services:
     runtime: docker
     plan: free
     region: oregon
+    healthCheckPath: /health
+    autoDeploy: true
     envVars:
       - key: PORT
         value: 3000
+      - key: RUST_LOG
+        value: la_feria=info,tower_http=info
+      - key: DATABASE_PATH
+        value: /data/feria.db
+    disk:
+      name: feria-data
+      mountPath: /data
+      sizeGB: 1
