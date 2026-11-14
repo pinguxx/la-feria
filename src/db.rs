@@ -210,6 +210,60 @@ impl Database {
         }
     }
 
+    pub fn upsert_profile(
+        &self,
+        id: &str,
+        nickname: &str,
+        avatar: &str,
+    ) -> Result<Passport, rusqlite::Error> {
+        let conn = self.conn.lock().unwrap();
+        let now = current_timestamp();
+        let clean_nick = if nickname.trim().is_empty() {
+            "Marchante".to_string()
+        } else {
+            nickname.trim().chars().take(24).collect()
+        };
+        let clean_avatar = if avatar.trim().is_empty() {
+            "🤼".to_string()
+        } else {
+            avatar.trim().to_string()
+        };
+
+        let updated = conn.execute(
+            r#"
+            UPDATE passports
+            SET nickname = ?1, avatar = ?2, last_active = ?3
+            WHERE id = ?4
+            "#,
+            params![clean_nick, clean_avatar, now, id],
+        )?;
+
+        if updated == 0 {
+            let _ = conn.execute(
+                r#"
+                INSERT INTO passports (id, nickname, avatar, pin_hash, coins, tickets, total_earned_coins, total_earned_tickets, games_played, created_at, last_active)
+                VALUES (?1, ?2, ?3, NULL, 50, 5, 50, 5, 0, ?4, ?4)
+                "#,
+                params![id, clean_nick, clean_avatar, now],
+            );
+        }
+
+        drop(conn);
+        Ok(self.get_passport(id)?.unwrap_or_else(|| Passport {
+            id: id.to_string(),
+            nickname: clean_nick,
+            avatar: clean_avatar,
+            has_pin: false,
+            coins: 50,
+            tickets: 5,
+            total_earned_coins: 50,
+            total_earned_tickets: 5,
+            games_played: 0,
+            created_at: now,
+            last_active: now,
+        }))
+    }
+
     pub fn set_pin(&self, id: &str, pin: &str) -> Result<bool, rusqlite::Error> {
         let conn = self.conn.lock().unwrap();
         let hashed = hash_pin(pin);
@@ -224,7 +278,18 @@ impl Database {
             params![hashed, now, id],
         )?;
 
-        Ok(updated > 0)
+        if updated == 0 {
+            // Auto-crear pasaporte si venía de localStorage o instancia previa
+            let _ = conn.execute(
+                r#"
+                INSERT INTO passports (id, nickname, avatar, pin_hash, coins, tickets, total_earned_coins, total_earned_tickets, games_played, created_at, last_active)
+                VALUES (?1, 'Marchante', '🤼', ?2, 50, 5, 50, 5, 0, ?3, ?3)
+                "#,
+                params![id, hashed, now],
+            );
+        }
+
+        Ok(true)
     }
 
     pub fn login_with_pin(
@@ -299,7 +364,16 @@ impl Database {
         )?;
 
         if updated == 0 {
-            return Ok(None);
+            // Auto-crear pasaporte si el juego reporta recompensa
+            let default_nick = "Marchante";
+            let default_avatar = "🤼";
+            let _ = conn.execute(
+                r#"
+                INSERT INTO passports (id, nickname, avatar, pin_hash, coins, tickets, total_earned_coins, total_earned_tickets, games_played, created_at, last_active)
+                VALUES (?1, ?2, ?3, NULL, 50 + ?4, 5 + ?5, 50 + ?4, 5 + ?5, 1, ?6, ?6)
+                "#,
+                params![passport_id, default_nick, default_avatar, coins.max(0), tickets.max(0), now],
+            );
         }
 
         conn.execute(

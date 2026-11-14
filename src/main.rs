@@ -236,6 +236,7 @@ pub fn app_router(state: AppState) -> Router {
         .route("/api/stats", get(stats_handler))
         .route("/api/redeem", post(redeem_handler))
         .route("/api/passport/quick", post(create_quick_passport_handler))
+        .route("/api/passport/profile", post(update_profile_handler))
         .route("/api/passport/{id}", get(get_passport_handler))
         .route("/api/passport/pin", post(set_pin_handler))
         .route("/api/passport/login", post(login_pin_handler))
@@ -374,6 +375,13 @@ pub struct QuickPassportRequest {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct UpdateProfileRequest {
+    pub id: String,
+    pub nickname: String,
+    pub avatar: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct SetPinRequest {
     pub id: String,
     pub pin: String,
@@ -408,6 +416,17 @@ async fn create_quick_passport_handler(
     state
         .db
         .create_guest_passport(&payload.nickname, &payload.avatar)
+        .map(Json)
+        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))
+}
+
+async fn update_profile_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<UpdateProfileRequest>,
+) -> Result<Json<db::Passport>, (StatusCode, String)> {
+    state
+        .db
+        .upsert_profile(&payload.id, &payload.nickname, &payload.avatar)
         .map(Json)
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))
 }
@@ -879,5 +898,80 @@ mod tests {
         let leaderboard: Vec<db::LeaderboardEntry> = serde_json::from_slice(&body_bytes).unwrap();
         assert_eq!(leaderboard.len(), 1);
         assert_eq!(leaderboard[0].nickname, "CharroTest");
+    }
+
+    #[tokio::test]
+    async fn test_profile_update_and_self_healing_pin() {
+        let app = app_router(test_state());
+
+        // 1. Update/upsert a guest profile that was not previously registered
+        let update_body = serde_json::json!({
+            "id": "guest_external_999",
+            "nickname": "TigreDeLaFeria",
+            "avatar": "🐯"
+        });
+
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/passport/profile")
+                    .header("content-type", "application/json")
+                    .body(axum::body::Body::from(update_body.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+        let body_bytes = axum::body::to_bytes(response.into_body(), 1024 * 16)
+            .await
+            .unwrap();
+        let passport: db::Passport = serde_json::from_slice(&body_bytes).unwrap();
+        assert_eq!(passport.id, "guest_external_999");
+        assert_eq!(passport.nickname, "TigreDeLaFeria");
+        assert_eq!(passport.avatar, "🐯");
+
+        // 2. Set pin on newly upserted profile
+        let pin_body = serde_json::json!({
+            "id": "guest_external_999",
+            "pin": "1234"
+        });
+
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/passport/pin")
+                    .header("content-type", "application/json")
+                    .body(axum::body::Body::from(pin_body.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
+
+        // 3. Set pin on a completely new unregistered id (self-healing)
+        let fresh_pin_body = serde_json::json!({
+            "id": "brand_new_id_123",
+            "pin": "5678"
+        });
+
+        let response = app
+            .oneshot(
+                Request::builder()
+                    .method("POST")
+                    .uri("/api/passport/pin")
+                    .header("content-type", "application/json")
+                    .body(axum::body::Body::from(fresh_pin_body.to_string()))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+
+        assert_eq!(response.status(), StatusCode::OK);
     }
 }
