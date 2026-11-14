@@ -644,6 +644,12 @@ body {
 .booth-card:nth-child(6) .booth-roof {
   background: repeating-linear-gradient(45deg, #ea580c, #ea580c 18px, #fff7ed 18px, #fff7ed 36px);
 }
+.booth-card:nth-child(7) .booth-roof {
+  background: repeating-linear-gradient(45deg, #0d9488, #0d9488 18px, #f0fdfa 18px, #f0fdfa 36px);
+}
+.booth-card:nth-child(8) .booth-roof {
+  background: repeating-linear-gradient(45deg, #db2777, #db2777 18px, #fdf2f8 18px, #fdf2f8 36px);
+}
 
 /* Card Visual Header */
 .booth-header {
