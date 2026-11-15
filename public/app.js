@@ -844,8 +844,10 @@ function getGameLaunchUrl(baseUrl) {
     if (state.passport) {
       url.searchParams.set('pass', state.passport.id);
       url.searchParams.set('player', state.passport.nickname || 'Marchante');
+      url.searchParams.set('name', state.passport.nickname || 'Marchante');
       url.searchParams.set('avatar', state.passport.avatar || '🤼');
       url.searchParams.set('hub', window.location.origin);
+      url.searchParams.set('feria', '1');
     }
     return url.toString();
   } catch (e) {
